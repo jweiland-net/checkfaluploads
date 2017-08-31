@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-04-04T10:32:20Z" product-name="checkfaluploads">
+		<header/>
+		<body>
+
+			<trans-unit id="dragUploader.iHaveTheRights">
+				<source>Yes...I have the rights to upload files</source>
+				<target>Ja. Die Stadt Pforzheim besitzt das unbeschränkte Nutzungsrecht an den Dateien, die ich hochladen will.</target>
+			</trans-unit>
+			<trans-unit id="file_upload.overwriteExistingFiles">
+				<source>Shall existing files be overwritten?</source>
+				<target>Bestehende Dateien mit dem gleichen Namen überschreiben?</target>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>
