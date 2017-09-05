@@ -1,31 +1,25 @@
-/***************************************************************
+/*
+ * This file is part of the TYPO3 CMS project.
  *
- *  Copyright notice
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
  *
- *  (c) 2014 Stefan Froemken <sfroemken@jweiland.net>
- *  All rights reserved
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
  *
- *  Released under GNU/GPL2+ (see license file in the main directory)
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- *  This copyright notice MUST APPEAR in all copies of this script
- *
- ***************************************************************/
+ * The TYPO3 project - inspiring people to share!
+ */
 /**
  * JavaScript RequireJS module called "TYPO3/CMS/Checkfaluploads/AddCheckboxForRightsInElementBrowser"
- *
  */
-define('TYPO3/CMS/Checkfaluploads/AddCheckboxForRightsInElementBrowser', ['jquery'], function($) {
-	var $checkBox = $("<input />").attr({
-		"type": "checkbox",
-		"name": "userHasRights",
-		"id": "userHasRights",
-		"value": "1"
-	});
-	var $label = $("<label />").attr("for", "userHasRights").text(TYPO3.l10n.localize('dragUploader.iHaveTheRights'));
-	var $wrapper = $("<div />").append($checkBox).append($label);
-	$("div#c-override").after($wrapper);
+define('TYPO3/CMS/Checkfaluploads/AddCheckboxForRightsInElementBrowser', ['jquery'], function ($) {
+  $(document).ready(function () {
+    var $checkBox = $("<input />").attr({
+      "type": "checkbox", "name": "userHasRights", "id": "userHasRights", "value": "1"
+    });
+    var $labelAndInput = $("<label />").attr("for", "userHasRights").append($checkBox).append(' ' + TYPO3.lang['dragUploader.iHaveTheRights']);
+    var $wrapper = $('<div class="checkbox" />').append($labelAndInput);
+    $('#overwriteExistingFiles').closest('.checkbox').after($wrapper);
+  });
 });
