@@ -10,10 +10,10 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'checkFalUploads',
-    'description' => 'check fal uploads',
+    'description' => 'Displays a checkbox that must be checked to upload files in backend',
     'category' => 'be',
     'author' => 'Stefan Frömken',
-    'author_email' => 'froemken@gmail.com',
+    'author_email' => 'projects@jweiland.net',
     'author_company' => 'jweiland.net',
     'shy' => '',
     'priority' => '',
