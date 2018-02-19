@@ -37,7 +37,7 @@ class ResourceStorage
      * @param string $sourceFilePath
      * @param \TYPO3\CMS\Core\Resource\ResourceStorage $parentObject
      * @param LocalDriver $driver
-     * @return array
+     * @return void
      * @throws InsufficientUserPermissionsException
      */
     public function checkFalUploads(
@@ -49,12 +49,15 @@ class ResourceStorage
     ) {
         // FE will not be checked here. This should be part of the extension itself.
         if (TYPO3_MODE === 'BE') {
-            $userHasRights = GeneralUtility::_POST('userHasRights');
-            if (empty($userHasRights)) {
-                throw new InsufficientUserPermissionsException(
-                    'You are not allowed to upload files as long as you are not the owner of these files',
-                    1396626278
-                );
+            $fileParts = GeneralUtility::split_fileref($targetFileName);
+            if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
+                $userHasRights = GeneralUtility::_POST('userHasRights');
+                if (empty($userHasRights)) {
+                    throw new InsufficientUserPermissionsException(
+                        'You are not allowed to upload files as long as you are not the owner of these files',
+                        1396626278
+                    );
+                }
             }
         }
     }
