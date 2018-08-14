@@ -59,9 +59,9 @@ class ResourceStorage
                     /** @var ExtendedFileUtility $extendedFileUtility */
                     $extendedFileUtility = GeneralUtility::makeInstance(ExtendedFileUtility::class);
                     $extendedFileUtility->writeLog(1, 1, 105, $message, []);
-                    $this->addMessageToFlashMessageQueue(
-                        'FileUtility.YouAreNotAllowedToUploadFiles'
-                    );
+                    $this->addMessageToFlashMessageQueue($message);
+
+                    throw new InsufficientUserPermissionsException($message, 1396626278);
                 }
             }
         }
