@@ -2,16 +2,10 @@
 namespace JWeiland\Checkfaluploads\Slots;
 
 /*
- * This file is part of the checkfaluploads project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/checkfaluploads.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -24,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Slot for ResourceStorage
- *
- * @package checkFalUpload
  */
 class ResourceStorage
 {
