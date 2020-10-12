@@ -9,16 +9,11 @@ namespace JWeiland\Checkfaluploads\Hooks;
  */
 
 /**
- * Class PageRenderer
+ * Replace DragUploader with our own version.
+ * We have to check, if JS of Core has changed in the meanwhile.
  */
 class PageRenderer
 {
-    /**
-     * replace DragUploader with own version
-     *
-     * @param array $parameters
-     * @param \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
-     */
     public function replaceDragUploader(array $parameters, \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer)
     {
         if (isset($parameters['jsInline']['RequireJS-Module-TYPO3/CMS/Backend/DragUploader'])) {

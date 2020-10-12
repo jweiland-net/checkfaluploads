@@ -11,17 +11,10 @@ namespace JWeiland\Checkfaluploads\Hooks;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class DocumentTemplate
+ * Add checkbox to ElementBrowser where user can decide, if he has the rights for the files he wants to upload
  */
 class DocumentTemplate
 {
-    /**
-     * Add checkbox where user can decide if he has the rights for the files, he wants to upload
-     *
-     * @param array $parameters
-     * @param \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate
-     * @return void
-     */
     public function addCheckboxForRights(
         array $parameters,
         \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate
