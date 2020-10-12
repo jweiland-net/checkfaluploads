@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Check if user has checked the checkbox which indicates that the user has the rights to upload these files
@@ -46,7 +47,10 @@ class ResourceStorage
             if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
                 $userHasRights = GeneralUtility::_POST('userHasRights');
                 if (empty($userHasRights)) {
-                    $message = 'It is not allowed to upload files, as long as the checkbox for file rights is not checked';
+                    $message = LocalizationUtility::translate(
+                        'error.uploadFile.missingRights',
+                        'Checkfaluploads'
+                    );
 
                     $extendedFileUtility = GeneralUtility::makeInstance(ExtendedFileUtility::class);
                     $extendedFileUtility->writeLog(1, 1, 105, $message, []);
