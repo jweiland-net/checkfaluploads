@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 call_user_func(function () {
-    // hook to replace original TYPO3 DragUploader with my own implementation
+    // Add checkbox for rights
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
         = \JWeiland\Checkfaluploads\Hooks\PageRenderer::class . '->replaceDragUploader';
 
@@ -35,7 +35,4 @@ call_user_func(function () {
         'addUserToRecord'
     );
 
-    // add checkbox for rights in element browser
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'][]
-        = \JWeiland\Checkfaluploads\Hooks\DocumentTemplate::class . '->addCheckboxForRights';
 });
