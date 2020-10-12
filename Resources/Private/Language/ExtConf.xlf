@@ -5,7 +5,6 @@
 		<body>
 			<trans-unit id="owner">
 				<source>Owner of files: Set the name of the owner who will have unrestricted rights to the uploaded files in TYPO3 backend.</source>
-				<target>Inhaber der Dateien: Setze den Namen des Inhabers, der das unbeschränkte Nutzungsrecht an den hochgeladenen Dateien besitzt, die Sie hochladen.</target>
 			</trans-unit>
 		</body>
 	</file>
