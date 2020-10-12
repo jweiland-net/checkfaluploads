@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-04-04T10:32:20Z" product-name="checkfaluploads">
+		<header/>
+		<body>
+			<trans-unit id="dragUploader.fileRights.title">
+				<source>You have to confirm that %s has unrestricted rights to use the files you will upload</source>
+				<target>Bestätigen Sie, dass %s das unbeschränkte Nutzungsrecht an den Dateien besitzt, die Sie hochladen wollen.</target>
+			</trans-unit>
+			<trans-unit id="dragUploader.fileRights.confirmation">
+				<source>Yes</source>
+				<target>Ja</target>
+			</trans-unit>
+			<trans-unit id="file_upload.overwriteExistingFiles">
+				<source>Shall existing files be overwritten?</source>
+				<target>Bestehende Dateien mit dem gleichen Namen überschreiben?</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
