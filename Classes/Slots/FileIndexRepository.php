@@ -1,5 +1,6 @@
 <?php
-namespace JWeiland\Checkfaluploads\Slots;
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/checkfaluploads.
@@ -8,8 +9,9 @@ namespace JWeiland\Checkfaluploads\Slots;
  * LICENSE file that was distributed with this source code.
  */
 
+namespace JWeiland\Checkfaluploads\Slots;
+
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -19,43 +21,36 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class FileIndexRepository
 {
-    /**
-     * Add the uid of the user to the added file
-     *
-     * @param array $data
-     * @return void
-     */
-    public function addUserToRecord(array $data)
+    public function addUserToRecord(array $data): void
     {
         $fields = [];
-        // add field for BE or FE User
         if (TYPO3_MODE === 'BE') {
-            $fields['cruser_id'] = $this->getBackendUserAuthentication()->user['uid'];
+            $fields['cruser_id'] = (int)$this->getBackendUserAuthentication()->user['uid'];
         } elseif (TYPO3_MODE === 'FE') {
-            $fields['fe_cruser_id'] = $this->getTypoScriptFrontendController()->fe_user->user['uid'];
+            $fields['fe_cruser_id'] = (int)$this->getTypoScriptFrontendController()->fe_user->user['uid'];
         }
-        /** @var Connection $connection */
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file');
-        $connection->update('sys_file', $fields, ['uid' => $data['uid']]);
+        $connection = $this->getConnectionPool()->getConnectionForTable('sys_file');
+        $connection->update(
+            'sys_file',
+            $fields,
+            [
+                'uid' => $data['uid']
+            ]
+        );
     }
 
-    /**
-     * Get BackendUserAuthentication
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Get TypoScriptFrontendController
-     *
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    protected function getConnectionPool(): ConnectionPool
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

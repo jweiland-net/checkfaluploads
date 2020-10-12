@@ -1,5 +1,6 @@
 <?php
-namespace JWeiland\Checkfaluploads\Slots;
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package jweiland/checkfaluploads.
@@ -7,6 +8,8 @@ namespace JWeiland\Checkfaluploads\Slots;
  * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Checkfaluploads\Slots;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -22,8 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ResourceStorage
 {
     /**
-     * Check if user has checked the checkbox, which indicated that the user has the rights to upload these files
-     *
      * @param string $targetFileName
      * @param Folder $targetFolder
      * @param string $sourceFilePath
@@ -38,7 +39,7 @@ class ResourceStorage
         $sourceFilePath,
         \TYPO3\CMS\Core\Resource\ResourceStorage $parentObject,
         LocalDriver $driver
-    ) {
+    ): void {
         // FE will not be checked here. This should be part of the extension itself.
         if (TYPO3_MODE === 'BE') {
             $fileParts = GeneralUtility::split_fileref($targetFileName);
@@ -47,26 +48,20 @@ class ResourceStorage
                 if (empty($userHasRights)) {
                     $message = 'It is not allowed to upload files, as long as the checkbox for file rights is not checked';
 
-                    /** @var ExtendedFileUtility $extendedFileUtility */
                     $extendedFileUtility = GeneralUtility::makeInstance(ExtendedFileUtility::class);
                     $extendedFileUtility->writeLog(1, 1, 105, $message, []);
-                    $this->addMessageToFlashMessageQueue($message);
 
+                    $this->addMessageToFlashMessageQueue($message);
                     throw new InsufficientUserPermissionsException($message, 1396626278);
                 }
             }
         }
     }
 
-    /**
-     * Adds a localized FlashMessage to the message queue
-     *
-     * @param string $message
-     * @param int $severity
-     * @throws \InvalidArgumentException
-     */
-    protected function addMessageToFlashMessageQueue($message, $severity = FlashMessage::ERROR)
-    {
+    protected function addMessageToFlashMessageQueue(
+        string $message,
+        int $severity = FlashMessage::ERROR
+    ): void {
         if (TYPO3_MODE !== 'BE') {
             return;
         }
@@ -80,17 +75,9 @@ class ResourceStorage
         $this->addFlashMessage($flashMessage);
     }
 
-    /**
-     * Add flash message to message queue
-     *
-     * @param FlashMessage $flashMessage
-     */
-    protected function addFlashMessage(FlashMessage $flashMessage)
+    protected function addFlashMessage(FlashMessage $flashMessage): void
     {
-        /** @var $flashMessageService FlashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-
-        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
