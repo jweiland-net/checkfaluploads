@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Slot for ResourceStorage
+ * Check if user has checked the checkbox which indicates that the user has the rights to upload these files
  */
 class ResourceStorage
 {
