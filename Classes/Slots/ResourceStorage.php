@@ -31,7 +31,6 @@ class ResourceStorage
      * @param string $sourceFilePath
      * @param \TYPO3\CMS\Core\Resource\ResourceStorage $parentObject
      * @param LocalDriver $driver
-     * @return void
      * @throws InsufficientUserPermissionsException
      */
     public function checkFalUploads(
