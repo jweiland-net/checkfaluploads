@@ -10,16 +10,19 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * JavaScript RequireJS module called "TYPO3/CMS/Checkfaluploads/AddCheckboxForRightsInElementBrowser"
  */
 define('TYPO3/CMS/Checkfaluploads/AddCheckboxForRightsInElementBrowser', ['jquery'], function ($) {
   $(document).ready(function () {
-    var $checkBox = $("<input />").attr({
+    let $checkBox = $("<input />").attr({
       "type": "checkbox", "name": "userHasRights", "id": "userHasRights", "value": "1"
     });
-    var $labelAndInput = $("<label />").attr("for", "userHasRights").append($checkBox).append(' ' + TYPO3.lang['dragUploader.iHaveTheRights']);
-    var $wrapper = $('<div class="checkbox" />').append($labelAndInput);
+    let $labelAndInput = $("<label />").attr("for", "userHasRights").append($checkBox).append(
+        ' ' + TYPO3.lang['dragUploader.fileRights.title'].replace('%s', TYPO3.settings.checkfaluploads.owner)
+    );
+    let $wrapper = $('<div class="checkbox" />').append($labelAndInput);
     $('#overwriteExistingFiles').closest('.checkbox').after($wrapper);
   });
 });
