@@ -23,6 +23,11 @@ class FileIndexRepository
 {
     public function addUserToRecord(array $data): void
     {
+        // Do nothing, if an UpgradeWizard of InstallTool was executed
+        if (TYPO3_REQUESTTYPE === TYPO3_REQUESTTYPE_INSTALL) {
+            return;
+        }
+
         $fields = [];
         if (TYPO3_MODE === 'BE') {
             $fields['cruser_id'] = (int)$this->getBackendUserAuthentication()->user['uid'];
