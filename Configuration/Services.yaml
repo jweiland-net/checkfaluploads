@@ -6,3 +6,6 @@ services:
 
   JWeiland\Checkfaluploads\:
     resource: '../Classes/*'
+
+  JWeiland\Checkfaluploads\Service\FalUploadService:
+    public: true

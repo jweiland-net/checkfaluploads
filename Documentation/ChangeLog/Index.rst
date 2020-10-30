@@ -14,3 +14,4 @@ ChangeLog
 - Make owner in label configurable
 - Merge Hooks into one file
 - Use TYPO3 Messages for better visibility in filelist
+- Add little API to check uploads against marked user rights checkbox
