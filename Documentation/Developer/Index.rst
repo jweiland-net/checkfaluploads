@@ -11,8 +11,14 @@ Additional columns
 
 checkfaluploads adds two columns to table sys_file:
 
-**cruser_id**: This column will be filled automatically by checkfaluploads in TYPO3 BE context.
-**fe_cruser_id**: This column can be filled by YOU in TYPO3 FE context
+**cruser_id**
+
+This column will be filled automatically by checkfaluploads in TYPO3 BE context.
+
+**fe_cruser_id**
+
+This column will be automatically filled by the current logged in FE user, as long
+as you use the officially TYPO3 API for FAL files. In any other cases you have to fill this column on your own.
 
 FalUploadService
 ================
