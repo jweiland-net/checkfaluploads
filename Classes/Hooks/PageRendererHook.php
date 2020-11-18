@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Hooks;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
