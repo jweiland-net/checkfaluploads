@@ -15,8 +15,8 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * EXT:checkfaluploads checks, if the image uploader has marked the checkbox to transfer the user rights of the image
- * to the owner of the website.
+ * EXT:checkfaluploads checks, if the user of the image upload has marked the checkbox to transfer the user rights
+ * of the image to the owner of the website.
  * Instead of implementing this code in many of our JW extensions we simply check, if checkfaluploads is loaded
  * and call this Service to return an Extbase Error, if checkbox was not marked.
  */
