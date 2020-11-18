@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+**Version 2.1.0**
+
+- Add new ViewHelper to generate an image user rights message for checkboxes in Fluid templates
+- Add Unit- and FunctionalTest
+
 **Version 2.0.0**
 
 - Remove TYPO3 8.7 compatibility
