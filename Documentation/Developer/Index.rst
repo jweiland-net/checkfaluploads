@@ -43,3 +43,30 @@ Somewhere in your extbase extension you should have an UploadTypeConverter. Add 
    ) {
        return $error;
    }
+
+ViewHelpers
+===========
+
+ImageRightsMessageViewHelper
+----------------------------
+
+This ViewHelper reads the owner property of checkfaluploads extension settings and implements the owner
+into a localized string. That way you can build a text like "I give all image rights to jweiland.net".
+
+.. code-block:: html
+
+   <c:imageRightsMessage />
+
+Or inline style:
+
+.. code-block:: html
+
+   {c:imageRightsMessage()}
+
+If you want you can use your own translation of your own extension. In that case be sure you have added `%s` as
+placeholder into your message of locallang.xml.
+
+.. code-block:: html
+
+   <c:imageRightsMessage languageKey="myOwnImageRightsLanguageKey" extensionName="myExtKey" />
+

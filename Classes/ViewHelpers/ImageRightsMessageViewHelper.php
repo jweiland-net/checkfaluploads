@@ -26,6 +26,28 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
+     * Initialize all arguments. You need to override this method and call
+     * $this->registerArgument(...) inside this method, to register all your arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'languageKey',
+            'string',
+            'The language key of a locallang.xml file to use/translate',
+            false,
+            'frontend.imageUserRights'
+        );
+        $this->registerArgument(
+            'extensionName',
+            'string',
+            'Use locallang.xml of given extension name',
+            false,
+            'checkfaluploads'
+        );
+    }
+
+    /**
      * Implements a ViewHelper to get values from current logged in fe_user.
      *
      * @param array $arguments
@@ -40,8 +62,8 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
     ) {
         $extConf = GeneralUtility::makeInstance(ExtConf::class);
         return LocalizationUtility::translate(
-            'frontend.imageUserRights',
-            'checkfaluploads',
+            $arguments['languageKey'],
+            $arguments['extensionName'],
             [
                 0 => $extConf->getOwner()
             ]
