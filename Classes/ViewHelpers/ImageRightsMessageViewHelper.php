@@ -25,10 +25,6 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize all arguments. You need to override this method and call
-     * $this->registerArgument(...) inside this method, to register all your arguments.
-     */
     public function initializeArguments()
     {
         $this->registerArgument(

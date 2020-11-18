@@ -46,6 +46,12 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
 
         $this->subject = new ImageRightsMessageViewHelper();
         $this->subject->setRenderingContext($renderingContext->reveal());
+        $this->subject->setArguments(
+            [
+                'languageKey' => 'frontend.imageUserRights',
+                'extensionName' => 'checkfaluploads'
+            ]
+        );
     }
 
     public function tearDown()
