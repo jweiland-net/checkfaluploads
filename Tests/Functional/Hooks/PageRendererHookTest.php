@@ -7,27 +7,39 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Checkfaluploads\Tests\Unit\Configuration;
+namespace JWeiland\Checkfaluploads\Tests\Functional\Configuration;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\Hooks\PageRendererHook;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case.
  */
-class PageRendererHookTest extends UnitTestCase
+class PageRendererHookTest extends FunctionalTestCase
 {
     /**
      * @var PageRendererHook
      */
     protected $subject;
 
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = [
+        'typo3conf/ext/checkfaluploads'
+    ];
+
     public function setUp()
     {
+        parent::setUp();
+
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+
         $this->subject = new PageRendererHook();
     }
 
@@ -36,6 +48,8 @@ class PageRendererHookTest extends UnitTestCase
         unset(
             $this->subject
         );
+
+        parent::tearDown();
     }
 
     /**
