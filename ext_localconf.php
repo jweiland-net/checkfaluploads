@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 call_user_func(function () {
     // Add checkbox for rights
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
-        = \JWeiland\Checkfaluploads\Hooks\PageRenderer::class . '->replaceDragUploader';
+        = \JWeiland\Checkfaluploads\Hooks\PageRendererHook::class . '->replaceDragUploader';
 
     /** @var $dispatcher \TYPO3\CMS\Extbase\SignalSlot\Dispatcher */
     $dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(

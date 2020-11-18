@@ -11,7 +11,9 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\Hooks;
 
+use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -21,11 +23,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * We will replace the DragUploader of TYPO3 completely.
  * We have to check, if JS of Core has changed in the meanwhile.
  */
-class PageRenderer
+class PageRendererHook
 {
     public function replaceDragUploader(
         array $parameters,
-        \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
+        PageRenderer $pageRenderer
     ): void {
         $this->addLanguageFile($pageRenderer);
         $this->addOwnerToTypo3Settings($pageRenderer);
@@ -49,14 +51,14 @@ class PageRenderer
         }
     }
 
-    protected function addLanguageFile(\TYPO3\CMS\Core\Page\PageRenderer $pageRenderer): void
+    protected function addLanguageFile(PageRenderer $pageRenderer): void
     {
         $pageRenderer->addInlineLanguageLabelFile(
             'EXT:checkfaluploads/Resources/Private/Language/locallang.xlf'
         );
     }
 
-    protected function addOwnerToTypo3Settings(\TYPO3\CMS\Core\Page\PageRenderer $pageRenderer): void
+    protected function addOwnerToTypo3Settings(PageRenderer $pageRenderer): void
     {
         $pageRenderer->addInlineSetting(
             'checkfaluploads',
@@ -67,7 +69,7 @@ class PageRenderer
 
     protected function getOwner(): string
     {
-        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
-        return (string)$extensionConfiguration->get('checkfaluploads', 'owner');
+        $extConf = GeneralUtility::makeInstance(ExtConf::class);
+        return $extConf->getOwner();
     }
 }

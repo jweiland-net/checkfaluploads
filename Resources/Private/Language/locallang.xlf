@@ -12,6 +12,10 @@
 			<trans-unit id="error.uploadFile.missingRights">
 				<source>It is not allowed to upload files, as long as the checkbox for file rights is not checked</source>
 			</trans-unit>
+
+			<trans-unit id="frontend.imageUserRights">
+				<source>You have to confirm that %s has unrestricted rights to use the files you will upload</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

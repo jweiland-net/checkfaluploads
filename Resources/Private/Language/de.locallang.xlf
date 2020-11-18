@@ -15,6 +15,11 @@
 				<source>It is not allowed to upload files, as long as the checkbox for file rights is not checked</source>
 				<target>Sie können keine Dateien hochladen, solange Sie die Checkbox für das Übertragen der Nutzungsberechtigungen nicht aktiviert haben</target>
 			</trans-unit>
+
+			<trans-unit id="frontend.imageUserRights">
+				<source>You have to confirm that %s has unrestricted rights to use the files you will upload</source>
+				<target>Bestätigen Sie, dass %s das unbeschränkte Nutzungsrecht an den Dateien besitzt, die Sie hochladen wollen.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
