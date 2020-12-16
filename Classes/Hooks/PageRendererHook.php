@@ -28,6 +28,11 @@ class PageRendererHook
         array $parameters,
         PageRenderer $pageRenderer
     ): void {
+        // Do not add inline language file in case of AJAX requests based on pageType with disableAllHeaderCode = 1
+        if ($controller->config['config']['disableAllHeaderCode'] ?? false) {
+            return;
+        }
+
         $this->addLanguageFile($pageRenderer);
         $this->addOwnerToTypo3Settings($pageRenderer);
 

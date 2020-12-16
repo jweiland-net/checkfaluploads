@@ -7,6 +7,10 @@
 ChangeLog
 =========
 
+**Version 2.1.1**
+
+- Do not load inline language file on AJAX requests based on pageType
+
 **Version 2.1.0**
 
 - Add new ViewHelper to generate an image user rights message for checkboxes in Fluid templates
