@@ -28,8 +28,7 @@ class PageRendererHook
         array $parameters,
         PageRenderer $pageRenderer
     ): void {
-        // Do not add inline language file in case of AJAX requests based on pageType with disableAllHeaderCode = 1
-        if ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode'] ?? false) {
+        if (TYPO3_MODE === 'FE') {
             return;
         }
 
