@@ -16,11 +16,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Start MySQL Server
+        if: ${{ env.GITHUB_ACTOR != 'nektos/act' }}
+        run: sudo systemctl start mysql.service
+
       - name: Set up PHP Version ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, xml, ctype, iconv, intl
+          extensions: mbstring, xml, ctype, iconv, intl, mysql
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: none
 
@@ -46,7 +50,15 @@ jobs:
           composer require typo3/cms-extensionmanager:${{ matrix.typo3 }} --no-progress
           git checkout composer.json
 
-      - name: Functional Tests
+      - name: Functional Tests at Github
+        if: ${{ env.GITHUB_ACTOR != 'nektos/act' }}
+        env:
+          typo3DatabaseDriver: pdo_sqlite
+          COMPOSER_PROCESS_TIMEOUT: 600
+        run: composer ci:tests:functional
+
+      - name: Functional Tests locally
+        if: ${{ env.GITHUB_ACTOR == 'nektos/act' }}
         env:
           typo3DatabaseDriver: pdo_sqlite
           COMPOSER_PROCESS_TIMEOUT: 600
