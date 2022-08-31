@@ -54,7 +54,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function checkFileWithRightsWillReturnNull()
+    public function checkFileWithRightsWillReturnNull(): void
     {
         $file = [
             'name' => 'test',
@@ -69,7 +69,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function checkFileWithNoRightsWillReturnErrorMessage()
+    public function checkFileWithNoRightsWillReturnErrorMessage(): void
     {
         $file = [
             'name' => 'test'
@@ -96,7 +96,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function checkFileWithEmptyRightsWillReturnErrorMessage()
+    public function checkFileWithEmptyRightsWillReturnErrorMessage(): void
     {
         $file = [
             'name' => 'test',

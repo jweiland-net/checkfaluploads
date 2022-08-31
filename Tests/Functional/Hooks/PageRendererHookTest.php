@@ -60,7 +60,7 @@ class PageRendererHookTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function replaceDragUploaderWillReplaceDragUploader()
+    public function replaceDragUploaderWillReplaceDragUploader(): void
     {
         $extConf = new ExtConf();
         $extConf->setOwner('Stefan Froemken');
@@ -108,7 +108,7 @@ class PageRendererHookTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function replaceDragUploaderWillNotLoadJavaScriptForElementBrowser()
+    public function replaceDragUploaderWillNotLoadJavaScriptForElementBrowser(): void
     {
         $extConf = new ExtConf();
         $extConf->setOwner('Stefan Froemken');
@@ -149,7 +149,7 @@ class PageRendererHookTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function replaceDragUploaderWillLoadJavaScriptForElementBrowser()
+    public function replaceDragUploaderWillLoadJavaScriptForElementBrowser(): void
     {
         $_GET['route'] = '/wizard/record/browse';
         $_GET['mode'] = 'file';

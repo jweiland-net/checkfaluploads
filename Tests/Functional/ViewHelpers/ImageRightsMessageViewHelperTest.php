@@ -71,7 +71,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderStaticInitiallyReturnsPlaceholder()
+    public function renderStaticInitiallyReturnsPlaceholder(): void
     {
         $message = $this->subject->initializeArgumentsAndRender();
 
@@ -92,7 +92,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderStaticReturnsMessageWithOwner()
+    public function renderStaticReturnsMessageWithOwner(): void
     {
         $extConf = new ExtConf();
         $extConf->setOwner('Stefan Froemken');
