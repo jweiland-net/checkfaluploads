@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _changelog:
@@ -6,6 +6,11 @@
 =========
 ChangeLog
 =========
+
+**Version 2.2.0**
+
+- Update documentation for upload rights checkbox
+- Add hook to add dynamic validator for upload rights checkbox
 
 **Version 2.1.1**
 

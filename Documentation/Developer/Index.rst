@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _developer-manual:
 
@@ -13,7 +13,7 @@ checkfaluploads adds two columns to table sys_file:
 
 **cruser_id**
 
-This column will be filled automatically by checkfaluploads in TYPO3 BE context.
+This column will be filled automatically by `checkfaluploads` in TYPO3 BE context.
 
 **fe_cruser_id**
 
@@ -25,6 +25,9 @@ FalUploadService
 
 We deliver a little API you can use in your own Extension to check, if an uploaded file from FE context
 has the user rights checkbox marked. Add checkbox to your Fluid Template:
+
+Checkbox via Fluid
+------------------
 
 .. code-block:: html
 
@@ -43,6 +46,35 @@ Somewhere in your extbase extension you should have an UploadTypeConverter. Add 
    ) {
        return $error;
    }
+
+Checkbox via YAML EXT:form
+--------------------------
+
+.. code-block:: yaml
+
+   -
+     label: 'Example image upload'
+     type: ImageUpload
+     identifier: image-1
+     properties:
+       saveToFileMount: '1:/Extensions/[myExt]'
+       allowedMimeTypes:
+       - image/jpg
+       - image/jpeg
+       - image/png
+       elementDescription: 'Select an image'
+   -
+     type: Checkbox
+     identifier: image-1-userrights
+     label: 'Upload Rights'
+     properties:
+       elementDescription: 'You have to confirm that %s has unrestricted rights to use the files you will upload'
+       # non-official property. Needed by DynamicUploadValidatorHook. Helps to identify the checkbox
+       checkboxType: uploadRights
+       # non-official property. Enter the identifier of the image/file upload
+       referenceUploadIdentifier: image-1
+     validators:
+     # Do not add NotEmpty validator. It will be added dynamically in DynamicUploadValidatorHook
 
 ViewHelpers
 ===========

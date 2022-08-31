@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/checkfaluploads.
  *
@@ -29,14 +31,14 @@ class ExtConfTest extends FunctionalTestCase
         'typo3conf/ext/checkfaluploads'
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->subject = new ExtConf();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset(
             $this->subject
@@ -48,7 +50,7 @@ class ExtConfTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getOwnerInitiallyReturnsPlaceholder()
+    public function getOwnerInitiallyReturnsPlaceholder(): void
     {
         self::assertSame(
             '[Missing owner in ext settings of checkfaluploads]',
@@ -59,7 +61,7 @@ class ExtConfTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function setOwnerSetsOwner()
+    public function setOwnerSetsOwner(): void
     {
         $this->subject->setOwner('foo bar');
 
@@ -67,23 +69,5 @@ class ExtConfTest extends FunctionalTestCase
             'foo bar',
             $this->subject->getOwner()
         );
-    }
-
-    /**
-     * @test
-     */
-    public function setOwnerWithIntegerResultsInString()
-    {
-        $this->subject->setOwner(123);
-        self::assertSame('123', $this->subject->getOwner());
-    }
-
-    /**
-     * @test
-     */
-    public function setOwnerWithBooleanResultsInString()
-    {
-        $this->subject->setOwner(true);
-        self::assertSame('1', $this->subject->getOwner());
     }
 }

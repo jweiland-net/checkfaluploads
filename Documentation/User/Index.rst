@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _user-manual:
@@ -7,9 +7,7 @@
 Users Manual
 ============
 
-Target group: **Editors**
-
-While uploading files in filelist module or in ElementBrowser you will see a new
+While uploading files in `filelist` module or in `ElementBrowser` you will see a new
 checkbox to confirm all file rights to the given owner. If you do not check this checkbox
 the file upload will fail.
 

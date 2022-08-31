@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/checkfaluploads.
  *
@@ -31,7 +33,7 @@ class FalUploadServiceTest extends FunctionalTestCase
         'typo3conf/ext/checkfaluploads'
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +42,7 @@ class FalUploadServiceTest extends FunctionalTestCase
         $this->subject = new FalUploadService();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset(
             $this->subject
@@ -52,7 +54,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function checkFileWithRightsWillReturnNull()
+    public function checkFileWithRightsWillReturnNull(): void
     {
         $file = [
             'name' => 'test',
@@ -67,7 +69,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function checkFileWithNoRightsWillReturnErrorMessage()
+    public function checkFileWithNoRightsWillReturnErrorMessage(): void
     {
         $file = [
             'name' => 'test'
@@ -94,7 +96,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function checkFileWithEmptyRightsWillReturnErrorMessage()
+    public function checkFileWithEmptyRightsWillReturnErrorMessage(): void
     {
         $file = [
             'name' => 'test',

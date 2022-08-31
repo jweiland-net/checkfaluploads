@@ -14,7 +14,7 @@ jobs:
       - name: Setup PHP with tools
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.3'
+          php-version: '7.4'
 
       - name: Get composer cache directory
         id: composer-cache
@@ -50,7 +50,7 @@ jobs:
       fail-fast: true
       matrix:
         typo3: ['^9.5', '^10.4']
-        php: ['7.2', '7.3', '7.4']
+        php: ['7.3', '7.4']
         include:
           # Reduce side effects while running functional tests
           - typo3: '^9.5'
@@ -89,6 +89,7 @@ jobs:
         run: |
           composer require typo3/cms-core:${{ matrix.typo3 }} --no-progress
           composer require typo3/cms-extensionmanager:${{ matrix.typo3 }} --no-progress
+          composer require typo3/cms-form:${{ matrix.typo3 }} --no-progress
           git checkout composer.json
 
       - name: Functional Tests at Github
