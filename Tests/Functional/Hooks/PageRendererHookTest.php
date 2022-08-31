@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/checkfaluploads.
  *
@@ -12,6 +14,7 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\Configuration;
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\Hooks\PageRendererHook;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -22,6 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageRendererHookTest extends FunctionalTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var PageRendererHook
      */
@@ -34,7 +39,7 @@ class PageRendererHookTest extends FunctionalTestCase
         'typo3conf/ext/checkfaluploads'
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -43,7 +48,7 @@ class PageRendererHookTest extends FunctionalTestCase
         $this->subject = new PageRendererHook();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset(
             $this->subject

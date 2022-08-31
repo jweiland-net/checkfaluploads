@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/checkfaluploads.
  *
@@ -31,7 +33,7 @@ class FalUploadServiceTest extends FunctionalTestCase
         'typo3conf/ext/checkfaluploads'
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +42,7 @@ class FalUploadServiceTest extends FunctionalTestCase
         $this->subject = new FalUploadService();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset(
             $this->subject

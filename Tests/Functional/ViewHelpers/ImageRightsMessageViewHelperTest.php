@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/checkfaluploads.
  *
@@ -12,6 +14,7 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\ViewHelpers;
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\ViewHelpers\ImageRightsMessageViewHelper;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -23,6 +26,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ImageRightsMessageViewHelperTest extends FunctionalTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ImageRightsMessageViewHelper
      */
@@ -35,7 +40,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
         'typo3conf/ext/checkfaluploads'
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -54,7 +59,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset(
             $this->subject

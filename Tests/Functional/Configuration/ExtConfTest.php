@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/checkfaluploads.
  *
@@ -29,14 +31,14 @@ class ExtConfTest extends FunctionalTestCase
         'typo3conf/ext/checkfaluploads'
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->subject = new ExtConf();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset(
             $this->subject
