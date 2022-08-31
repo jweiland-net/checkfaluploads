@@ -45,6 +45,15 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
     protected $subject;
 
     /**
+     * Core extensions to load.
+     *
+     * @var array
+     */
+    protected $coreExtensionsToLoad = [
+        'form'
+    ];
+
+    /**
      * @var array
      */
     protected $testExtensionsToLoad = [

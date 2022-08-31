@@ -69,6 +69,15 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     ];
 
     /**
+     * Core extensions to load.
+     *
+     * @var array
+     */
+    protected $coreExtensionsToLoad = [
+        'form'
+    ];
+
+    /**
      * @var array
      */
     protected $testExtensionsToLoad = [
