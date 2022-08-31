@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _configuration:
@@ -6,8 +6,6 @@
 =============
 Configuration
 =============
-
-Target group: **Developers, Integrators**
 
 Extension Settings
 ==================
