@@ -25,7 +25,7 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument(
             'languageKey',
@@ -45,24 +45,23 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
 
     /**
      * Implements a ViewHelper to get values from current logged in fe_user.
-     *
-     * @param array $arguments
-     * @param \Closure $childClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      */
     public static function renderStatic(
         array $arguments,
-        \Closure $childClosure,
+        \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
-        $extConf = GeneralUtility::makeInstance(ExtConf::class);
+    ): string {
         return LocalizationUtility::translate(
             $arguments['languageKey'],
             $arguments['extensionName'],
             [
-                0 => $extConf->getOwner()
+                0 => self::getExtConf()->getOwner()
             ]
         );
+    }
+
+    protected static function getExtConf(): ExtConf
+    {
+        return GeneralUtility::makeInstance(ExtConf::class);
     }
 }

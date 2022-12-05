@@ -24,6 +24,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageRendererHook
 {
+    /**
+     * @var ExtConf
+     */
+    protected $extConf;
+
+    public function __construct(ExtConf $extConf)
+    {
+        $this->extConf = $extConf;
+    }
+
     public function replaceDragUploader(
         array $parameters,
         PageRenderer $pageRenderer
@@ -66,13 +76,7 @@ class PageRendererHook
         $pageRenderer->addInlineSetting(
             'checkfaluploads',
             'owner',
-            $this->getOwner()
+            $this->extConf->getOwner()
         );
-    }
-
-    protected function getOwner(): string
-    {
-        $extConf = GeneralUtility::makeInstance(ExtConf::class);
-        return $extConf->getOwner();
     }
 }

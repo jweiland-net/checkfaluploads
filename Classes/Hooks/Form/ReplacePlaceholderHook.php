@@ -11,16 +11,14 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\Hooks\Form;
 
-/*
- * Replace placeholder for customer in checkbox labels
- */
-
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 
+/**
+ * Replace placeholder for customer in checkbox labels
+ */
 class ReplacePlaceholderHook
 {
     /**
@@ -28,9 +26,9 @@ class ReplacePlaceholderHook
      */
     protected $extConf;
 
-    public function __construct()
+    public function __construct(ExtConf $extConf)
     {
-        $this->extConf = GeneralUtility::makeInstance(ExtConf::class);
+        $this->extConf = $extConf;
     }
 
     /**
