@@ -13,7 +13,6 @@ namespace JWeiland\Checkfaluploads\Configuration;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /*
  * This class streamlines all settings from extension manager
@@ -25,10 +24,10 @@ class ExtConf implements SingletonInterface
      */
     protected $owner = '';
 
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
         // get global configuration
-        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('checkfaluploads');
+        $extConf = $extensionConfiguration->get('checkfaluploads');
         if (is_array($extConf)) {
             // call setter method foreach configuration entry
             foreach ($extConf as $key => $value) {
@@ -42,13 +41,14 @@ class ExtConf implements SingletonInterface
 
     public function getOwner(): string
     {
-        if (empty($this->owner)) {
+        if ($this->owner === '') {
             return '[Missing owner in ext settings of checkfaluploads]';
         }
+
         return $this->owner;
     }
 
-    public function setOwner(string $owner)
+    public function setOwner(string $owner): void
     {
         $this->owner = trim($owner);
     }
