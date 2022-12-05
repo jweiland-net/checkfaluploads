@@ -17,6 +17,7 @@ use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
@@ -68,10 +69,10 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
 
         $this->renderableProphecy = $this->prophesize(GenericFormElement::class);
 
-        $this->extConf = new ExtConf();
+        $this->extConf = new ExtConf(new ExtensionConfiguration());
         GeneralUtility::setSingletonInstance(ExtConf::class, $this->extConf);
 
-        $this->subject = new ReplacePlaceholderHook();
+        $this->subject = new ReplacePlaceholderHook($this->extConf);
     }
 
     public function tearDown(): void

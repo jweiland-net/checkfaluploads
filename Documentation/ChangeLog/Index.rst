@@ -7,6 +7,18 @@
 ChangeLog
 =========
 
+Version 3.0.0
+=============
+
+*   Remove TYPO3 9 compatibility
+*   Add TYPO3 11 compatibility
+*   Set hook classes as public in Services.yaml
+*   Prevent GU::makeInstance where possible
+*   Add tests for TYPO3 11
+*   Migrate from SignalSlots to EventListeners
+*   Use ExtensionConfiguration as constructor argument
+*   Remove clearcacheonload from ext_emconf.php
+
 Version 2.2.1
 =============
 

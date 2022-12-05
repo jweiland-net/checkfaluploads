@@ -16,6 +16,7 @@ use JWeiland\Checkfaluploads\ViewHelpers\ImageRightsMessageViewHelper;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
@@ -94,7 +95,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
      */
     public function renderStaticReturnsMessageWithOwner(): void
     {
-        $extConf = new ExtConf();
+        $extConf = new ExtConf(new ExtensionConfiguration());
         $extConf->setOwner('Stefan Froemken');
 
         GeneralUtility::setSingletonInstance(ExtConf::class, $extConf);

@@ -29,12 +29,16 @@ class FalUploadService
         string $extensionName = 'checkfaluploads'
     ): ?Error {
         // When checkFile was called, we already have a pre-validated uploaded file
-        if (!isset($uploadedFile[$fieldName]) || empty($uploadedFile[$fieldName])) {
+        if (
+            !isset($uploadedFile[$fieldName])
+            || $uploadedFile[$fieldName] === ''
+        ) {
             return new Error(
                 LocalizationUtility::translate($langKey, $extensionName),
                 1604050225
             );
         }
+
         return null;
     }
 }
