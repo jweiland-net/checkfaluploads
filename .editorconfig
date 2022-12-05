@@ -3,7 +3,7 @@
 # Use as master: https://github.com/TYPO3-Documentation/T3DocTeam/blob/master/.editorconfig
 
 # top-most EditorConfig file
-root = true
+root = false
 
 [{*.rst,*.rst.txt}]
 charset = utf-8
@@ -11,8 +11,7 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = space
-indent_size = 3
-max_line_length = 80
+indent_size = 4
 
 # MD-Files
 [*.md]
@@ -22,4 +21,3 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
-max_line_length = 80
