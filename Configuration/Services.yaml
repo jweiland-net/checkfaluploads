@@ -7,5 +7,16 @@ services:
   JWeiland\Checkfaluploads\:
     resource: '../Classes/*'
 
-  JWeiland\Checkfaluploads\Service\FalUploadService:
-    public: true
+  # Check if user has checked the checkbox (has rights to upload files)
+  JWeiland\Checkfaluploads\EventListener\AddUserToFalRecordOnCreationEventListener:
+    - name: event.listener
+      event: TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent
+
+  # Add BE or FE user to FAL record
+  JWeiland\Checkfaluploads\EventListener\UserMarkedCheckboxForRightsEventListener:
+    - name: event.listener
+      event: TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent
+  JWeiland\Checkfaluploads\EventListener\AddUserToFalRecordOnUpdateEventListener:
+    - name: event.listener
+      event: TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent
+
