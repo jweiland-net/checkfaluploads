@@ -9,19 +9,29 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Checkfaluploads\Slots;
+namespace JWeiland\Checkfaluploads\EventListener;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Add the uid of the current user to the uploaded file
  */
-class FileIndexRepository
+class AddUserToFalRecordOnUpdateEventListener
 {
-    public function addUserToRecord(array $data): void
+    /**
+     * @var ConnectionPool
+     */
+    protected $connectionPool;
+
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+    }
+
+    public function invoke(AfterFileUpdatedInIndexEvent $event): void
     {
         // Do nothing, if an UpgradeWizard of InstallTool was executed
         if (TYPO3_REQUESTTYPE === TYPO3_REQUESTTYPE_INSTALL) {
@@ -34,12 +44,13 @@ class FileIndexRepository
         } elseif (TYPO3_MODE === 'FE') {
             $fields['fe_cruser_id'] = (int)$this->getTypoScriptFrontendController()->fe_user->user['uid'];
         }
-        $connection = $this->getConnectionPool()->getConnectionForTable('sys_file');
+
+        $connection = $this->connectionPool->getConnectionForTable('sys_file');
         $connection->update(
             'sys_file',
             $fields,
             [
-                'uid' => $data['uid']
+                'uid' => (int)$event->getRelevantProperties()['uid']
             ]
         );
     }
@@ -52,10 +63,5 @@ class FileIndexRepository
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
-    }
-
-    protected function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }
