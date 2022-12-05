@@ -16,6 +16,7 @@ use JWeiland\Checkfaluploads\Hooks\PageRendererHook;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +34,11 @@ class PageRendererHookTest extends FunctionalTestCase
     protected $subject;
 
     /**
+     * @var ExtConf
+     */
+    protected $extConf;
+
+    /**
      * @var array
      */
     protected $testExtensionsToLoad = [
@@ -45,13 +51,16 @@ class PageRendererHookTest extends FunctionalTestCase
 
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 
-        $this->subject = new PageRendererHook();
+        $this->extConf = new ExtConf(new ExtensionConfiguration());
+
+        $this->subject = new PageRendererHook($this->extConf);
     }
 
     public function tearDown(): void
     {
         unset(
-            $this->subject
+            $this->subject,
+            $this->extConf
         );
 
         parent::tearDown();
@@ -62,10 +71,9 @@ class PageRendererHookTest extends FunctionalTestCase
      */
     public function replaceDragUploaderWillReplaceDragUploader(): void
     {
-        $extConf = new ExtConf();
-        $extConf->setOwner('Stefan Froemken');
+        $this->extConf->setOwner('Stefan Froemken');
 
-        GeneralUtility::setSingletonInstance(ExtConf::class, $extConf);
+        GeneralUtility::setSingletonInstance(ExtConf::class, $this->extConf);
 
         /** @var PageRenderer|ObjectProphecy $pageRenderer */
         $pageRenderer = $this->prophesize(PageRenderer::class);
@@ -110,10 +118,9 @@ class PageRendererHookTest extends FunctionalTestCase
      */
     public function replaceDragUploaderWillNotLoadJavaScriptForElementBrowser(): void
     {
-        $extConf = new ExtConf();
-        $extConf->setOwner('Stefan Froemken');
+        $this->extConf->setOwner('Stefan Froemken');
 
-        GeneralUtility::setSingletonInstance(ExtConf::class, $extConf);
+        GeneralUtility::setSingletonInstance(ExtConf::class, $this->extConf);
 
         /** @var PageRenderer|ObjectProphecy $pageRenderer */
         $pageRenderer = $this->prophesize(PageRenderer::class);
@@ -154,10 +161,9 @@ class PageRendererHookTest extends FunctionalTestCase
         $_GET['route'] = '/wizard/record/browse';
         $_GET['mode'] = 'file';
 
-        $extConf = new ExtConf();
-        $extConf->setOwner('Stefan Froemken');
+        $this->extConf->setOwner('Stefan Froemken');
 
-        GeneralUtility::setSingletonInstance(ExtConf::class, $extConf);
+        GeneralUtility::setSingletonInstance(ExtConf::class, $this->extConf);
 
         /** @var PageRenderer|ObjectProphecy $pageRenderer */
         $pageRenderer = $this->prophesize(PageRenderer::class);

@@ -13,6 +13,7 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\Configuration;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 /**
  * Test case.
@@ -35,7 +36,7 @@ class ExtConfTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->subject = new ExtConf();
+        $this->subject = new ExtConf(new ExtensionConfiguration());
     }
 
     public function tearDown(): void
