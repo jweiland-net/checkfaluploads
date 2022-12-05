@@ -7,25 +7,37 @@
 ChangeLog
 =========
 
-**Version 2.2.0**
+Version 2.2.1
+=============
 
-- Update documentation for upload rights checkbox
-- Add hook to add dynamic validator for upload rights checkbox
+*   Update .gitattributes
+*   Update .gitignore
+*   Update .editorconfig
+*   Update structure of documentation
 
-**Version 2.1.1**
+Version 2.2.0
+=============
 
-- Do not load inline language file on AJAX requests based on pageType
+*   Update documentation for upload rights checkbox
+*   Add hook to add dynamic validator for upload rights checkbox
 
-**Version 2.1.0**
+Version 2.1.1
+=============
 
-- Add new ViewHelper to generate an image user rights message for checkboxes in Fluid templates
-- Add Unit- and FunctionalTest
+*   Do not load inline language file on AJAX requests based on pageType
 
-**Version 2.0.0**
+Version 2.1.0
+=============
 
-- Remove TYPO3 8.7 compatibility
-- Add TYPO3 10.4 compatibility
-- Make owner in label configurable
-- Merge Hooks into one file
-- Use TYPO3 Messages for better visibility in filelist
-- Add little API to check uploads against marked user rights checkbox
+*   Add new ViewHelper to generate an image user rights message for checkboxes in Fluid templates
+*   Add Unit- and FunctionalTest
+
+Version 2.0.0
+=============
+
+*   Remove TYPO3 8.7 compatibility
+*   Add TYPO3 10.4 compatibility
+*   Make owner in label configurable
+*   Merge Hooks into one file
+*   Use TYPO3 Messages for better visibility in filelist
+*   Add little API to check uploads against marked user rights checkbox

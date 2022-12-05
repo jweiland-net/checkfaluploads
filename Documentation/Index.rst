@@ -1,64 +1,61 @@
 .. include:: /Includes.rst.txt
 
 
-.. Every manual should have a start label for cross-referencing to
-.. start page. Do not remove this!
-
 .. _start:
 
-=============================================================
+===============
 Checkfaluploads
-=============================================================
+===============
 
-.. only:: html
+:Extension key:
+    checkfaluploads
 
-   :Classification:
-      checkfaluploads
+:Package name:
+    jweiland/checkfaluploads
 
-   :Version:
-      |release|
+:Version:
+    |release|
 
-   :Language:
-      en
+:Language:
+    en
 
-   :Description:
-      Manual covering TYPO3 extension checkfaluploads
+:Author:
+    Stefan Froemken
 
-   :Keywords:
-      fal, uploads, user rights
+:License:
+    This document is published under the
+    `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+    license.
 
-   :Copyright:
-      2013-2020
+:Rendered:
+    |today|
 
-   :Author:
-      Stefan Froemken
+----
 
-   :Email:
-      projects@jweiland.net
+With checkfaluploads we will add a new checkbox to filelist module and ElementBrowser
+where the user gives unrestricted rights to the owner for the uploaded files.
+----
 
-   :License:
-      This document is published under the Open Publication License
-      available from http://www.opencontent.org/openpub/
+**Table of Contents:**
 
-   :Rendered:
-      |today|
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-   The content of this document is related to TYPO3,
-   a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
+    Introduction/Index
+    User/Index
+    Installation/Index
+    Configuration/Index
+    Developer/Index
+    KnownProblems/Index
+    ChangeLog/Index
+    Links
+    Sitemap
 
+..  Meta Menu
 
-   **Table of Contents**
+..  toctree::
+    :hidden:
 
-.. toctree::
-   :maxdepth: 3
-
-
-   Introduction/Index
-   User/Index
-   Installation/Index
-   Configuration/Index
-   AdministratorManual/Index
-   Developer/Index
-   KnownProblems/Index
-   ChangeLog/Index
-   Links
+    Sitemap
+    genindex
