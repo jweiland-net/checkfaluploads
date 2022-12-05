@@ -38,7 +38,7 @@ class UserMarkedCheckboxForRightsEventListener
     /**
      * @throws InsufficientUserPermissionsException
      */
-    public function invoke(BeforeFileAddedEvent $event): void
+    public function __invoke(BeforeFileAddedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
         if (TYPO3_MODE === 'BE') {
@@ -68,6 +68,7 @@ class UserMarkedCheckboxForRightsEventListener
         if (TYPO3_MODE !== 'BE') {
             return;
         }
+
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
             $message,

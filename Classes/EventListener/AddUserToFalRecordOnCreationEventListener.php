@@ -31,7 +31,7 @@ class AddUserToFalRecordOnCreationEventListener
         $this->connectionPool = $connectionPool;
     }
 
-    public function invoke(AfterFileAddedToIndexEvent $event): void
+    public function __invoke(AfterFileAddedToIndexEvent $event): void
     {
         // Do nothing, if an UpgradeWizard of InstallTool was executed
         if (TYPO3_REQUESTTYPE === TYPO3_REQUESTTYPE_INSTALL) {
