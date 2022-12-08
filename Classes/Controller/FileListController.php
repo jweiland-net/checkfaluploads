@@ -96,10 +96,13 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
 
         // New folder button
         if ($this->folderObject && $this->folderObject->checkActionPermission('write')
-            && ($this->folderObject->getStorage()->checkUserActionPermission(
+            && (
+                $this->folderObject->getStorage()->checkUserActionPermission(
                     'add',
                     'File'
-                ) || $this->folderObject->checkActionPermission('add'))
+                )
+                || $this->folderObject->checkActionPermission('add')
+            )
         ) {
             $newButton = $buttonBar->makeLinkButton()
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute(
@@ -123,7 +126,9 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 $elToConfirm = [];
                 foreach ($elFromTable as $key => $element) {
                     $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
-                    if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder(
+                    if (
+                        $clipBoardElement instanceof Folder
+                        && $clipBoardElement->getStorage()->isWithinFolder(
                             $clipBoardElement,
                             $this->folderObject
                         )
@@ -210,10 +215,13 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
         }
 
         // Upload button (only if upload to this directory is allowed)
-        if ($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission(
+        if (
+            $this->folderObject
+            && $this->folderObject->getStorage()->checkUserActionPermission(
                 'add',
                 'File'
-            ) && $this->folderObject->checkActionPermission('write')
+            )
+            && $this->folderObject->checkActionPermission('write')
         ) {
             $uploadButton = $buttonBar->makeLinkButton()
                 ->setHref((string)$uriBuilder->buildUriFromRoute(
@@ -230,11 +238,16 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
         }
 
         // New folder button
-        if ($this->folderObject && $this->folderObject->checkActionPermission('write')
-            && ($this->folderObject->getStorage()->checkUserActionPermission(
+        if (
+            $this->folderObject
+            && $this->folderObject->checkActionPermission('write')
+            && (
+                $this->folderObject->getStorage()->checkUserActionPermission(
                     'add',
                     'File'
-                ) || $this->folderObject->checkActionPermission('add'))
+                )
+                || $this->folderObject->checkActionPermission('add')
+            )
         ) {
             $newButton = $buttonBar->makeLinkButton()
                 ->setHref((string)$uriBuilder->buildUriFromRoute(
@@ -257,7 +270,9 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 $elToConfirm = [];
                 foreach ($elFromTable as $key => $element) {
                     $clipBoardElement = $resourceFactory->retrieveFileOrFolderObject($element);
-                    if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder(
+                    if (
+                        $clipBoardElement instanceof Folder
+                        && $clipBoardElement->getStorage()->isWithinFolder(
                             $clipBoardElement,
                             $this->folderObject
                         )
