@@ -4,9 +4,9 @@ if (!defined('TYPO3_MODE')) {
 }
 
 call_user_func(static function (): void {
-    // Add checkbox for rights
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][]
-        = \JWeiland\Checkfaluploads\Hooks\PageRendererHook::class . '->replaceDragUploader';
+    // Disable CSS class "t3js-drag-uploader-trigger" to prevent loading DragUploader modal.
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Filelist\Controller\FileListController::class]['className']
+        = \JWeiland\Checkfaluploads\Controller\FileListController::class;
 
     // Update (replace placeholders) label and description of Checkboxes
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1661929818]
