@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Add userHasRights checkbox to FileBrowser PopUp
@@ -95,7 +94,7 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Recordlist\View\FolderUtilityRend
         $markup[] = '<div class="checkbox">';
         $markup[] = '    <label>';
         $markup[] = '    <input type="checkbox" name="userHasRights" id="userHasRights" value="1" />';
-        $markup[] = htmlspecialchars($this->getLabelForUserRights());
+        $markup[] = htmlspecialchars($this->getExtConf()->getLabelForUserRights());
         $markup[] = '    </label>';
         $markup[] = '</div>';
 
@@ -161,20 +160,6 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Recordlist\View\FolderUtilityRend
         }
 
         return $code;
-    }
-
-    protected function getLabelForUserRights(): string
-    {
-        return LocalizationUtility::translate(
-            'dragUploader.fileRights.title',
-            'checkfaluploads',
-            [0 => $this->getOwner()]
-        );
-    }
-
-    protected function getOwner(): string
-    {
-        return $this->getExtConf()->getOwner();
     }
 
     protected function getExtConf(): ExtConf
