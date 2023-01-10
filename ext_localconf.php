@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die ('Access denied.');
 }
@@ -7,6 +8,10 @@ call_user_func(static function (): void {
     // Disable CSS class "t3js-drag-uploader-trigger" to prevent loading DragUploader modal.
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Filelist\Controller\FileListController::class]['className']
         = \JWeiland\Checkfaluploads\Controller\FileListController::class;
+
+    // Add userHasRights checkbox to FileBrowser PopUp
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer::class]['className']
+        = \JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRenderer::class;
 
     // Update (replace placeholders) label and description of Checkboxes
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1661929818]
