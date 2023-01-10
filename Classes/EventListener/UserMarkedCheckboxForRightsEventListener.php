@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,11 +39,37 @@ class UserMarkedCheckboxForRightsEventListener
     /**
      * @throws InsufficientUserPermissionsException
      */
-    public function __invoke(BeforeFileAddedEvent $event): void
+    public function checkForAddedFile(BeforeFileAddedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
         if (TYPO3_MODE === 'BE') {
             $fileParts = GeneralUtility::split_fileref($event->getFileName());
+            if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
+                $userHasRights = GeneralUtility::_POST('userHasRights');
+                if (empty($userHasRights)) {
+                    $message = LocalizationUtility::translate(
+                        'error.uploadFile.missingRights',
+                        'Checkfaluploads'
+                    );
+
+                    $this->extendedFileUtility->writeLog(1, 1, 105, $message, []);
+
+                    $this->addMessageToFlashMessageQueue($message);
+
+                    throw new InsufficientUserPermissionsException($message, 1396626278);
+                }
+            }
+        }
+    }
+
+    /**
+     * @throws InsufficientUserPermissionsException
+     */
+    public function checkForReplacedFile(BeforeFileReplacedEvent $event): void
+    {
+        // FE will not be checked here. This should be part of the extension itself.
+        if (TYPO3_MODE === 'BE') {
+            $fileParts = GeneralUtility::split_fileref($event->getFile()->getName());
             if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
                 $userHasRights = GeneralUtility::_POST('userHasRights');
                 if (empty($userHasRights)) {
