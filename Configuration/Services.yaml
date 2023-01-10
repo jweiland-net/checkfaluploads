@@ -23,7 +23,11 @@ services:
   JWeiland\Checkfaluploads\EventListener\UserMarkedCheckboxForRightsEventListener:
     tags:
       - name: 'event.listener'
+        method: checkForAddedFile
         event: TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent
+      - name: 'event.listener'
+        method: checkForReplacedFile
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent
 
   # Add BE or FE user to FAL record
   JWeiland\Checkfaluploads\EventListener\AddUserToFalRecordOnCreationEventListener:

@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 3.0.2
+=============
+
+*   Check also for image rights while replacing a file
+
 Version 3.0.1
 =============
 
