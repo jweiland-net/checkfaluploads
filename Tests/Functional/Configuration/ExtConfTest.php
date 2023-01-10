@@ -14,6 +14,8 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\Configuration;
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case.
@@ -35,6 +37,8 @@ class ExtConfTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 
         $this->subject = new ExtConf(new ExtensionConfiguration());
     }
@@ -69,6 +73,19 @@ class ExtConfTest extends FunctionalTestCase
         self::assertSame(
             'foo bar',
             $this->subject->getOwner()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getLabelForUserRightsContainsOwner(): void
+    {
+        $this->subject->setOwner('foo bar');
+
+        self::assertStringContainsString(
+            'foo bar',
+            $this->subject->getLabelForUserRights()
         );
     }
 }
