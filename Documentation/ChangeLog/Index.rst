@@ -7,6 +7,15 @@
 ChangeLog
 =========
 
+Version 3.0.1
+=============
+
+*   Update func tests
+*   Update Readme.md
+*   Move labelForUserRights to ExtConf object
+*   Add userHasRights checkbox to FileBrowser PopUp
+*   Add further description to EventListerner in Services.yaml
+
 Version 3.0.0
 =============
 
