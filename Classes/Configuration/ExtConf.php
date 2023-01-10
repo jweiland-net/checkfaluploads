@@ -13,6 +13,7 @@ namespace JWeiland\Checkfaluploads\Configuration;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /*
  * This class streamlines all settings from extension manager
@@ -51,5 +52,20 @@ class ExtConf implements SingletonInterface
     public function setOwner(string $owner): void
     {
         $this->owner = trim($owner);
+    }
+
+    /**
+     * Helper method to get the translated label for userHasRights checkbox where
+     * the owner was already inserted.
+     */
+    public function getLabelForUserRights(): string
+    {
+        return LocalizationUtility::translate(
+            'dragUploader.fileRights.title',
+            'checkfaluploads',
+            [
+                0 => $this->getOwner()
+            ]
+        );
     }
 }

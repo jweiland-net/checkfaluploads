@@ -13,7 +13,6 @@ namespace JWeiland\Checkfaluploads\Controller\File;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Add Checkbox to give usage rights to another person/company
@@ -40,7 +39,7 @@ class FileUploadController extends \TYPO3\CMS\Filelist\Controller\File\FileUploa
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="userHasRights" id="userHasRights" value="1" />
-                <label class="form-check-label" for="userHasRights"> ' . htmlspecialchars($this->getLabelForUserRights()) . '</label>
+                <label class="form-check-label" for="userHasRights"> ' . htmlspecialchars($this->getExtConf()->getLabelForUserRights()) . '</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" />
@@ -54,20 +53,6 @@ class FileUploadController extends \TYPO3\CMS\Filelist\Controller\File\FileUploa
               ' . htmlspecialchars($this->getLanguageService()->getLL('uploadMultipleFilesInfo')) . '
             </div>
         ';
-    }
-
-    protected function getLabelForUserRights(): string
-    {
-        return LocalizationUtility::translate(
-            'dragUploader.fileRights.title',
-            'checkfaluploads',
-            [0 => $this->getOwner()]
-        );
-    }
-
-    protected function getOwner(): string
-    {
-        return $this->getExtConf()->getOwner();
     }
 
     protected function getExtConf(): ExtConf

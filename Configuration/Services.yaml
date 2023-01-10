@@ -7,11 +7,11 @@ services:
   JWeiland\Checkfaluploads\:
     resource: '../Classes/*'
 
-  # Called by GeneralUtility::makeInstance in FormRuntime::mapAndValidatePage
+  # Called by GeneralUtility::makeInstance in EXT:form -> FormRuntime::mapAndValidatePage
   JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook:
     public: true
 
-  # Called by GeneralUtility::makeInstance in AbstractFormFactory::triggerFormBuildingFinished
+  # Called by GeneralUtility::makeInstance in EXT:form -> AbstractFormFactory::triggerFormBuildingFinished
   JWeiland\Checkfaluploads\Hooks\Form\ReplacePlaceholderHook:
     public: true
 
