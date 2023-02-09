@@ -7,10 +7,15 @@
 ChangeLog
 =========
 
+Version 3.0.3
+=============
+
+*   Add image rights checkbox in replace file form
+
 Version 3.0.2
 =============
 
-*   Check also for image rights while replacing a file
+*   Check also for image rights while replacing a file (API only)
 
 Version 3.0.1
 =============
