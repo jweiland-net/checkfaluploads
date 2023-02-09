@@ -24,13 +24,6 @@ class FileUploadController extends \TYPO3\CMS\Filelist\Controller\File\FileUploa
      */
     protected function renderUploadFormInternal(): string
     {
-        /**
-        let $labelAndInput = $("<label />").attr("for", "userHasRights").append($checkBox).append(
-        ' ' + TYPO3.lang['dragUploader.fileRights.title'].replace('%s', TYPO3.settings.checkfaluploads.owner)
-        );
-        let $wrapper = $('<div class="checkbox" />').append($labelAndInput);
-         */
-
         return '
             <div class="form-group">
                 <input type="file" multiple="multiple" class="form-control" name="upload_1[]" />
