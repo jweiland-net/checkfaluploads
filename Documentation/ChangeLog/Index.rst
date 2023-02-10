@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 3.0.4
+=============
+
+*   Test for existing user record before accessing user record array
+
 Version 3.0.3
 =============
 
