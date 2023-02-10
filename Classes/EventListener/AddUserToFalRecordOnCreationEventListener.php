@@ -40,9 +40,9 @@ class AddUserToFalRecordOnCreationEventListener
 
         $fields = [];
         if (TYPO3_MODE === 'BE') {
-            $fields['cruser_id'] = (int)$this->getBackendUserAuthentication()->user['uid'];
+            $fields['cruser_id'] = (int)($this->getBackendUserAuthentication()->user['uid'] ?? 0);
         } elseif (TYPO3_MODE === 'FE') {
-            $fields['fe_cruser_id'] = (int)$this->getTypoScriptFrontendController()->fe_user->user['uid'];
+            $fields['fe_cruser_id'] = (int)($this->getTypoScriptFrontendController()->fe_user->user['uid'] ?? 0);
         }
 
         $connection = $this->connectionPool->getConnectionForTable('sys_file');
@@ -50,7 +50,7 @@ class AddUserToFalRecordOnCreationEventListener
             'sys_file',
             $fields,
             [
-                'uid' => $event->getFileUid()
+                'uid' => $event->getFileUid(),
             ]
         );
     }
