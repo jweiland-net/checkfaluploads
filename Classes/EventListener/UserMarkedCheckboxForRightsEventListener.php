@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\EventListener;
 
+use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -26,10 +28,9 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class UserMarkedCheckboxForRightsEventListener
 {
-    /**
-     * @var ExtendedFileUtility
-     */
-    protected $extendedFileUtility;
+    use ApplicationContextTrait;
+
+    protected ExtendedFileUtility $extendedFileUtility;
 
     public function __construct(ExtendedFileUtility $extendedFileUtility)
     {
@@ -42,17 +43,17 @@ class UserMarkedCheckboxForRightsEventListener
     public function checkForAddedFile(BeforeFileAddedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
-        if (TYPO3_MODE === 'BE') {
+        if ($this->isBackendRequest()) {
             $fileParts = GeneralUtility::split_fileref($event->getFileName());
-            if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
-                $userHasRights = GeneralUtility::_POST('userHasRights');
-                if (empty($userHasRights)) {
+            if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'], true)) {
+                $userHasRights = (bool)($this->getTypo3Request()->getParsedBody()['userHasRights'] ?? 0);
+                if ($userHasRights === false) {
                     $message = LocalizationUtility::translate(
                         'error.uploadFile.missingRights',
                         'Checkfaluploads'
                     );
 
-                    $this->extendedFileUtility->writeLog(1, 1, 105, $message, []);
+                    $this->getBackendUserAuthentication()->writeLog(2, 1, 1, 105, $message, []);
 
                     $this->addMessageToFlashMessageQueue($message);
 
@@ -68,17 +69,17 @@ class UserMarkedCheckboxForRightsEventListener
     public function checkForReplacedFile(BeforeFileReplacedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
-        if (TYPO3_MODE === 'BE') {
+        if ($this->isBackendRequest()) {
             $fileParts = GeneralUtility::split_fileref($event->getFile()->getName());
             if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
-                $userHasRights = GeneralUtility::_POST('userHasRights');
-                if (empty($userHasRights)) {
+                $userHasRights = (bool)($this->getTypo3Request()->getParsedBody()['userHasRights'] ?? false);
+                if ($userHasRights === false) {
                     $message = LocalizationUtility::translate(
                         'error.uploadFile.missingRights',
                         'Checkfaluploads'
                     );
 
-                    $this->extendedFileUtility->writeLog(1, 1, 105, $message, []);
+                    $this->getBackendUserAuthentication()->writeLog(2, 1, 1, 105, $message, []);
 
                     $this->addMessageToFlashMessageQueue($message);
 
@@ -92,7 +93,7 @@ class UserMarkedCheckboxForRightsEventListener
         string $message,
         int $severity = AbstractMessage::ERROR
     ): void {
-        if (TYPO3_MODE !== 'BE') {
+        if (!$this->isBackendRequest()) {
             return;
         }
 
@@ -111,5 +112,10 @@ class UserMarkedCheckboxForRightsEventListener
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
+    }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

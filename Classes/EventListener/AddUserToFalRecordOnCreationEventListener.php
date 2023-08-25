@@ -13,7 +13,9 @@ namespace JWeiland\Checkfaluploads\EventListener;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -21,31 +23,20 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class AddUserToFalRecordOnCreationEventListener
 {
-    /**
-     * @var ConnectionPool
-     */
-    protected $connectionPool;
-
-    public function __construct(ConnectionPool $connectionPool)
-    {
-        $this->connectionPool = $connectionPool;
-    }
-
     public function __invoke(AfterFileAddedToIndexEvent $event): void
     {
-        // Do nothing, if an UpgradeWizard of InstallTool was executed
-        if (TYPO3_REQUESTTYPE === TYPO3_REQUESTTYPE_INSTALL) {
+        $fields = [];
+        $typo3Request = $GLOBALS['TYPO3_REQUEST'];
+
+        if (ApplicationType::fromRequest($typo3Request)->isBackend()) {
+            $fields['cruser_id'] = (int)($this->getBackendUserAuthentication()->user['uid'] ?? 0);
+        } elseif (ApplicationType::fromRequest($typo3Request)->isFrontend()) {
+            $fields['fe_cruser_id'] = (int)($this->getTypoScriptFrontendController()->fe_user->user['uid'] ?? 0);
+        } else {
             return;
         }
 
-        $fields = [];
-        if (TYPO3_MODE === 'BE') {
-            $fields['cruser_id'] = (int)($this->getBackendUserAuthentication()->user['uid'] ?? 0);
-        } elseif (TYPO3_MODE === 'FE') {
-            $fields['fe_cruser_id'] = (int)($this->getTypoScriptFrontendController()->fe_user->user['uid'] ?? 0);
-        }
-
-        $connection = $this->connectionPool->getConnectionForTable('sys_file');
+        $connection = $this->getConnectionPool()->getConnectionForTable('sys_file');
         $connection->update(
             'sys_file',
             $fields,
@@ -63,5 +54,10 @@ class AddUserToFalRecordOnCreationEventListener
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    private function getConnectionPool(): ConnectionPool
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }
