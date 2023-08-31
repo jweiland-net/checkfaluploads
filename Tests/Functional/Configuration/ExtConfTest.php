@@ -25,7 +25,7 @@ class ExtConfTest extends FunctionalTestCase
     protected ExtConf $subject;
 
     protected array $testExtensionsToLoad = [
-        'jweiland/checkfaluploads'
+        'jweiland/checkfaluploads',
     ];
 
     public function setUp(): void

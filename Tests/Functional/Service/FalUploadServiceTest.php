@@ -21,13 +21,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class FalUploadServiceTest extends FunctionalTestCase
 {
-    /**
-     * @var FalUploadService
-     */
     protected ?FalUploadService $subject = null;
 
     protected array $testExtensionsToLoad = [
-        'jweiland/checkfaluploads'
+        'jweiland/checkfaluploads',
     ];
 
     public function setUp(): void
@@ -55,7 +52,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     {
         $file = [
             'name' => 'test',
-            'rights' => '1'
+            'rights' => '1',
         ];
 
         self::assertNull(
@@ -69,7 +66,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     public function checkFileWithNoRightsWillReturnErrorMessage(): void
     {
         $file = [
-            'name' => 'test'
+            'name' => 'test',
         ];
 
         $error = $this->subject->checkFile($file);
@@ -97,7 +94,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     {
         $file = [
             'name' => 'test',
-            'rights' => ''
+            'rights' => '',
         ];
 
         $error = $this->subject->checkFile($file);

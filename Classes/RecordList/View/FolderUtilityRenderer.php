@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\RecordList\View;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -74,9 +73,10 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Recordlist\View\FolderUtilityRend
         $formAction = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
         $combinedIdentifier = $folderObject->getCombinedIdentifier();
         $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
-                $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
-                '&'
-            );
+            $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
+            '&'
+        );
+
         $markup[] = '<form class="pt-3 pb-3" action="' . htmlspecialchars($formAction) . '" method="post" name="editform" enctype="multipart/form-data">';
         $markup[] = '<input type="hidden" name="data[upload][0][target]" value="' . htmlspecialchars($combinedIdentifier) . '" />';
         $markup[] = '<input type="hidden" name="data[upload][0][data]" value="0" />';

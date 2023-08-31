@@ -55,7 +55,7 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
             $arguments['languageKey'],
             $arguments['extensionName'],
             [
-                0 => self::getExtConf()->getOwner()
+                0 => self::getExtConf()->getOwner(),
             ]
         );
     }

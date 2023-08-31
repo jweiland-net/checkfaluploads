@@ -40,7 +40,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     protected ?DynamicUploadValidatorHook $subject = null;
 
     protected array $elementValue = [
-        'foo' => 'bar'
+        'foo' => 'bar',
     ];
 
     protected array $requestArguments = [
@@ -59,11 +59,11 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      * Core extensions to load.
      */
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'jweiland/checkfaluploads'
+        'jweiland/checkfaluploads',
     ];
 
     public function setUp(): void
@@ -107,7 +107,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->getElementsRecursively()
             ->shouldBeCalled()
             ->willReturn([
-                0 => $formElement->reveal()
+                0 => $formElement->reveal(),
             ]);
 
         self::assertSame(
@@ -141,7 +141,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->getProperties()
             ->willReturn([
                 'checkboxType' => 'uploadRights',
-                'referenceUploadIdentifier' => 'image-upload'
+                'referenceUploadIdentifier' => 'image-upload',
             ]);
         $checkboxElementProphecy
             ->getIdentifier()
@@ -157,7 +157,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->shouldBeCalled()
             ->willReturn([
                 0 => $fileUploadProphecy->reveal(),
-                1 => $checkboxElementProphecy->reveal()
+                1 => $checkboxElementProphecy->reveal(),
             ]);
 
         $requestArguments = $this->requestArguments;
@@ -194,7 +194,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->getProperties()
             ->willReturn([
                 'checkboxType' => 'uploadRights',
-                'referenceUploadIdentifier' => 'image-upload'
+                'referenceUploadIdentifier' => 'image-upload',
             ]);
         $checkboxElementProphecy
             ->getIdentifier()
@@ -210,7 +210,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->shouldBeCalled()
             ->willReturn([
                 0 => $fileUploadProphecy->reveal(),
-                1 => $checkboxElementProphecy->reveal()
+                1 => $checkboxElementProphecy->reveal(),
             ]);
 
         self::assertSame(

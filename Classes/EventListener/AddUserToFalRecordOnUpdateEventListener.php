@@ -42,7 +42,7 @@ class AddUserToFalRecordOnUpdateEventListener
             'sys_file',
             $fields,
             [
-                'uid' => (int)$event->getRelevantProperties()['uid']
+                'uid' => (int)$event->getRelevantProperties()['uid'],
             ]
         );
     }

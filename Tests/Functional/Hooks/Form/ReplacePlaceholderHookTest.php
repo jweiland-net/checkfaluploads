@@ -39,11 +39,11 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
      * Core extensions to load.
      */
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'jweiland/checkfaluploads'
+        'jweiland/checkfaluploads',
     ];
 
     public function setUp(): void
@@ -100,7 +100,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         $formElement
             ->getProperties()
             ->willReturn([
-                'checkboxType' => 'uploadRights'
+                'checkboxType' => 'uploadRights',
             ]);
 
         $formElement
@@ -122,7 +122,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         $formElement
             ->getProperties()
             ->willReturn([
-                'checkboxType' => 'uploadRights'
+                'checkboxType' => 'uploadRights',
             ]);
 
         $formElement

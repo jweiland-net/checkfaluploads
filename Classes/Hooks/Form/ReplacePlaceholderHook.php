@@ -45,7 +45,7 @@ class ReplacePlaceholderHook
                 'frontend.imageUserRights',
                 'checkfaluploads',
                 [
-                    0 => $this->extConf->getOwner()
+                    0 => $this->extConf->getOwner(),
                 ]
             ));
         }

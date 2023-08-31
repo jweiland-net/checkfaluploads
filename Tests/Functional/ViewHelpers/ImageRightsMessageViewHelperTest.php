@@ -29,7 +29,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
     protected ?ImageRightsMessageViewHelper $subject = null;
 
     protected array $testExtensionsToLoad = [
-        'jweiland/checkfaluploads'
+        'jweiland/checkfaluploads',
     ];
 
     public function setUp(): void
@@ -46,7 +46,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
         $this->subject->setArguments(
             [
                 'languageKey' => 'frontend.imageUserRights',
-                'extensionName' => 'checkfaluploads'
+                'extensionName' => 'checkfaluploads',
             ]
         );
     }

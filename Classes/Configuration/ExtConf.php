@@ -64,7 +64,7 @@ class ExtConf implements SingletonInterface
             'dragUploader.fileRights.title',
             'checkfaluploads',
             [
-                0 => $this->getOwner()
+                0 => $this->getOwner(),
             ]
         );
     }
