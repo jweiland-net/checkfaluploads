@@ -1,5 +1,7 @@
 <?php
 
+use JWeiland\Avalex\Utility\Typo3Utility;
+
 if (!defined('TYPO3')) {
     die ('Access denied.');
 }
@@ -14,8 +16,13 @@ call_user_func(static function (): void {
         = \JWeiland\Checkfaluploads\Controller\File\ReplaceFileController::class;
 
     // Add userHasRights checkbox to FileBrowser PopUp
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer::class]['className']
-        = \JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRenderer::class;
+    if (version_compare(Typo3Utility::getTypo3Version(), '12.0', '>')) {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer::class]['className']
+            = \JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRenderer::class;
+    } else {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer::class]['className']
+            = \JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRendererV11::class;
+    }
 
     // Update (replace placeholders) label and description of Checkboxes
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1661929818]
