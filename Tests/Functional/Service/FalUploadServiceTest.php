@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\Service;
 
 use JWeiland\Checkfaluploads\Service\FalUploadService;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.
@@ -24,13 +24,10 @@ class FalUploadServiceTest extends FunctionalTestCase
     /**
      * @var FalUploadService
      */
-    protected $subject;
+    protected ?FalUploadService $subject = null;
 
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/checkfaluploads'
+    protected array $testExtensionsToLoad = [
+        'jweiland/checkfaluploads'
     ];
 
     public function setUp(): void
