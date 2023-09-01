@@ -78,12 +78,12 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getProperties')
             ->willReturn([]);
 
         $formElement
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('setLabel');
 
         $this->subject->afterBuildingFinished($formElement);
@@ -99,16 +99,16 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
             ]);
 
         $formElement
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setLabel')
-            ->with($this->stringContains('[Missing owner in ext settings of checkfaluploads]'));
+            ->with(self::stringContains('[Missing owner in ext settings of checkfaluploads]'));
 
         $this->subject->afterBuildingFinished($formElement);
     }
@@ -123,16 +123,16 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
             ]);
 
         $formElement
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setLabel')
-            ->with($this->stringContains('jweiland.net'));
+            ->with(self::stringContains('jweiland.net'));
 
         $this->subject->afterBuildingFinished($formElement);
     }

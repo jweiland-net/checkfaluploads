@@ -95,17 +95,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var FormElementInterface|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getProperties')
             ->willReturn([]);
 
         $formElement
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('addValidator');
 
         $this->renderableMock = $this->createMock(Page::class);
         $this->renderableMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 0 => $formElement,
@@ -130,12 +130,12 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var FormElementInterface|MockObject $fileUploadMock */
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getProperties')
             ->willReturn([]);
 
         $fileUploadMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('image-upload');
 
@@ -150,17 +150,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ]);
 
         $checkboxElementMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('upload-rights');
 
         $checkboxElementMock
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('addValidator');
 
         $this->renderableMock = $this->createMock(Page::class);
         $this->renderableMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 0 => $fileUploadMock,
@@ -189,19 +189,19 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var FormElementInterface|MockObject $fileUploadMock */
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getProperties')
             ->willReturn([]);
 
         $fileUploadMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('image-upload');
 
         /** @var FormElementInterface|MockObject $checkboxElementMock */
         $checkboxElementMock = $this->createMock(GenericFormElement::class);
         $checkboxElementMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
@@ -209,18 +209,18 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ]);
 
         $checkboxElementMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('upload-rights');
 
         $checkboxElementMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('addValidator')
-            ->with($this->isInstanceOf(NotEmptyValidator::class));
+            ->with(self::isInstanceOf(NotEmptyValidator::class));
 
         $this->renderableMock = $this->createMock(Page::class);
         $this->renderableMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 0 => $fileUploadMock,
