@@ -13,6 +13,7 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\Hooks;
 
 use JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook;
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
@@ -41,18 +42,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
     protected array $elementValue = [
         'foo' => 'bar',
-    ];
-
-    protected array $requestArguments = [
-        'foo' => 'bar',
-        'image-upload' => [
-            'error' => 0,
-            'name' => 'schlumpf',
-            'size' => 123,
-            'tmp_name' => '/tmp/nr4378tg',
-            'type' => 2,
-        ],
-        'upload-rights' => '0',
     ];
 
     /**
@@ -117,7 +106,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 $this->formRuntimeMock,
                 $this->renderableMock,
                 $this->elementValue,
-                $this->requestArguments
+                [
+                    'foo' => 'bar',
+                    'image-upload' => new UploadedFile(
+                        'schlumpf.png',
+                        123,
+                        0,
+                        '/tmp/nr4378tg',
+                        'image/png'
+                    ),
+                    'upload-rights' => '0',
+                ]
             )
         );
     }
@@ -165,8 +164,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 1 => $checkboxElementMock,
             ]);
 
-        $requestArguments = $this->requestArguments;
-        $requestArguments['image-upload']['error'] = 4;
+        $requestArguments = [
+            'foo' => 'bar',
+            'image-upload' => new UploadedFile(
+                'schlumpf.png',
+                123,
+                4,
+                '/tmp/nr4378tg',
+                'image/png'
+            ),
+            'upload-rights' => '0',
+        ];
 
         self::assertSame(
             $this->elementValue,
@@ -192,6 +200,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->willReturn([]);
 
         $fileUploadMock
+            ->expects(self::atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('image-upload');
 
@@ -206,6 +215,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ]);
 
         $checkboxElementMock
+            ->expects(self::atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('upload-rights');
 
@@ -229,7 +239,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 $this->formRuntimeMock,
                 $this->renderableMock,
                 $this->elementValue,
-                $this->requestArguments
+                [
+                    'foo' => 'bar',
+                    'image-upload' => new UploadedFile(
+                        'schlumpf.png',
+                        123,
+                        0,
+                        '/tmp/nr4378tg',
+                        'image/png'
+                    ),
+                    'upload-rights' => '0',
+                ]
             )
         );
     }
