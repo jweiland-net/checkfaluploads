@@ -40,7 +40,7 @@ class ReplacePlaceholderHook
             return;
         }
 
-        if ($formElement->getProperties()['checkboxType'] === 'uploadRights') {
+        if (($formElement->getProperties()['checkboxType'] ?? '') === 'uploadRights') {
             $formElement->setLabel(LocalizationUtility::translate(
                 'frontend.imageUserRights',
                 'checkfaluploads',

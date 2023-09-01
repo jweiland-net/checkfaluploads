@@ -134,8 +134,9 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getProperties')
             ->willReturn([]);
 
+        // "never" as it isn't a checkbox element
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects(self::never())
             ->method('getIdentifier')
             ->willReturn('image-upload');
 
