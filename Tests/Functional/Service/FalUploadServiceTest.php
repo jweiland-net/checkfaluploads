@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\Service;
 
 use JWeiland\Checkfaluploads\Service\FalUploadService;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -31,7 +31,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $this->subject = new FalUploadService();
     }

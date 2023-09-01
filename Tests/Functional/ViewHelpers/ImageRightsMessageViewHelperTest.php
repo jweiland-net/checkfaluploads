@@ -15,7 +15,7 @@ use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\ViewHelpers\ImageRightsMessageViewHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
@@ -36,13 +36,13 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         /** @var RenderingContextInterface|MockObject $renderingContext */
         $renderingContext = $this->createMock(RenderingContext::class);
 
         $this->subject = new ImageRightsMessageViewHelper();
-        $this->subject->setRenderingContext($renderingContext->reveal());
+        $this->subject->setRenderingContext($renderingContext);
         $this->subject->setArguments(
             [
                 'languageKey' => 'frontend.imageUserRights',

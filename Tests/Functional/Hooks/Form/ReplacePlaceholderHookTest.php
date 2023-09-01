@@ -15,7 +15,7 @@ use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\Hooks\Form\ReplacePlaceholderHook;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
@@ -50,9 +50,9 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
-        $this->renderableMock = $this->prophesize(GenericFormElement::class);
+        $this->renderableMock = $this->createMock(GenericFormElement::class);
 
         $this->extConf = new ExtConf(new ExtensionConfiguration());
         GeneralUtility::setSingletonInstance(ExtConf::class, $this->extConf);
@@ -78,14 +78,15 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->getProperties()
+            ->expects($this->atLeastOnce())
+            ->method('getProperties')
             ->willReturn([]);
 
         $formElement
-            ->setLabel(Argument::any())
-            ->shouldNotBeCalled();
+            ->expects($this->never())
+            ->method('setLabel');
 
-        $this->subject->afterBuildingFinished($formElement->reveal());
+        $this->subject->afterBuildingFinished($formElement);
     }
 
     /**
@@ -98,16 +99,18 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->getProperties()
+            ->expects($this->atLeastOnce())
+            ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
             ]);
 
         $formElement
-            ->setLabel(Argument::containingString('[Missing owner in ext settings of checkfaluploads]'))
-            ->shouldBeCalled();
+            ->expects($this->atLeastOnce())
+            ->method('setLabel')
+            ->with($this->stringContains('[Missing owner in ext settings of checkfaluploads]'));
 
-        $this->subject->afterBuildingFinished($formElement->reveal());
+        $this->subject->afterBuildingFinished($formElement);
     }
 
     /**
@@ -120,15 +123,17 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->getProperties()
+            ->expects($this->atLeastOnce())
+            ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
             ]);
 
         $formElement
-            ->setLabel(Argument::containingString('jweiland.net'))
-            ->shouldBeCalled();
+            ->expects($this->atLeastOnce())
+            ->method('setLabel')
+            ->with($this->stringContains('jweiland.net'));
 
-        $this->subject->afterBuildingFinished($formElement->reveal());
+        $this->subject->afterBuildingFinished($formElement);
     }
 }
