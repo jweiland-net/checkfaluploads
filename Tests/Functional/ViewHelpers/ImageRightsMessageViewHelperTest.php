@@ -13,12 +13,11 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\ViewHelpers;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\ViewHelpers\ImageRightsMessageViewHelper;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -27,35 +26,27 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  */
 class ImageRightsMessageViewHelperTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
+    protected ?ImageRightsMessageViewHelper $subject = null;
 
-    /**
-     * @var ImageRightsMessageViewHelper
-     */
-    protected $subject;
-
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/checkfaluploads'
+    protected array $testExtensionsToLoad = [
+        'jweiland/checkfaluploads',
     ];
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
-        /** @var RenderingContextInterface|ObjectProphecy $renderingContext */
-        $renderingContext = $this->prophesize(RenderingContext::class);
+        /** @var RenderingContextInterface|MockObject $renderingContext */
+        $renderingContext = $this->createMock(RenderingContext::class);
 
         $this->subject = new ImageRightsMessageViewHelper();
-        $this->subject->setRenderingContext($renderingContext->reveal());
+        $this->subject->setRenderingContext($renderingContext);
         $this->subject->setArguments(
             [
                 'languageKey' => 'frontend.imageUserRights',
-                'extensionName' => 'checkfaluploads'
+                'extensionName' => 'checkfaluploads',
             ]
         );
     }

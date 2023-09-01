@@ -12,10 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\Hooks;
 
 use JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
@@ -23,40 +20,30 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.
  */
 class DynamicUploadValidatorHookTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
+    /**
+     * @var FormRuntime|MockObject
+     */
+    protected $formRuntimeMock;
 
     /**
-     * @var FormRuntime|ObjectProphecy
+     * @var RenderableInterface|Page|MockObject
      */
-    protected $formRuntimeProphecy;
+    protected $renderableMock;
 
-    /**
-     * @var RenderableInterface|Page|ObjectProphecy
-     */
-    protected $renderableProphecy;
+    protected ?DynamicUploadValidatorHook $subject = null;
 
-    /**
-     * @var DynamicUploadValidatorHook
-     */
-    protected $subject;
-
-    /**
-     * @var array
-     */
-    protected $elementValue = [
-        'foo' => 'bar'
+    protected array $elementValue = [
+        'foo' => 'bar',
     ];
 
-    /**
-     * @var array
-     */
-    protected $requestArguments = [
+    protected array $requestArguments = [
         'foo' => 'bar',
         'image-upload' => [
             'error' => 0,
@@ -70,26 +57,21 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
     /**
      * Core extensions to load.
-     *
-     * @var array
      */
-    protected $coreExtensionsToLoad = [
-        'form'
+    protected array $coreExtensionsToLoad = [
+        'form',
     ];
 
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/checkfaluploads'
+    protected array $testExtensionsToLoad = [
+        'jweiland/checkfaluploads',
     ];
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $this->renderableProphecy = $this->prophesize(Page::class);
+        $this->formRuntimeMock = $this->createMock(FormRuntime::class);
+        $this->renderableMock = $this->createMock(Page::class);
 
         $this->subject = new DynamicUploadValidatorHook();
     }
@@ -98,8 +80,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     {
         unset(
             $this->subject,
-            $this->renderableProphecy,
-            $this->formRuntimeProphecy
+            $this->renderableMock,
+            $this->formRuntimeMock
         );
 
         parent::tearDown();
@@ -110,29 +92,30 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      */
     public function afterSubmitWithoutUploadElementsWillNotAddValidator(): void
     {
-        /** @var FormElementInterface|ObjectProphecy $formElement */
-        $formElement = $this->prophesize(GenericFormElement::class);
+        /** @var FormElementInterface|MockObject $formElement */
+        $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->getProperties()
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
             ->willReturn([]);
 
         $formElement
-            ->addValidator(Argument::cetera())
-            ->shouldNotBeCalled();
+            ->expects(self::never())
+            ->method('addValidator');
 
-        $this->renderableProphecy = $this->prophesize(Page::class);
-        $this->renderableProphecy
-            ->getElementsRecursively()
-            ->shouldBeCalled()
+        $this->renderableMock = $this->createMock(Page::class);
+        $this->renderableMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
             ->willReturn([
-                0 => $formElement->reveal()
+                0 => $formElement,
             ]);
 
         self::assertSame(
             $this->elementValue,
             $this->subject->afterSubmit(
-                $this->formRuntimeProphecy->reveal(),
-                $this->renderableProphecy->reveal(),
+                $this->formRuntimeMock,
+                $this->renderableMock,
                 $this->elementValue,
                 $this->requestArguments
             )
@@ -144,38 +127,42 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      */
     public function afterSubmitWithFailedUploadWillNotAddValidator(): void
     {
-        /** @var FormElementInterface|ObjectProphecy $fileUploadProphecy */
-        $fileUploadProphecy = $this->prophesize(FileUpload::class);
-        $fileUploadProphecy
-            ->getProperties()
+        /** @var FormElementInterface|MockObject $fileUploadMock */
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
             ->willReturn([]);
-        $fileUploadProphecy
-            ->getIdentifier()
+
+        $fileUploadMock
+            ->method('getIdentifier')
             ->willReturn('image-upload');
 
-        /** @var FormElementInterface|ObjectProphecy $checkboxElementProphecy */
-        $checkboxElementProphecy = $this->prophesize(GenericFormElement::class);
-        $checkboxElementProphecy
-            ->getProperties()
+        /** @var FormElementInterface|MockObject $checkboxElementMock */
+        $checkboxElementMock = $this->createMock(GenericFormElement::class);
+        $checkboxElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
-                'referenceUploadIdentifier' => 'image-upload'
+                'referenceUploadIdentifier' => 'image-upload',
             ]);
-        $checkboxElementProphecy
-            ->getIdentifier()
+
+        $checkboxElementMock
+            ->method('getIdentifier')
             ->willReturn('upload-rights');
 
-        $checkboxElementProphecy
-            ->addValidator(Argument::cetera())
-            ->shouldNotBeCalled();
+        $checkboxElementMock
+            ->expects(self::never())
+            ->method('addValidator');
 
-        $this->renderableProphecy = $this->prophesize(Page::class);
-        $this->renderableProphecy
-            ->getElementsRecursively()
-            ->shouldBeCalled()
+        $this->renderableMock = $this->createMock(Page::class);
+        $this->renderableMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
             ->willReturn([
-                0 => $fileUploadProphecy->reveal(),
-                1 => $checkboxElementProphecy->reveal()
+                0 => $fileUploadMock,
+                1 => $checkboxElementMock,
             ]);
 
         $requestArguments = $this->requestArguments;
@@ -184,8 +171,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         self::assertSame(
             $this->elementValue,
             $this->subject->afterSubmit(
-                $this->formRuntimeProphecy->reveal(),
-                $this->renderableProphecy->reveal(),
+                $this->formRuntimeMock,
+                $this->renderableMock,
                 $this->elementValue,
                 $requestArguments
             )
@@ -197,45 +184,52 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      */
     public function afterSubmitWithUploadElementsWillAddValidator(): void
     {
-        /** @var FormElementInterface|ObjectProphecy $fileUploadProphecy */
-        $fileUploadProphecy = $this->prophesize(FileUpload::class);
-        $fileUploadProphecy
-            ->getProperties()
+        /** @var FormElementInterface|MockObject $fileUploadMock */
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
             ->willReturn([]);
-        $fileUploadProphecy
-            ->getIdentifier()
+
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getIdentifier')
             ->willReturn('image-upload');
 
-        /** @var FormElementInterface|ObjectProphecy $checkboxElementProphecy */
-        $checkboxElementProphecy = $this->prophesize(GenericFormElement::class);
-        $checkboxElementProphecy
-            ->getProperties()
+        /** @var FormElementInterface|MockObject $checkboxElementMock */
+        $checkboxElementMock = $this->createMock(GenericFormElement::class);
+        $checkboxElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
-                'referenceUploadIdentifier' => 'image-upload'
+                'referenceUploadIdentifier' => 'image-upload',
             ]);
-        $checkboxElementProphecy
-            ->getIdentifier()
+
+        $checkboxElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getIdentifier')
             ->willReturn('upload-rights');
 
-        $checkboxElementProphecy
-            ->addValidator(Argument::type(NotEmptyValidator::class))
-            ->shouldBeCalled();
+        $checkboxElementMock
+            ->expects(self::atLeastOnce())
+            ->method('addValidator')
+            ->with(self::isInstanceOf(NotEmptyValidator::class));
 
-        $this->renderableProphecy = $this->prophesize(Page::class);
-        $this->renderableProphecy
-            ->getElementsRecursively()
-            ->shouldBeCalled()
+        $this->renderableMock = $this->createMock(Page::class);
+        $this->renderableMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
             ->willReturn([
-                0 => $fileUploadProphecy->reveal(),
-                1 => $checkboxElementProphecy->reveal()
+                0 => $fileUploadMock,
+                1 => $checkboxElementMock,
             ]);
 
         self::assertSame(
             $this->elementValue,
             $this->subject->afterSubmit(
-                $this->formRuntimeProphecy->reveal(),
-                $this->renderableProphecy->reveal(),
+                $this->formRuntimeMock,
+                $this->renderableMock,
                 $this->elementValue,
                 $this->requestArguments
             )

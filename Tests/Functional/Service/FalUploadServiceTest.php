@@ -12,32 +12,26 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\Service;
 
 use JWeiland\Checkfaluploads\Service\FalUploadService;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.
  */
 class FalUploadServiceTest extends FunctionalTestCase
 {
-    /**
-     * @var FalUploadService
-     */
-    protected $subject;
+    protected ?FalUploadService $subject = null;
 
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/checkfaluploads'
+    protected array $testExtensionsToLoad = [
+        'jweiland/checkfaluploads',
     ];
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
         $this->subject = new FalUploadService();
     }
@@ -58,7 +52,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     {
         $file = [
             'name' => 'test',
-            'rights' => '1'
+            'rights' => '1',
         ];
 
         self::assertNull(
@@ -72,7 +66,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     public function checkFileWithNoRightsWillReturnErrorMessage(): void
     {
         $file = [
-            'name' => 'test'
+            'name' => 'test',
         ];
 
         $error = $this->subject->checkFile($file);
@@ -100,7 +94,7 @@ class FalUploadServiceTest extends FunctionalTestCase
     {
         $file = [
             'name' => 'test',
-            'rights' => ''
+            'rights' => '',
         ];
 
         $error = $this->subject->checkFile($file);

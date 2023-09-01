@@ -1,6 +1,8 @@
 <?php
 
-if (!defined('TYPO3_MODE')) {
+use JWeiland\Avalex\Utility\Typo3Utility;
+
+if (!defined('TYPO3')) {
     die ('Access denied.');
 }
 
