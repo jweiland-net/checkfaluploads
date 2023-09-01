@@ -11,10 +11,6 @@ call_user_func(static function (): void {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Filelist\Controller\FileListController::class]['className']
         = \JWeiland\Checkfaluploads\Controller\FileListController::class;
 
-    // Add Checkbox for image rights into replace file form
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Filelist\Controller\File\ReplaceFileController::class]['className']
-        = \JWeiland\Checkfaluploads\Controller\File\ReplaceFileController::class;
-
     // Add userHasRights checkbox to FileBrowser PopUp
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Recordlist\View\FolderUtilityRenderer::class]['className']
         = \JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRenderer::class;

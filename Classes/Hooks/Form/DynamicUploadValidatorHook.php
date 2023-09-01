@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\Hooks\Form;
 
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
@@ -101,19 +102,11 @@ class DynamicUploadValidatorHook
             return false;
         }
 
-        if (!is_array($argument)) {
+        if (!$argument instanceof UploadedFile) {
             return false;
         }
 
-        if ($argument === []) {
-            return false;
-        }
-
-        if (!isset($argument['error'], $argument['name'], $argument['size'], $argument['tmp_name'], $argument['type'])) {
-            return false;
-        }
-
-        if ($argument['error'] > 0) {
+        if ($argument->getError() > 0) {
             return false;
         }
 
