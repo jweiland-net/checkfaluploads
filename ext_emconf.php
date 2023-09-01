@@ -16,6 +16,7 @@ $EM_CONF[$_EXTKEY] = [
         'conflicts' => [
         ],
         'suggests' => [
+            'form' => '12.4.4-12.4.99',
         ],
     ],
 ];
