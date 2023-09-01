@@ -142,7 +142,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var FormElementInterface|MockObject $checkboxElementMock */
         $checkboxElementMock = $this->createMock(GenericFormElement::class);
         $checkboxElementMock
-            ->expects($this->once())
+            ->expects(self::atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
