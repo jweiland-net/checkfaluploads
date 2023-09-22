@@ -32,6 +32,9 @@
 		"friendsofphp/php-cs-fixer": "^3.14",
 		"typo3/cms-form": "^12.4.4"
 	},
+	"replace": {
+		"typo3-ter/checkfaluploads": "self.version"
+	},
 	"autoload": {
 		"psr-4": {
 			"JWeiland\\Checkfaluploads\\": "Classes"
