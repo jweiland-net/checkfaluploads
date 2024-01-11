@@ -26,10 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ReplacePlaceholderHookTest extends FunctionalTestCase
 {
-    /**
-     * @var RenderableInterface|GenericFormElement|MockObject
-     */
-    protected $renderableMock;
+    protected RenderableInterface|GenericFormElement|MockObject $renderableMock;
 
     protected ExtConf $extConf;
 

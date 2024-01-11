@@ -11,14 +11,13 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\EventListener;
 
+use JWeiland\Checkfaluploads\Helper\MessageHelper;
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -29,12 +28,18 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class UserMarkedCheckboxForRightsEventListener
 {
     use ApplicationContextTrait;
+    use BackendUserAuthenticationTrait;
 
     protected ExtendedFileUtility $extendedFileUtility;
 
-    public function __construct(ExtendedFileUtility $extendedFileUtility)
-    {
+    protected MessageHelper $messageHelper;
+
+    public function __construct(
+        ExtendedFileUtility $extendedFileUtility,
+        MessageHelper $messageHelper
+    ) {
         $this->extendedFileUtility = $extendedFileUtility;
+        $this->messageHelper = $messageHelper;
     }
 
     /**
@@ -55,7 +60,7 @@ class UserMarkedCheckboxForRightsEventListener
 
                     $this->getBackendUserAuthentication()->writeLog(2, 1, 1, 105, $message, []);
 
-                    $this->addMessageToFlashMessageQueue($message);
+                    $this->messageHelper->addFlashMessage($message, '', ContextualFeedbackSeverity::ERROR);
 
                     throw new InsufficientUserPermissionsException($message, 1396626278);
                 }
@@ -71,7 +76,7 @@ class UserMarkedCheckboxForRightsEventListener
         // FE will not be checked here. This should be part of the extension itself.
         if ($this->isBackendRequest()) {
             $fileParts = GeneralUtility::split_fileref($event->getFile()->getName());
-            if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
+            if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'], true)) {
                 $userHasRights = (bool)($this->getTypo3Request()->getParsedBody()['userHasRights'] ?? false);
                 if ($userHasRights === false) {
                     $message = LocalizationUtility::translate(
@@ -81,41 +86,11 @@ class UserMarkedCheckboxForRightsEventListener
 
                     $this->getBackendUserAuthentication()->writeLog(2, 1, 1, 105, $message, []);
 
-                    $this->addMessageToFlashMessageQueue($message);
+                    $this->messageHelper->addFlashMessage($message, '', ContextualFeedbackSeverity::ERROR);
 
                     throw new InsufficientUserPermissionsException($message, 1396626278);
                 }
             }
         }
-    }
-
-    protected function addMessageToFlashMessageQueue(
-        string $message,
-        int $severity = AbstractMessage::ERROR
-    ): void {
-        if (!$this->isBackendRequest()) {
-            return;
-        }
-
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            $message,
-            '',
-            $severity,
-            true
-        );
-        $this->addFlashMessage($flashMessage);
-    }
-
-    protected function addFlashMessage(FlashMessage $flashMessage): void
-    {
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        $defaultFlashMessageQueue->enqueue($flashMessage);
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

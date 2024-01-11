@@ -24,20 +24,14 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 class DynamicUploadValidatorHook
 {
-    /**
-     * @var array
-     */
-    protected $arguments = [];
+    protected array $arguments = [];
 
-    /**
-     * @var RenderableInterface
-     */
-    protected $renderable;
+    protected RenderableInterface $renderable;
 
     /**
      * @var FormElementInterface[]
      */
-    protected $elements = [];
+    protected array $elements = [];
 
     /**
      * This method will be called by Form Framework.
@@ -89,7 +83,7 @@ class DynamicUploadValidatorHook
                 }
 
                 $checkboxElementForUploadRights->addValidator(
-                    GeneralUtility::makeInstance(NotEmptyValidator::class)
+                    $this->getNotEmptyValidator()
                 );
             }
         }
@@ -125,10 +119,9 @@ class DynamicUploadValidatorHook
     }
 
     /**
-     * @param string|int $value
      * @return FormElementInterface[]
      */
-    protected function getElementsByProperty(string $propertyName, $value): array
+    protected function getElementsByProperty(string $propertyName, string|int $value): array
     {
         $matchedElements = [];
         foreach ($this->elements as $element) {
@@ -149,11 +142,13 @@ class DynamicUploadValidatorHook
         return array_key_exists($argument, $this->arguments) && $this->arguments[$argument] !== null;
     }
 
-    /**
-     * @return array|string
-     */
-    protected function getArgument(string $argument)
+    protected function getArgument(string $argument): array|string
     {
         return $this->hasArgument($argument) ? $this->arguments[$argument] : '';
+    }
+
+    protected function getNotEmptyValidator(): NotEmptyValidator
+    {
+        return GeneralUtility::makeInstance(NotEmptyValidator::class);
     }
 }

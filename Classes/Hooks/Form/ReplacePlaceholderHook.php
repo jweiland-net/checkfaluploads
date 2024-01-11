@@ -21,19 +21,13 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
  */
 class ReplacePlaceholderHook
 {
-    /**
-     * @var ExtConf
-     */
-    protected $extConf;
+    protected ExtConf $extConf;
 
     public function __construct(ExtConf $extConf)
     {
         $this->extConf = $extConf;
     }
 
-    /**
-     * @param RenderableInterface $formElement
-     */
     public function afterBuildingFinished(RenderableInterface $formElement): void
     {
         if (!$formElement instanceof FormElementInterface) {

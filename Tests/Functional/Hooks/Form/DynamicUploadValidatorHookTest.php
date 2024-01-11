@@ -28,15 +28,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class DynamicUploadValidatorHookTest extends FunctionalTestCase
 {
-    /**
-     * @var FormRuntime|MockObject
-     */
-    protected $formRuntimeMock;
+    protected FormRuntime|MockObject $formRuntimeMock;
 
-    /**
-     * @var RenderableInterface|Page|MockObject
-     */
-    protected $renderableMock;
+    protected RenderableInterface|Page|MockObject $renderableMock;
 
     protected ?DynamicUploadValidatorHook $subject = null;
 
