@@ -70,7 +70,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      */
     public function afterSubmitWithoutFileUploadWillReturnOriginalElementValue(): void
     {
-        $this->assertSame(
+        self::assertSame(
             'Test',
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
@@ -85,7 +85,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      */
     public function afterSubmitWithNullValueWillReturnNull(): void
     {
-        $this->assertNull(
+        self::assertNull(
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $this->createMock(FileUpload::class),
@@ -106,7 +106,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(1);
 
-        $this->assertNull(
+        self::assertNull(
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $this->createMock(FileUpload::class),
@@ -132,7 +132,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      */
     public function afterSubmitWithEmptyResourcePointerWillReturnNull(mixed $invalidResourcePointer): void
     {
-        $this->assertNull(
+        self::assertNull(
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $this->createMock(FileUpload::class),
@@ -166,7 +166,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(0);
 
-        $this->assertSame(
+        self::assertSame(
             $uploadedFileMock,
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
@@ -194,7 +194,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
-                $genericFormElementMock
+                $genericFormElementMock,
             ]);
 
         $fileUploadMock = $this->createMock(FileUpload::class);
@@ -210,7 +210,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(0);
 
-        $this->assertSame(
+        self::assertSame(
             $uploadedFileMock,
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
@@ -242,7 +242,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
-                $checkboxFormElementMock
+                $checkboxFormElementMock,
             ]);
 
         $fileUploadMock = $this->createMock(FileUpload::class);
@@ -258,7 +258,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(0);
 
-        $this->assertSame(
+        self::assertSame(
             $uploadedFileMock,
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
@@ -292,7 +292,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
-                $checkboxFormElementMock
+                $checkboxFormElementMock,
             ]);
 
         $fileUploadMock = $this->createMock(FileUpload::class);
@@ -308,7 +308,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(0);
 
-        $this->assertSame(
+        self::assertSame(
             $uploadedFileMock,
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
@@ -343,7 +343,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
-                $checkboxFormElementMock
+                $checkboxFormElementMock,
             ]);
 
         $fileUploadMock = $this->createMock(FileUpload::class);
@@ -363,7 +363,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(0);
 
-        $this->assertSame(
+        self::assertSame(
             $uploadedFileMock,
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
@@ -398,7 +398,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
-                $checkboxFormElementMock
+                $checkboxFormElementMock,
             ]);
 
         $fileUploadMock = $this->createMock(FileUpload::class);
@@ -418,7 +418,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(0);
 
-        $this->assertSame(
+        self::assertSame(
             $uploadedFileMock,
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
@@ -457,7 +457,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
-                $checkboxFormElementMock
+                $checkboxFormElementMock,
             ]);
 
         $fileUploadMock = $this->createMock(FileUpload::class);
@@ -477,7 +477,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(0);
 
-        $this->assertSame(
+        self::assertSame(
             $uploadedFileMock,
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
@@ -525,7 +525,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
-                $checkboxFormElementMock
+                $checkboxFormElementMock,
             ]);
 
         $fileUploadMock = $this->createMock(FileUpload::class);
@@ -545,7 +545,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getError')
             ->willReturn(0);
 
-        $this->assertNull(
+        self::assertNull(
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $fileUploadMock,
