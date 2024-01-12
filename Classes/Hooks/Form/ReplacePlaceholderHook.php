@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Hooks\Form;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 
@@ -35,13 +34,7 @@ class ReplacePlaceholderHook
         }
 
         if (($formElement->getProperties()['checkboxType'] ?? '') === 'uploadRights') {
-            $formElement->setLabel(LocalizationUtility::translate(
-                'frontend.imageUserRights',
-                'checkfaluploads',
-                [
-                    0 => $this->extConf->getOwner(),
-                ]
-            ));
+            $formElement->setLabel($this->extConf->getLabelForUserRights());
         }
     }
 }

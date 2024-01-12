@@ -13,6 +13,8 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\Configuration;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -73,8 +75,29 @@ class ExtConfTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getLabelForUserRightsContainsOwner(): void
+    public function getLabelForUserRightsInFrontendContextContainsOwner(): void
     {
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        $this->subject->setOwner('foo bar');
+
+        self::assertStringContainsString(
+            'foo bar',
+            $this->subject->getLabelForUserRights()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getLabelForUserRightsInBackendContextContainsOwner(): void
+    {
+
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+
         $this->subject->setOwner('foo bar');
 
         self::assertStringContainsString(
