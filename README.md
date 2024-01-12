@@ -1,6 +1,6 @@
 # TYPO3 Extension `checkfaluploads`
 
-![Build Status](https://github.com/jweiland-net/checkfaluploads/workflows/CI/badge.svg)
+![Build Status](https://github.com/jweiland-net/checkfaluploads/actions/workflows/typo3_12.yml/badge.svg)
 
 With `checkfaluploads` we will add a new checkbox to filelist module and FileBrowser
 where the user gives unrestricted rights to the owner for the uploaded files.
