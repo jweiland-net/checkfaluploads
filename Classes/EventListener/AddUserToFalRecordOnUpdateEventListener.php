@@ -12,11 +12,10 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\EventListener;
 
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
+use JWeiland\Checkfaluploads\Traits\ConnectionPoolTrait;
+use JWeiland\Checkfaluploads\Traits\TypoScriptFrontendControllerTrait;
 use TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Add the uid of the current user to the uploaded file
@@ -24,6 +23,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class AddUserToFalRecordOnUpdateEventListener
 {
     use ApplicationContextTrait;
+    use BackendUserAuthenticationTrait;
+    use ConnectionPoolTrait;
+    use TypoScriptFrontendControllerTrait;
 
     public function __invoke(AfterFileUpdatedInIndexEvent $event): void
     {
@@ -45,20 +47,5 @@ class AddUserToFalRecordOnUpdateEventListener
                 'uid' => (int)$event->getRelevantProperties()['uid'],
             ]
         );
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
-    }
-
-    private function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

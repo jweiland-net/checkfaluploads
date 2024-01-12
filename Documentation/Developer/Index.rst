@@ -69,7 +69,6 @@ Checkbox via YAML EXT:form
       identifier: image-1-userrights
       label: 'Upload Rights'
       properties:
-        elementDescription: 'You have to confirm that %s has unrestricted rights to use the files you will upload'
         # non-official property. Needed by DynamicUploadValidatorHook. Helps to identify the checkbox
         checkboxType: uploadRights
         # non-official property. Enter the identifier of the image/file upload
