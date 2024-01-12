@@ -18,6 +18,8 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -65,10 +67,27 @@ class ExtConfTest extends FunctionalTestCase
             ],
         ]);
 
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript->setSetupArray([
+            'page' => 'PAGE',
+            'page.' => [
+                'config.' => [
+                    'disableAllHeaderCode' => '1',
+                ],
+                '10' => 'TEXT',
+                '10.' => [
+                    'value' => '<p>I like apples</p>',
+                ],
+            ],
+        ]);
+
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+
         // Request to default page
         $request = new ServerRequest('https://example.com', 'GET');
         $request = $request->withAttribute('site', $site);
-        $request = $request->withAttribute('applicationType', $applicationType);
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
 
         return $request->withAttribute('language', $site->getDefaultLanguage());
     }

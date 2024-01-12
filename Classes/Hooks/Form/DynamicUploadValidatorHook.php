@@ -45,11 +45,6 @@ class DynamicUploadValidatorHook
         return $elementValue;
     }
 
-    protected function initialize(array $requestArguments): void
-    {
-        $this->requestArguments = $requestArguments;
-    }
-
     /**
      * In normal cases $elementValue should never be an array, as we remove the file from request, if checkbox
      * for user-rights was not checked.
@@ -72,7 +67,7 @@ class DynamicUploadValidatorHook
 
         // Early return, if upload has failed
         if (!$this->isValidElementValue($elementValue)) {
-            return $elementValue;
+            return null;
         }
 
         // Early return, if there is no checkbox configured for user-rights
