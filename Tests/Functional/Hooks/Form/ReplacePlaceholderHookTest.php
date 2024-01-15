@@ -18,7 +18,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 
@@ -61,6 +63,8 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 
         $site = new Site('https://example.com', 1, [
             'base' => '/',
