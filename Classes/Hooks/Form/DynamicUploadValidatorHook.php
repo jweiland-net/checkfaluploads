@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\Hooks\Form;
 
-use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
@@ -56,9 +55,6 @@ class DynamicUploadValidatorHook
      * - You have uploaded a file, marked the checkbox, but a validator of another element throws an error, and you send the form again after solving the issue
      * - You upload the file on Page 1, but add the checkbox for file-rights to Page 2. OK, in that special case this code here will not find the checkbox ;-)
      * - You are using the form to edit records which has already an image assigned, and send the form to update the record.
-     *
-     * @param array|UploadedFile|null $elementValue UploadedFile on initial upload, array on next upload after error, null on no upload
-     * @return array|UploadedFile|null
      */
     protected function updateElementValueOnError(
         $elementValue,
@@ -134,14 +130,11 @@ class DynamicUploadValidatorHook
         return $this->getPageElement($parentElement);
     }
 
-    /**
-     * @param UploadedFile|array $elementValue
-     */
-    protected function isValidElementValue($elementValue): bool
+    protected function isValidElementValue(array $elementValue): bool
     {
         // Process value on initial upload
-        if ($elementValue instanceof UploadedFile) {
-            return $elementValue->getError() === 0;
+        if (array_key_exists('error', $elementValue)) {
+            return $elementValue['error'] === 0;
         }
 
         // Process value on further uploads after error.
@@ -192,7 +185,7 @@ class DynamicUploadValidatorHook
     }
 
     /**
-     * @return array|string|UploadedFile
+     * @return array|string
      */
     protected function getArgument(string $argument)
     {
