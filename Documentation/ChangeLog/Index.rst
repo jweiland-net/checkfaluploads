@@ -7,6 +7,13 @@
 ChangeLog
 =========
 
+Version 3.0.5
+=============
+
+*   Replace duplicate code with traits
+*   Add MessageHelper to centralize message handling
+*   BUGFIX: Prevent uploading files on EXT:form validation errors
+
 Version 3.0.4
 =============
 

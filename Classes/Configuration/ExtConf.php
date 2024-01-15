@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\Configuration;
 
+use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -20,6 +23,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class ExtConf implements SingletonInterface
 {
+    use ApplicationContextTrait;
+
     /**
      * @var string
      */
@@ -27,16 +32,17 @@ class ExtConf implements SingletonInterface
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        // get global configuration
-        $extConf = $extensionConfiguration->get('checkfaluploads');
-        if (is_array($extConf)) {
-            // call setter method foreach configuration entry
-            foreach ($extConf as $key => $value) {
-                $methodName = 'set' . ucfirst($key);
-                if (method_exists($this, $methodName)) {
-                    $this->$methodName($value);
+        try {
+            $extConf = $extensionConfiguration->get('checkfaluploads');
+            if (is_array($extConf)) {
+                foreach ($extConf as $key => $value) {
+                    $methodName = 'set' . ucfirst($key);
+                    if (method_exists($this, $methodName)) {
+                        $this->$methodName($value);
+                    }
                 }
             }
+        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $e) {
         }
     }
 
@@ -60,11 +66,16 @@ class ExtConf implements SingletonInterface
      */
     public function getLabelForUserRights(): string
     {
+        $langKey = 'dragUploader.fileRights.title';
+        if ($this->isFrontendRequest()) {
+            $langKey = 'frontend.imageUserRights';
+        }
+
         return LocalizationUtility::translate(
-            'dragUploader.fileRights.title',
+            $langKey,
             'checkfaluploads',
             [
-                0 => $this->getOwner()
+                0 => $this->getOwner(),
             ]
         );
     }

@@ -10,6 +10,7 @@
 *~
 *.bak
 *.swp
+.ddev
 .DS_Store
 
 # Ignore by common IDEs used directories/files
