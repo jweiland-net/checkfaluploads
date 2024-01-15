@@ -1,0 +1,9 @@
+page = PAGE
+page {
+  config {
+    disableAllHeaderCode = 1
+  }
+
+  10 = TEXT
+  10.value = <p>I like apples</p>
+}

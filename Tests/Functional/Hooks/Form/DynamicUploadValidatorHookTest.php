@@ -9,16 +9,13 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Checkfaluploads\Tests\Functional\Hooks;
+namespace JWeiland\Checkfaluploads\Tests\Functional\Hooks\Form;
 
 use JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
-use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
@@ -29,44 +26,20 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 class DynamicUploadValidatorHookTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
+    /**
+     * @var FormRuntime|MockObject
+     */
+    protected $formRuntimeMock;
 
     /**
-     * @var FormRuntime|ObjectProphecy
+     * @var RenderableInterface|Page|MockObject
      */
-    protected $formRuntimeProphecy;
+    protected $renderableMock;
 
     /**
-     * @var RenderableInterface|Page|ObjectProphecy
+     * @var DynamicUploadValidatorHook|null
      */
-    protected $renderableProphecy;
-
-    /**
-     * @var DynamicUploadValidatorHook
-     */
-    protected $subject;
-
-    /**
-     * @var array
-     */
-    protected $elementValue = [
-        'foo' => 'bar'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $requestArguments = [
-        'foo' => 'bar',
-        'image-upload' => [
-            'error' => 0,
-            'name' => 'schlumpf',
-            'size' => 123,
-            'tmp_name' => '/tmp/nr4378tg',
-            'type' => 2,
-        ],
-        'upload-rights' => '0',
-    ];
+    protected $subject = null;
 
     /**
      * Core extensions to load.
@@ -74,11 +47,11 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      * @var array
      */
     protected $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     /**
-     * @var array
+     * @var array|string[]
      */
     protected $testExtensionsToLoad = [
         'typo3conf/ext/checkfaluploads'
@@ -88,8 +61,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->formRuntimeProphecy = $this->prophesize(FormRuntime::class);
-        $this->renderableProphecy = $this->prophesize(Page::class);
+        $this->formRuntimeMock = $this->createMock(FormRuntime::class);
+        $this->renderableMock = $this->createMock(Page::class);
 
         $this->subject = new DynamicUploadValidatorHook();
     }
@@ -98,8 +71,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     {
         unset(
             $this->subject,
-            $this->renderableProphecy,
-            $this->formRuntimeProphecy
+            $this->renderableMock,
+            $this->formRuntimeMock
         );
 
         parent::tearDown();
@@ -108,33 +81,14 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function afterSubmitWithoutUploadElementsWillNotAddValidator(): void
+    public function afterSubmitWithoutFileUploadWillReturnOriginalElementValue(): void
     {
-        /** @var FormElementInterface|ObjectProphecy $formElement */
-        $formElement = $this->prophesize(GenericFormElement::class);
-        $formElement
-            ->getProperties()
-            ->willReturn([]);
-
-        $formElement
-            ->addValidator(Argument::cetera())
-            ->shouldNotBeCalled();
-
-        $this->renderableProphecy = $this->prophesize(Page::class);
-        $this->renderableProphecy
-            ->getElementsRecursively()
-            ->shouldBeCalled()
-            ->willReturn([
-                0 => $formElement->reveal()
-            ]);
-
         self::assertSame(
-            $this->elementValue,
+            'Test',
             $this->subject->afterSubmit(
-                $this->formRuntimeProphecy->reveal(),
-                $this->renderableProphecy->reveal(),
-                $this->elementValue,
-                $this->requestArguments
+                $this->formRuntimeMock,
+                $this->createMock(Page::class),
+                'Test'
             )
         );
     }
@@ -142,52 +96,13 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function afterSubmitWithFailedUploadWillNotAddValidator(): void
+    public function afterSubmitWithNullValueWillReturnNull(): void
     {
-        /** @var FormElementInterface|ObjectProphecy $fileUploadProphecy */
-        $fileUploadProphecy = $this->prophesize(FileUpload::class);
-        $fileUploadProphecy
-            ->getProperties()
-            ->willReturn([]);
-        $fileUploadProphecy
-            ->getIdentifier()
-            ->willReturn('image-upload');
-
-        /** @var FormElementInterface|ObjectProphecy $checkboxElementProphecy */
-        $checkboxElementProphecy = $this->prophesize(GenericFormElement::class);
-        $checkboxElementProphecy
-            ->getProperties()
-            ->willReturn([
-                'checkboxType' => 'uploadRights',
-                'referenceUploadIdentifier' => 'image-upload'
-            ]);
-        $checkboxElementProphecy
-            ->getIdentifier()
-            ->willReturn('upload-rights');
-
-        $checkboxElementProphecy
-            ->addValidator(Argument::cetera())
-            ->shouldNotBeCalled();
-
-        $this->renderableProphecy = $this->prophesize(Page::class);
-        $this->renderableProphecy
-            ->getElementsRecursively()
-            ->shouldBeCalled()
-            ->willReturn([
-                0 => $fileUploadProphecy->reveal(),
-                1 => $checkboxElementProphecy->reveal()
-            ]);
-
-        $requestArguments = $this->requestArguments;
-        $requestArguments['image-upload']['error'] = 4;
-
-        self::assertSame(
-            $this->elementValue,
+        self::assertNull(
             $this->subject->afterSubmit(
-                $this->formRuntimeProphecy->reveal(),
-                $this->renderableProphecy->reveal(),
-                $this->elementValue,
-                $requestArguments
+                $this->formRuntimeMock,
+                $this->createMock(FileUpload::class),
+                null
             )
         );
     }
@@ -195,49 +110,442 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function afterSubmitWithUploadElementsWillAddValidator(): void
+    public function afterSubmitWithUploadedFileErrorWillReturnNull(): void
     {
-        /** @var FormElementInterface|ObjectProphecy $fileUploadProphecy */
-        $fileUploadProphecy = $this->prophesize(FileUpload::class);
-        $fileUploadProphecy
-            ->getProperties()
+        self::assertNull(
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $this->createMock(FileUpload::class),
+                [
+                    'error' => 1,
+                ]
+            )
+        );
+    }
+
+    public function invalidResourcePointerDataProvider(): array
+    {
+        return [
+            'empty array' => [[]],
+            'invalid array structure' => [['eat' => 'apple']],
+            'empty submitted file' => [['submittedFile' => []]],
+            'empty resource pointer' => [['submittedFile' => ['resourcePointer' => '']]],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider invalidResourcePointerDataProvider
+     */
+    public function afterSubmitWithEmptyResourcePointerWillReturnNull($invalidResourcePointer): void
+    {
+        self::assertNull(
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $this->createMock(FileUpload::class),
+                $invalidResourcePointer
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterSubmitWithNoChildElementsReturnsOriginalEmptyValue(): void
+    {
+        $uploadedFile = [
+            'error' => 0,
+            'path' => '/tmp/cth8w9mth'
+        ];
+
+        /** @var Page|MockObject $pageMock */
+        $pageMock = $this->createMock(Page::class);
+        $pageMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
             ->willReturn([]);
-        $fileUploadProphecy
-            ->getIdentifier()
-            ->willReturn('image-upload');
 
-        /** @var FormElementInterface|ObjectProphecy $checkboxElementProphecy */
-        $checkboxElementProphecy = $this->prophesize(GenericFormElement::class);
-        $checkboxElementProphecy
-            ->getProperties()
-            ->willReturn([
-                'checkboxType' => 'uploadRights',
-                'referenceUploadIdentifier' => 'image-upload'
-            ]);
-        $checkboxElementProphecy
-            ->getIdentifier()
-            ->willReturn('upload-rights');
-
-        $checkboxElementProphecy
-            ->addValidator(Argument::type(NotEmptyValidator::class))
-            ->shouldBeCalled();
-
-        $this->renderableProphecy = $this->prophesize(Page::class);
-        $this->renderableProphecy
-            ->getElementsRecursively()
-            ->shouldBeCalled()
-            ->willReturn([
-                0 => $fileUploadProphecy->reveal(),
-                1 => $checkboxElementProphecy->reveal()
-            ]);
+        /** @var FileUpload|MockObject $fileUploadMock */
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getParentRenderable')
+            ->willReturn($pageMock);
 
         self::assertSame(
-            $this->elementValue,
+            $uploadedFile,
             $this->subject->afterSubmit(
-                $this->formRuntimeProphecy->reveal(),
-                $this->renderableProphecy->reveal(),
-                $this->elementValue,
-                $this->requestArguments
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $uploadedFile
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterSubmitWithNoCheckboxElementReturnsOriginalEmptyValue(): void
+    {
+        /** @var GenericFormElement|MockObject $genericFormElementMock */
+        $genericFormElementMock = $this->createMock(GenericFormElement::class);
+        $genericFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getType')
+            ->willReturn('Text');
+
+        /** @var Page|MockObject $pageMock */
+        $pageMock = $this->createMock(Page::class);
+        $pageMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
+            ->willReturn([
+                $genericFormElementMock,
+            ]);
+
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getParentRenderable')
+            ->willReturn($pageMock);
+
+        $uploadedFile = [
+            'error' => 0,
+            'path' => '/tmp/cth8w9mth'
+        ];
+
+        self::assertSame(
+            $uploadedFile,
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $uploadedFile
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterSubmitWithEmptyCheckboxPropertiesReturnsOriginalEmptyValue(): void
+    {
+        /** @var GenericFormElement|MockObject $checkboxFormElementMock */
+        $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getType')
+            ->willReturn('Checkbox');
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
+            ->willReturn([]);
+
+        /** @var Page|MockObject $pageMock */
+        $pageMock = $this->createMock(Page::class);
+        $pageMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
+            ->willReturn([
+                $checkboxFormElementMock,
+            ]);
+
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getParentRenderable')
+            ->willReturn($pageMock);
+
+        $uploadedFile = [
+            'error' => 0,
+            'path' => '/tmp/cth8w9mth'
+        ];
+
+        self::assertSame(
+            $uploadedFile,
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $uploadedFile
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterSubmitWithEmptyUploadIdentifierReturnsOriginalEmptyValue(): void
+    {
+        /** @var GenericFormElement|MockObject $checkboxFormElementMock */
+        $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getType')
+            ->willReturn('Checkbox');
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
+            ->willReturn([
+                'checkboxType' => 'uploadRights',
+            ]);
+
+        /** @var Page|MockObject $pageMock */
+        $pageMock = $this->createMock(Page::class);
+        $pageMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
+            ->willReturn([
+                $checkboxFormElementMock,
+            ]);
+
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getParentRenderable')
+            ->willReturn($pageMock);
+
+        $uploadedFile = [
+            'error' => 0,
+            'path' => '/tmp/cth8w9mth'
+        ];
+
+        self::assertSame(
+            $uploadedFile,
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $uploadedFile
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterSubmitWithDifferentIdentifiersReturnsOriginalEmptyValue(): void
+    {
+        /** @var GenericFormElement|MockObject $checkboxFormElementMock */
+        $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getType')
+            ->willReturn('Checkbox');
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
+            ->willReturn([
+                'checkboxType' => 'uploadRights',
+                'referenceUploadIdentifier' => 'Different Identifier',
+            ]);
+
+        /** @var Page|MockObject $pageMock */
+        $pageMock = $this->createMock(Page::class);
+        $pageMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
+            ->willReturn([
+                $checkboxFormElementMock,
+            ]);
+
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getParentRenderable')
+            ->willReturn($pageMock);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getIdentifier')
+            ->willReturn('Other Identifier');
+
+        $uploadedFile = [
+            'error' => 0,
+            'path' => '/tmp/cth8w9mth'
+        ];
+
+        self::assertSame(
+            $uploadedFile,
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $uploadedFile
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterSubmitWithMissingCheckboxRequestReturnsOriginalEmptyValue(): void
+    {
+        /** @var GenericFormElement|MockObject $checkboxFormElementMock */
+        $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getType')
+            ->willReturn('Checkbox');
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
+            ->willReturn([
+                'checkboxType' => 'uploadRights',
+                'referenceUploadIdentifier' => 'CorrectIdentifier',
+            ]);
+
+        /** @var Page|MockObject $pageMock */
+        $pageMock = $this->createMock(Page::class);
+        $pageMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
+            ->willReturn([
+                $checkboxFormElementMock,
+            ]);
+
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getParentRenderable')
+            ->willReturn($pageMock);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getIdentifier')
+            ->willReturn('CorrectIdentifier');
+
+        $uploadedFile = [
+            'error' => 0,
+            'path' => '/tmp/cth8w9mth'
+        ];
+
+        self::assertSame(
+            $uploadedFile,
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $uploadedFile
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterSubmitWithActivatedCheckboxReturnsOriginalEmptyValue(): void
+    {
+        /** @var GenericFormElement|MockObject $checkboxFormElementMock */
+        $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getType')
+            ->willReturn('Checkbox');
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
+            ->willReturn([
+                'checkboxType' => 'uploadRights',
+                'referenceUploadIdentifier' => 'FileUploadIdentifier',
+            ]);
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getIdentifier')
+            ->willReturn('CheckboxIdentifier');
+
+        /** @var Page|MockObject $pageMock */
+        $pageMock = $this->createMock(Page::class);
+        $pageMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
+            ->willReturn([
+                $checkboxFormElementMock,
+            ]);
+
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getParentRenderable')
+            ->willReturn($pageMock);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getIdentifier')
+            ->willReturn('FileUploadIdentifier');
+
+        $uploadedFile = [
+            'error' => 0,
+            'path' => '/tmp/cth8w9mth'
+        ];
+
+        self::assertSame(
+            $uploadedFile,
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $uploadedFile,
+                [
+                    'CheckboxIdentifier' => '1',
+                ]
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function afterSubmitWithDeactivatedCheckboxWillAddNotEmptyValidator(): void
+    {
+        /** @var GenericFormElement|MockObject $checkboxFormElementMock */
+        $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getType')
+            ->willReturn('Checkbox');
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getProperties')
+            ->willReturn([
+                'checkboxType' => 'uploadRights',
+                'referenceUploadIdentifier' => 'FileUploadIdentifier',
+            ]);
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('getIdentifier')
+            ->willReturn('CheckboxIdentifier');
+        $checkboxFormElementMock
+            ->expects(self::atLeastOnce())
+            ->method('addValidator')
+            ->with(
+                self::isInstanceOf(NotEmptyValidator::class)
+            );
+
+        /** @var Page|MockObject $pageMock */
+        $pageMock = $this->createMock(Page::class);
+        $pageMock
+            ->expects(self::atLeastOnce())
+            ->method('getElementsRecursively')
+            ->willReturn([
+                $checkboxFormElementMock,
+            ]);
+
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getParentRenderable')
+            ->willReturn($pageMock);
+        $fileUploadMock
+            ->expects(self::atLeastOnce())
+            ->method('getIdentifier')
+            ->willReturn('FileUploadIdentifier');
+
+        $uploadedFile = [
+            'error' => 0,
+            'path' => '/tmp/cth8w9mth'
+        ];
+
+        self::assertNull(
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $uploadedFile,
+                [
+                    'CheckboxIdentifier' => '',
+                ]
             )
         );
     }
