@@ -11,16 +11,21 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\EventListener;
 
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
+use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
+use JWeiland\Checkfaluploads\Traits\TypoScriptFrontendControllerTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Add the uid of the current user to the uploaded file
  */
 class AddUserToFalRecordOnUpdateEventListener
 {
+    use ApplicationContextTrait;
+    use BackendUserAuthenticationTrait;
+    use TypoScriptFrontendControllerTrait;
+
     /**
      * @var ConnectionPool
      */
@@ -39,9 +44,9 @@ class AddUserToFalRecordOnUpdateEventListener
         }
 
         $fields = [];
-        if (TYPO3_MODE === 'BE') {
+        if ($this->isBackendRequest()) {
             $fields['cruser_id'] = (int)$this->getBackendUserAuthentication()->user['uid'];
-        } elseif (TYPO3_MODE === 'FE') {
+        } elseif ($this->isFrontendRequest()) {
             $fields['fe_cruser_id'] = (int)$this->getTypoScriptFrontendController()->fe_user->user['uid'];
         }
 
@@ -53,15 +58,5 @@ class AddUserToFalRecordOnUpdateEventListener
                 'uid' => (int)$event->getRelevantProperties()['uid']
             ]
         );
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 }

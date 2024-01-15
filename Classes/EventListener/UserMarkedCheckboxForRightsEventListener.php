@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\EventListener;
 
+use JWeiland\Checkfaluploads\Helper\MessageHelper;
+use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
@@ -26,14 +26,24 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class UserMarkedCheckboxForRightsEventListener
 {
+    use ApplicationContextTrait;
+
     /**
      * @var ExtendedFileUtility
      */
     protected $extendedFileUtility;
 
-    public function __construct(ExtendedFileUtility $extendedFileUtility)
-    {
+    /**
+     * @var MessageHelper
+     */
+    protected $messageHelper;
+
+    public function __construct(
+        ExtendedFileUtility $extendedFileUtility,
+        MessageHelper $messageHelper
+    ) {
         $this->extendedFileUtility = $extendedFileUtility;
+        $this->messageHelper = $messageHelper;
     }
 
     /**
@@ -42,9 +52,9 @@ class UserMarkedCheckboxForRightsEventListener
     public function checkForAddedFile(BeforeFileAddedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
-        if (TYPO3_MODE === 'BE') {
+        if ($this->isBackendRequest()) {
             $fileParts = GeneralUtility::split_fileref($event->getFileName());
-            if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
+            if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'], true)) {
                 $userHasRights = GeneralUtility::_POST('userHasRights');
                 if (empty($userHasRights)) {
                     $message = LocalizationUtility::translate(
@@ -54,7 +64,7 @@ class UserMarkedCheckboxForRightsEventListener
 
                     $this->extendedFileUtility->writeLog(1, 1, 105, $message, []);
 
-                    $this->addMessageToFlashMessageQueue($message);
+                    $this->messageHelper->addFlashMessage($message, '', AbstractMessage::ERROR);
 
                     throw new InsufficientUserPermissionsException($message, 1396626278);
                 }
@@ -68,7 +78,7 @@ class UserMarkedCheckboxForRightsEventListener
     public function checkForReplacedFile(BeforeFileReplacedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
-        if (TYPO3_MODE === 'BE') {
+        if ($this->isBackendRequest()) {
             $fileParts = GeneralUtility::split_fileref($event->getFile()->getName());
             if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'])) {
                 $userHasRights = GeneralUtility::_POST('userHasRights');
@@ -80,36 +90,11 @@ class UserMarkedCheckboxForRightsEventListener
 
                     $this->extendedFileUtility->writeLog(1, 1, 105, $message, []);
 
-                    $this->addMessageToFlashMessageQueue($message);
+                    $this->messageHelper->addFlashMessage($message, '', AbstractMessage::ERROR);
 
                     throw new InsufficientUserPermissionsException($message, 1396626278);
                 }
             }
         }
-    }
-
-    protected function addMessageToFlashMessageQueue(
-        string $message,
-        int $severity = AbstractMessage::ERROR
-    ): void {
-        if (TYPO3_MODE !== 'BE') {
-            return;
-        }
-
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            $message,
-            '',
-            $severity,
-            true
-        );
-        $this->addFlashMessage($flashMessage);
-    }
-
-    protected function addFlashMessage(FlashMessage $flashMessage): void
-    {
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 }
