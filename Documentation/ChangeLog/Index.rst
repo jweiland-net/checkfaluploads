@@ -7,12 +7,19 @@
 ChangeLog
 =========
 
+Version 4.0.1
+=============
+
+*   Exclude .crowdin.yml while packaging
+
 Version 4.0.0
 =============
 
 *   Add TYPO3 12 compatibility
 *   Remove TYPO3 10 compatibility
 *   Remove TYPO3 11 compatibility
+*   Change ext icon
+*   BUGFIX: Do not upload files on validation error in EXT:form
 
 Version 3.0.4
 =============
