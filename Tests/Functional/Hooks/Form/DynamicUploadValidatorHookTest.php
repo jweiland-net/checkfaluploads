@@ -39,7 +39,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     /**
      * @var DynamicUploadValidatorHook|null
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Core extensions to load.

@@ -40,7 +40,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
     /**
      * @var ReplacePlaceholderHook|null
      */
-    protected $subject = null;
+    protected $subject;
 
     /**
      * Core extensions to load.
