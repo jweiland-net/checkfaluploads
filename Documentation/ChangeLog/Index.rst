@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 4.0.2
+=============
+
+*   Use correct var in annotation of DynamicUploadValidatorHookTest
+
 Version 4.0.1
 =============
 

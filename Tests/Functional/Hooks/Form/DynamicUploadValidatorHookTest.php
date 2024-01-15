@@ -146,7 +146,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
      */
     public function afterSubmitWithNoChildElementsReturnsOriginalEmptyValue(): void
     {
-        /** @var Page|MockObject $uploadedFileMock */
+        /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
             ->expects(self::atLeastOnce())
@@ -188,7 +188,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getType')
             ->willReturn('Text');
 
-        /** @var Page|MockObject $uploadedFileMock */
+        /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
             ->expects(self::atLeastOnce())
@@ -236,7 +236,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getProperties')
             ->willReturn([]);
 
-        /** @var Page|MockObject $uploadedFileMock */
+        /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
             ->expects(self::atLeastOnce())
@@ -286,7 +286,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 'checkboxType' => 'uploadRights',
             ]);
 
-        /** @var Page|MockObject $uploadedFileMock */
+        /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
             ->expects(self::atLeastOnce())
@@ -337,7 +337,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 'referenceUploadIdentifier' => 'Different Identifier',
             ]);
 
-        /** @var Page|MockObject $uploadedFileMock */
+        /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
             ->expects(self::atLeastOnce())
@@ -392,7 +392,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 'referenceUploadIdentifier' => 'CorrectIdentifier',
             ]);
 
-        /** @var Page|MockObject $uploadedFileMock */
+        /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
             ->expects(self::atLeastOnce())
@@ -451,7 +451,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getIdentifier')
             ->willReturn('CheckboxIdentifier');
 
-        /** @var Page|MockObject $uploadedFileMock */
+        /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
             ->expects(self::atLeastOnce())
@@ -519,7 +519,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 self::isInstanceOf(NotEmptyValidator::class)
             );
 
-        /** @var Page|MockObject $uploadedFileMock */
+        /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
             ->expects(self::atLeastOnce())
