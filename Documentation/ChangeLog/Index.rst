@@ -7,6 +7,12 @@
 ChangeLog
 =========
 
+Version 3.0.5
+=============
+
+*   Replace duplicate code with traits
+*   Add MessageHelper to centralize message handling
+
 Version 3.0.4
 =============
 
