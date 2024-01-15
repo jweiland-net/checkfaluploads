@@ -86,7 +86,7 @@ class ExtConfTest extends FunctionalTestCase
         // Request to default page
         $request = new ServerRequest('https://example.com', 'GET');
         $request = $request->withAttribute('site', $site);
-        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $request = $request->withAttribute('applicationType', $applicationType);
         $request = $request->withAttribute('frontend.typoscript', $frontendTypoScript);
 
         return $request->withAttribute('language', $site->getDefaultLanguage());
