@@ -39,6 +39,11 @@
 			"JWeiland\\Checkfaluploads\\": "Classes"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"JWeiland\\Checkfaluploads\\Tests\\": "Tests"
+		}
+	},
 	"config": {
 		"vendor-dir": ".build/vendor",
 		"allow-plugins": {
