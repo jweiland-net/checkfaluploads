@@ -18,16 +18,28 @@ trait ApplicationContextTrait
 {
     private function isBackendRequest(): bool
     {
-        return ApplicationType::fromRequest($this->getTypo3Request())->isBackend();
+        $request = $this->getTypo3Request();
+        if ($request instanceof ServerRequestInterface) {
+            return ApplicationType::fromRequest($request)->isBackend();
+        }
+
+        // In CLI context there is no TYPO3_REQUEST
+        return false;
     }
 
     private function isFrontendRequest(): bool
     {
-        return ApplicationType::fromRequest($this->getTypo3Request())->isFrontend();
+        $request = $this->getTypo3Request();
+        if ($request instanceof ServerRequestInterface) {
+            return ApplicationType::fromRequest($request)->isFrontend();
+        }
+
+        // In CLI context there is no TYPO3_REQUEST
+        return false;
     }
 
-    private function getTypo3Request(): ServerRequestInterface
+    private function getTypo3Request(): ?ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return $GLOBALS['TYPO3_REQUEST'] ?? null;
     }
 }

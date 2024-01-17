@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _start:
+..  _start:
 
 ===============
 Checkfaluploads
@@ -49,7 +49,6 @@ where the user gives unrestricted rights to the owner for the uploaded files.
     Developer/Index
     KnownProblems/Index
     ChangeLog/Index
-    Links
     Sitemap
 
 ..  Meta Menu
