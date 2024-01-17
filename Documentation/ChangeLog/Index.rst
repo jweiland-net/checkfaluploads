@@ -1,11 +1,16 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _changelog:
+..  _changelog:
 
 =========
 ChangeLog
 =========
+
+Version 4.0.3
+=============
+
+*   [BUGFIX] Do not try to add user information to images in CLI mode.
 
 Version 4.0.2
 =============
