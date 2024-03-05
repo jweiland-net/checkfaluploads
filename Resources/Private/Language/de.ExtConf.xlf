@@ -3,9 +3,9 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2020-10-12T13:32:20Z" product-name="checkfaluploads" target-language="de">
     <header/>
     <body>
-      <trans-unit id="owner">
+      <trans-unit id="owner" approved="yes">
         <source>Owner of files: Set the name of the owner who will have unrestricted rights to the uploaded files in TYPO3 backend.</source>
-        <target state="needs-translation">Owner of files: Set the name of the owner who will have unrestricted rights to the uploaded files in TYPO3 backend.</target>
+        <target state="final">Besitzer der Dateien: Legen Sie den Namen des Eigentümers fest, der uneingeschränkte Rechte an den hoch geladenen Dateien im TYPO3 Backend hat.</target>
       </trans-unit>
     </body>
   </file>
