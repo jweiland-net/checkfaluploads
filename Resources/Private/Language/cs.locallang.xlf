@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-04-04T10:32:20Z" product-name="checkfaluploads" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="dragUploader.fileRights.title">
+        <source>You have to confirm that %s has unrestricted rights to use the files you will upload</source>
+        <target state="needs-translation">You have to confirm that %s has unrestricted rights to use the files you will upload</target>
+      </trans-unit>
+      <trans-unit id="dragUploader.fileRights.confirmation">
+        <source>Yes</source>
+        <target state="needs-translation">Yes</target>
+      </trans-unit>
+      <trans-unit id="error.uploadFile.missingRights">
+        <source>It is not allowed to upload files, as long as the checkbox for file rights is not checked</source>
+        <target state="needs-translation">It is not allowed to upload files, as long as the checkbox for file rights is not checked</target>
+      </trans-unit>
+      <trans-unit id="frontend.imageUserRights">
+        <source>You have to confirm that %s has unrestricted rights to use the files you will upload</source>
+        <target state="needs-translation">You have to confirm that %s has unrestricted rights to use the files you will upload</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
