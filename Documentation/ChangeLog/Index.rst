@@ -7,6 +7,12 @@
 ChangeLog
 =========
 
+Version 3.0.7
+=============
+
+*   [BUGFIX] Backporting a fix from new version to old version.
+
+
 Version 3.0.6
 =============
 
