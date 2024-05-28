@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 3.0.8
+=============
+
+*   [BUGFIX] EventListerner issue backported from latest version.
+
 Version 3.0.7
 =============
 

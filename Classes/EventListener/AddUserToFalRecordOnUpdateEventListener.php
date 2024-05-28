@@ -48,6 +48,8 @@ class AddUserToFalRecordOnUpdateEventListener
             $fields['cruser_id'] = (int)$this->getBackendUserAuthentication()->user['uid'];
         } elseif ($this->isFrontendRequest()) {
             $fields['fe_cruser_id'] = (int)$this->getTypoScriptFrontendController()->fe_user->user['uid'];
+        } else {
+            return;
         }
 
         $connection = $this->connectionPool->getConnectionForTable('sys_file');
