@@ -159,7 +159,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getParentRenderable')
             ->willReturn($pageMock);
 
-        /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
             ->expects(self::atLeastOnce())
@@ -203,7 +202,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getParentRenderable')
             ->willReturn($pageMock);
 
-        /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
             ->expects(self::atLeastOnce())
@@ -251,7 +249,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getParentRenderable')
             ->willReturn($pageMock);
 
-        /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
             ->expects(self::atLeastOnce())
@@ -301,7 +298,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getParentRenderable')
             ->willReturn($pageMock);
 
-        /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
             ->expects(self::atLeastOnce())
@@ -356,7 +352,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getIdentifier')
             ->willReturn('Other Identifier');
 
-        /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
             ->expects(self::atLeastOnce())
@@ -411,7 +406,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getIdentifier')
             ->willReturn('CorrectIdentifier');
 
-        /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
             ->expects(self::atLeastOnce())
@@ -470,7 +464,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getIdentifier')
             ->willReturn('FileUploadIdentifier');
 
-        /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
             ->expects(self::atLeastOnce())
@@ -538,7 +531,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->method('getIdentifier')
             ->willReturn('FileUploadIdentifier');
 
-        /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
             ->expects(self::atLeastOnce())
