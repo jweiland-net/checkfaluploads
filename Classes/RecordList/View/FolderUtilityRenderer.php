@@ -33,6 +33,7 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Recordlist\View\FolderUtilityRend
         if (!$folderObject->checkActionPermission('write')) {
             return '';
         }
+
         // Read configuration of upload field count
         $count = (int)($this->getBackendUser()->getTSConfig()['options.']['folderTree.']['uploadFieldsInLinkBrowser'] ?? 1);
         if ($count === 0) {
@@ -44,7 +45,7 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Recordlist\View\FolderUtilityRend
         $allowedOnlineMediaList = [];
         $lang = $this->getLanguageService();
 
-        if ($fileExtensionFilter !== null) {
+        if ($fileExtensionFilter instanceof FileExtensionFilter) {
             $resolvedFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
             if (($resolvedFileExtensions['allowedFileExtensions'] ?? []) !== []) {
                 $list = $resolvedFileExtensions['allowedFileExtensions'];
@@ -60,8 +61,9 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Recordlist\View\FolderUtilityRend
                 $allowedOnlineMediaList[] = '<span class="badge badge-' . ($denyList ? 'danger' : 'success') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
             }
         }
+
         $markup = [];
-        if (!empty($allowedOnlineMediaList)) {
+        if ($allowedOnlineMediaList !== []) {
             $markup[] = '<div class="row">';
             $markup[] = '    <label>';
             $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($denyList ? 'disallowedFileExtensions' : 'allowedFileExtensions'))) . '<br/>';
@@ -123,12 +125,13 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Recordlist\View\FolderUtilityRend
         $allowedOnlineMediaList = [];
         foreach (GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions() as $supportedFileExtension) {
             if ($fileNameVerifier->isValid('.' . $supportedFileExtension)
-                && ($fileExtensionFilter === null || $fileExtensionFilter->isAllowed($supportedFileExtension))
+                && (!$fileExtensionFilter instanceof FileExtensionFilter || $fileExtensionFilter->isAllowed($supportedFileExtension))
             ) {
                 $allowedOnlineMediaList[$supportedFileExtension] = '<span class="badge badge-success">' . strtoupper(htmlspecialchars($supportedFileExtension)) . '</span>';
             }
         }
-        if (!empty($allowedOnlineMediaList)) {
+
+        if ($allowedOnlineMediaList !== []) {
             $formAction = (string)$this->uriBuilder->buildUriFromRoute('online_media');
 
             $markup = [];

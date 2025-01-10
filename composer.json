@@ -12,8 +12,13 @@
 	"authors": [
 		{
 			"name": "Stefan Froemken",
-			"email": "projects@jweiland.net",
-			"role": "Developer"
+			"email": "sfroemken@jweiland.net",
+			"role": "Lead Developer"
+		},
+		{
+			"name": "Hoja Mustaffa Abdul Latheef",
+			"email": "hlatheef@jweiland.net",
+			"role": "Senior Developer"
 		}
 	],
 	"support": {
@@ -22,16 +27,17 @@
 		"source": "https://github.com/jweiland-net/checkfaluploads"
 	},
 	"require": {
-		"typo3/cms-core": "^12.4.8",
-		"typo3/cms-filelist": "^12.4.8"
+		"typo3/cms-core": "^13.4",
+		"typo3/cms-filelist": "^13.4"
 	},
 	"require-dev": {
-		"roave/security-advisories": "dev-latest",
-		"typo3/testing-framework": "^7.0.2",
-		"phpunit/phpunit": "^9.6",
-		"typo3/coding-standards": "^0.6",
+		"ergebnis/composer-normalize": "^2.44",
 		"friendsofphp/php-cs-fixer": "^3.14",
-		"typo3/cms-form": "^12.4.4"
+		"phpstan/phpstan": "^1.10",
+		"roave/security-advisories": "dev-latest",
+		"typo3/cms-form": "^13.4",
+		"typo3/coding-standards": "^0.8",
+		"typo3/testing-framework": "^9.0.1"
 	},
 	"replace": {
 		"typo3-ter/checkfaluploads": "self.version"

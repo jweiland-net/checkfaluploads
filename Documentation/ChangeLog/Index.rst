@@ -7,6 +7,12 @@
 ChangeLog
 =========
 
+Version 5.0.0
+=============
+
+*   [TASK] TYPO3 Compatibility fix for 13 LTS
+*   [TASK] Removed TYPO3 12 Compatibility
+
 Version 4.0.3
 =============
 

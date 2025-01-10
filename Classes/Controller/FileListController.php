@@ -64,6 +64,7 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
                 ->setIcon($this->iconFactory->getIcon('actions-image'));
         }
+
         $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
             ->setActive((bool)$this->moduleData->get('clipBoard'))
             ->setHref($this->filelist->createModuleUri(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
@@ -91,12 +92,14 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 ])
                 ->setIcon($this->iconFactory->getIcon('actions-options'));
         }
+
         $viewModeButton = $buttonBar->makeDropDownButton()
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
             ->setShowLabelText(true);
         foreach ($viewModeItems as $viewModeItem) {
             $viewModeButton->addItem($viewModeItem);
         }
+
         $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
 
         // Level up
@@ -122,7 +125,7 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL));
                 $buttonBar->addButton($levelUpButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
         }
 
         // Shortcut
@@ -201,8 +204,10 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                     ) {
                         $addPasteButton = false;
                     }
+
                     $elToConfirm[$key] = $clipBoardElement->getName();
                 }
+
                 if ($addPasteButton) {
                     $confirmText = $this->filelist->clipObj
                         ->confirmMsgText('_FILE', $this->folderObject->getReadablePath(), 'into', $elToConfirm);

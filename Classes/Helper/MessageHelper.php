@@ -62,7 +62,7 @@ class MessageHelper
 
     public function hasMessages(): bool
     {
-        return !empty($this->getAllFlashMessages(false));
+        return $this->getAllFlashMessages(false) !== [];
     }
 
     /**
@@ -85,7 +85,7 @@ class MessageHelper
 
     public function hasErrorMessages(): bool
     {
-        return !empty($this->getErrorMessages(false));
+        return $this->getErrorMessages(false) !== [];
     }
 
     /**
@@ -102,7 +102,7 @@ class MessageHelper
 
     public function hasWarningMessages(): bool
     {
-        return !empty($this->getWarningMessages(false));
+        return $this->getWarningMessages(false) !== [];
     }
 
     /**
@@ -119,7 +119,7 @@ class MessageHelper
 
     public function hasOkMessages(): bool
     {
-        return !empty($this->getOkMessages(false));
+        return $this->getOkMessages(false) !== [];
     }
 
     /**
@@ -136,7 +136,7 @@ class MessageHelper
 
     public function hasInfoMessages(): bool
     {
-        return !empty($this->getInfoMessages(false));
+        return $this->getInfoMessages(false) !== [];
     }
 
     /**
@@ -153,7 +153,7 @@ class MessageHelper
 
     public function hasNoticeMessages(): bool
     {
-        return !empty($this->getNoticeMessages(false));
+        return $this->getNoticeMessages(false) !== [];
     }
 
     /**
