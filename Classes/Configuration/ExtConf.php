@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Configuration;
 
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -24,31 +25,43 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class ExtConf implements SingletonInterface
 {
     use ApplicationContextTrait;
+    use LoggerAwareTrait;
 
-    protected string $owner = '';
+    private const EXTENSION_KEY = 'checkfaluploads';
+    private const DEFAULT_OWNER = '[Missing owner in ext settings of checkfaluploads]';
+    private string $owner = self::DEFAULT_OWNER;
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
         try {
-            $extConf = $extensionConfiguration->get('checkfaluploads');
+            $extConf = $extensionConfiguration->get(self::EXTENSION_KEY);
             if (is_array($extConf)) {
-                foreach ($extConf as $key => $value) {
-                    $methodName = 'set' . ucfirst($key);
-                    if (method_exists($this, $methodName)) {
-                        $this->$methodName($value);
-                    }
-                }
+                $this->mapConfiguration($extConf);
             }
-        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $e) {
+        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
+            $this->logger?->error(
+                sprintf('Failed to load configuration for extension "%s": %s', self::EXTENSION_KEY, $exception->getMessage())
+            );
+        }
+    }
+
+    /**
+     * Maps the configuration array to class properties.
+     *
+     * @param array<string, mixed> $config
+     */
+    private function mapConfiguration(array $config): void
+    {
+        foreach ($config as $key => $value) {
+            $setterMethod = 'set' . ucfirst($key);
+            if (method_exists($this, $setterMethod)) {
+                $this->$setterMethod((string) $value);
+            }
         }
     }
 
     public function getOwner(): string
     {
-        if ($this->owner === '') {
-            return '[Missing owner in ext settings of checkfaluploads]';
-        }
-
         return $this->owner;
     }
 
@@ -70,7 +83,7 @@ class ExtConf implements SingletonInterface
 
         return LocalizationUtility::translate(
             $langKey,
-            'checkfaluploads',
+            self::EXTENSION_KEY,
             [
                 0 => $this->getOwner(),
             ]

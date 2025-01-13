@@ -15,6 +15,7 @@ use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
 use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
 use JWeiland\Checkfaluploads\Traits\ConnectionPoolTrait;
 use JWeiland\Checkfaluploads\Traits\TypoScriptFrontendControllerTrait;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
 
 /**
@@ -27,6 +28,8 @@ class AddUserToFalRecordOnCreationEventListener
     use ConnectionPoolTrait;
     use TypoScriptFrontendControllerTrait;
 
+    public function __construct(private readonly Context $context) {}
+
     public function __invoke(AfterFileAddedToIndexEvent $event): void
     {
         $fields = [];
@@ -34,7 +37,8 @@ class AddUserToFalRecordOnCreationEventListener
         if ($this->isBackendRequest()) {
             $fields['cruser_id'] = (int)($this->getBackendUserAuthentication()->user['uid'] ?? 0);
         } elseif ($this->isFrontendRequest()) {
-            $fields['fe_cruser_id'] = (int)($this->getTypoScriptFrontendController()->fe_user->user['uid'] ?? 0);
+            $fields['fe_cruser_id'] = $this->getFrontendUserId();
+            debug($fields);
         } else {
             return;
         }
@@ -47,5 +51,10 @@ class AddUserToFalRecordOnCreationEventListener
                 'uid' => $event->getFileUid(),
             ]
         );
+    }
+
+    public function getFrontendUserId(): int
+    {
+        return $this->context->getPropertyFromAspect('frontend.user', 'uid', '');
     }
 }

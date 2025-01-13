@@ -14,19 +14,17 @@ namespace JWeiland\Checkfaluploads\ViewHelpers;
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /*
  * This VH renders an image user rights message incl. the owner who will retrieve the image rights.
  */
+
 class ImageRightsMessageViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
+        // Registering arguments with clear types and defaults
         $this->registerArgument(
             'languageKey',
             'string',
@@ -45,21 +43,40 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
 
     /**
      * Implements a ViewHelper to get values from current logged in fe_user.
+     *
+     * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ): string {
+    public function render(): string
+    {
+        $arguments = $this->arguments;
+
+        $owner = self::getOwnerFromConfiguration();
+
         return LocalizationUtility::translate(
             $arguments['languageKey'],
             $arguments['extensionName'],
             [
-                0 => self::getExtConf()->getOwner(),
+                0 => $owner,
             ]
         );
     }
 
+    /**
+     * Fetches the owner from the extension configuration.
+     *
+     * @return string The owner name or an empty string if not configured
+     */
+    private static function getOwnerFromConfiguration(): string
+    {
+        $extConf = self::getExtConf();
+        return $extConf->getOwner() ?: '';  // Return an empty string if owner is not set
+    }
+
+    /**
+     * Retrieves the extension configuration instance.
+     *
+     * @return ExtConf The configuration object
+     */
     protected static function getExtConf(): ExtConf
     {
         return GeneralUtility::makeInstance(ExtConf::class);

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\RecordList\View;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -22,13 +23,13 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * Add userHasRights checkbox to FileBrowser PopUp
  */
-class FolderUtilityRenderer extends \TYPO3\CMS\Recordlist\View\FolderUtilityRenderer
+class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRenderer
 {
     /**
      * Makes an upload form for uploading files to the filemount the user is browsing.
      * The files are uploaded to the tce_file.php script in the core which will handle the upload.
      */
-    public function uploadForm(Folder $folderObject, ?FileExtensionFilter $fileExtensionFilter = null): string
+    public function uploadForm(ServerRequestInterface $request, Folder $folderObject, ?FileExtensionFilter $fileExtensionFilter = null)
     {
         if (!$folderObject->checkActionPermission('write')) {
             return '';

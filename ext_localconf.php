@@ -8,8 +8,8 @@ use JWeiland\Checkfaluploads\Controller\FileListController as CheckfaluploadsFil
 use JWeiland\Checkfaluploads\Hooks\Form\ReplacePlaceholderHook;
 use JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook;
 use JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRenderer as CheckfaluploadsFolderUtilityRenderer;
+use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Filelist\Controller\FileListController;
-use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
 call_user_func(static function (): void {
     // Disable CSS class "t3js-drag-uploader-trigger" to prevent loading DragUploader modal.
