@@ -32,7 +32,8 @@ class ReplacePlaceholderHook
         if (!$formElement instanceof FormElementInterface) {
             return;
         }
-var_dump($formElement->getProperties());die;
+        var_dump($formElement->getProperties());
+        die;
         if (($formElement->getProperties()['checkboxType'] ?? '') === 'uploadRights') {
             $formElement->setLabel($this->extConf->getLabelForUserRights());
         }
