@@ -178,8 +178,7 @@ Options:
     -i version
         Specify a specific database version
         With "-d mariadb":
-            - 10.4   short-term, maintained until 2024-06-18 (default)
-            - 10.5   short-term, maintained until 2025-06-24
+            - 10.5   short-term, maintained until 2025-06-24 (default)
             - 10.6   long-term, maintained until 2026-06
             - 10.7   short-term, no longer maintained
             - 10.8   short-term, maintained until 2023-05
