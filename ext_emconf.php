@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the package jweiland/checkfaluploads.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'checkFalUploads',
     'description' => 'Displays a checkbox that must be checked to upload files in backend',

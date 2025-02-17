@@ -62,7 +62,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
             ],
         ]);
 
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([
             'page' => 'PAGE',
             'page.' => [
@@ -96,7 +96,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
     {
         unset(
             $this->subject,
-            $this->renderableMock
+            $this->renderableMock,
         );
 
         parent::tearDown();

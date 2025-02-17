@@ -47,7 +47,7 @@ class ExtConfTest extends FunctionalTestCase
     public function tearDown(): void
     {
         unset(
-            $this->subject
+            $this->subject,
         );
 
         parent::tearDown();
@@ -67,7 +67,7 @@ class ExtConfTest extends FunctionalTestCase
             ],
         ]);
 
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), []);
+        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([
             'page' => 'PAGE',
             'page.' => [
@@ -98,8 +98,8 @@ class ExtConfTest extends FunctionalTestCase
     public function getOwnerInitiallyReturnsPlaceholder(): void
     {
         self::assertSame(
-            '[Missing owner in ext settings of checkfaluploads]',
-            $this->subject->getOwner()
+            '', // It's set as '' in default TypoScript
+            $this->subject->getOwner(),
         );
     }
 
@@ -112,7 +112,7 @@ class ExtConfTest extends FunctionalTestCase
 
         self::assertSame(
             'foo bar',
-            $this->subject->getOwner()
+            $this->subject->getOwner(),
         );
     }
 
@@ -127,7 +127,7 @@ class ExtConfTest extends FunctionalTestCase
 
         self::assertStringContainsString(
             'foo bar',
-            $this->subject->getLabelForUserRights()
+            $this->subject->getLabelForUserRights(),
         );
     }
 
@@ -142,7 +142,7 @@ class ExtConfTest extends FunctionalTestCase
 
         self::assertStringContainsString(
             'foo bar',
-            $this->subject->getLabelForUserRights()
+            $this->subject->getLabelForUserRights(),
         );
     }
 }

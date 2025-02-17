@@ -35,7 +35,7 @@ class DynamicUploadValidatorHook
         FormRuntime $formRuntime,
         RenderableInterface $renderable,
         $elementValue,
-        array $requestArguments = []
+        array $requestArguments = [],
     ) {
         if ($renderable instanceof FileUpload) {
             $this->requestArguments = $requestArguments;
@@ -58,7 +58,7 @@ class DynamicUploadValidatorHook
      */
     protected function updateElementValueOnError(
         array|UploadedFile|null $elementValue,
-        FileUpload $fileUpload
+        FileUpload $fileUpload,
     ): array|UploadedFile|null {
         // Early return, if no file was uploaded
         if ($elementValue === null) {
@@ -86,7 +86,7 @@ class DynamicUploadValidatorHook
 
         // Checkbox not activated: Add NotEmpty validator to inform the user
         $relatedCheckboxForFileUpload->addValidator(
-            $this->getNotEmptyValidator()
+            $this->getNotEmptyValidator(),
         );
 
         // Checkbox not activated: Remove the uploaded file from request by returning an empty value
@@ -98,7 +98,7 @@ class DynamicUploadValidatorHook
         $possibleCheckboxElements = $this->getCheckboxElementsByProperty(
             'checkboxType',
             'uploadRights',
-            $this->getPageElement($fileUpload)
+            $this->getPageElement($fileUpload),
         );
 
         foreach ($possibleCheckboxElements as $possibleCheckboxElement) {

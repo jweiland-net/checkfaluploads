@@ -36,7 +36,7 @@ class UserMarkedCheckboxForRightsEventListener
 
     public function __construct(
         ExtendedFileUtility $extendedFileUtility,
-        MessageHelper $messageHelper
+        MessageHelper $messageHelper,
     ) {
         $this->extendedFileUtility = $extendedFileUtility;
         $this->messageHelper = $messageHelper;
@@ -55,7 +55,7 @@ class UserMarkedCheckboxForRightsEventListener
                 if ($userHasRights === false) {
                     $message = LocalizationUtility::translate(
                         'error.uploadFile.missingRights',
-                        'Checkfaluploads'
+                        'Checkfaluploads',
                     );
 
                     $this->getBackendUserAuthentication()->writeLog(2, 1, 1, 105, $message, []);
@@ -81,7 +81,7 @@ class UserMarkedCheckboxForRightsEventListener
                 if ($userHasRights === false) {
                     $message = LocalizationUtility::translate(
                         'error.uploadFile.missingRights',
-                        'Checkfaluploads'
+                        'Checkfaluploads',
                     );
 
                     $this->getBackendUserAuthentication()->writeLog(2, 1, 1, 105, $message, []);

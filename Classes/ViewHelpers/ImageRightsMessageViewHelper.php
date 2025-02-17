@@ -30,14 +30,14 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
             'string',
             'The language key of a locallang.xml file to use/translate',
             false,
-            'frontend.imageUserRights'
+            'frontend.imageUserRights',
         );
         $this->registerArgument(
             'extensionName',
             'string',
             'Use locallang.xml of given extension name',
             false,
-            'checkfaluploads'
+            'checkfaluploads',
         );
     }
 
@@ -57,7 +57,7 @@ class ImageRightsMessageViewHelper extends AbstractViewHelper
             $arguments['extensionName'],
             [
                 0 => $owner,
-            ]
+            ],
         );
     }
 

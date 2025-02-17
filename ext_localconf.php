@@ -1,12 +1,19 @@
 <?php
 
+/*
+ * This file is part of the package jweiland/checkfaluploads.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 if (!defined('TYPO3')) {
-    die ('Access denied.');
+    die('Access denied.');
 }
 
 use JWeiland\Checkfaluploads\Controller\FileListController as CheckfaluploadsFileListController;
-use JWeiland\Checkfaluploads\Hooks\Form\ReplacePlaceholderHook;
 use JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook;
+use JWeiland\Checkfaluploads\Hooks\Form\ReplacePlaceholderHook;
 use JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRenderer as CheckfaluploadsFolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Filelist\Controller\FileListController;

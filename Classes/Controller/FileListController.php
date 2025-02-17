@@ -109,7 +109,7 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 ->setAttributes([
                     'data-url' => $this->uriBuilder->buildUriFromRoute(
                         'ajax_show_columns_selector',
-                        ['id' => $this->id, 'table' => '_FILE']
+                        ['id' => $this->id, 'table' => '_FILE'],
                     ),
                     'data-target' => $this->filelist->createModuleUri(),
                     'data-title' => sprintf(
@@ -185,18 +185,18 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 $levelUpButton = $buttonBar->makeLinkButton()
                     ->setDataAttributes([
                         'tree-update-request' => htmlspecialchars(
-                            'folder' . GeneralUtility::md5int($parentFolder->getCombinedIdentifier())
+                            'folder' . GeneralUtility::md5int($parentFolder->getCombinedIdentifier()),
                         ),
                     ])
                     ->setHref(
                         (string)$this->uriBuilder->buildUriFromRoute(
                             'media_management',
-                            ['id' => $parentFolder->getCombinedIdentifier()]
-                        )
+                            ['id' => $parentFolder->getCombinedIdentifier()],
+                        ),
                     )
                     ->setShowLabelText(true)
                     ->setTitle(
-                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.upOneLevel')
+                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.upOneLevel'),
                     )
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-up', self::ICON_SIZE));
                 $buttonBar->addButton($levelUpButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
@@ -223,7 +223,7 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
             ->setDisplayName(sprintf(
                 '%s: %s',
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'),
-                $this->folderObject->getName() ?: $this->folderObject->getIdentifier()
+                $this->folderObject->getName() ?: $this->folderObject->getIdentifier(),
             ))
             ->setArguments(array_filter([
                 'id' => $this->id,
@@ -251,8 +251,8 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
     private function addNewFolderButton(ButtonBar $buttonBar, \TYPO3\CMS\Core\Localization\LanguageService $lang): void
     {
         if ($this->folderObject && $this->folderObject->checkActionPermission(
-                'write'
-            ) && $this->folderObject->checkActionPermission('add')) {
+            'write',
+        ) && $this->folderObject->checkActionPermission('add')) {
             $newButton = $buttonBar->makeLinkButton()
                 ->setClasses('t3js-element-browser')
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser'))
@@ -279,8 +279,8 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                         [
                             'target' => $this->folderObject->getCombinedIdentifier(),
                             'returnUrl' => $this->filelist->createModuleUri(),
-                        ]
-                    )
+                        ],
+                    ),
                 )
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:actions.create_file'))
@@ -299,9 +299,9 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 foreach ($elFromTable as $key => $element) {
                     $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
                     if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder(
-                            $clipBoardElement,
-                            $this->folderObject
-                        )
+                        $clipBoardElement,
+                        $this->folderObject,
+                    )
                     ) {
                         $addPasteButton = false;
                     }

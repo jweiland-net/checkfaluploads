@@ -1,14 +1,13 @@
 {
 	"name": "jweiland/checkfaluploads",
-	"type": "typo3-cms-extension",
 	"description": "Displays a checkbox that must be checked to upload files in backend",
 	"license": "GPL-2.0-or-later",
+	"type": "typo3-cms-extension",
 	"keywords": [
 		"typo3",
 		"TYPO3 CMS",
 		"checkfaluploads"
 	],
-	"homepage": "https://jweiland.net",
 	"authors": [
 		{
 			"name": "Stefan Froemken",
@@ -21,6 +20,7 @@
 			"role": "Senior Developer"
 		}
 	],
+	"homepage": "https://jweiland.net",
 	"support": {
 		"email": "projects@jweiland.net",
 		"issues": "https://github.com/jweiland-net/checkfaluploads/issues",
@@ -53,17 +53,18 @@
 		}
 	},
 	"config": {
-		"vendor-dir": ".Build/vendor",
-		"bin-dir": ".Build/bin",
 		"allow-plugins": {
+			"ergebnis/composer-normalize": true,
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true
-		}
+		},
+		"bin-dir": ".Build/bin",
+		"vendor-dir": ".Build/vendor"
 	},
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "checkfaluploads",
 			"app-dir": ".Build",
+			"extension-key": "checkfaluploads",
 			"web-dir": ".Build/Web"
 		}
 	}

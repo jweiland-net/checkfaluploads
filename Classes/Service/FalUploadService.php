@@ -27,13 +27,13 @@ class FalUploadService
         UploadedFile $uploadedFile,
         string $fieldName = 'rights',
         string $langKey = 'error.uploadFile.missingRights',
-        string $extensionName = 'checkfaluploads'
+        string $extensionName = 'checkfaluploads',
     ): ?Error {
         // Check if the file has an upload error
         if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
             return new Error(
                 LocalizationUtility::translate('error.uploadFile.invalidFile', $extensionName) . ': ' . $this->getUploadErrorMessage($uploadedFile->getError()),
-                1604050226
+                1604050226,
             );
         }
 
@@ -41,7 +41,7 @@ class FalUploadService
         if ($uploadedFile->getSize() === 0) {
             return new Error(
                 LocalizationUtility::translate('error.uploadFile.emptyFile', $extensionName),
-                1604050227
+                1604050227,
             );
         }
 
@@ -54,10 +54,10 @@ class FalUploadService
             $fileContents = $stream->getContents();
             $stream->close();
 
-            if (strpos($fileContents, 'rights') === false) {
+            if (!str_contains($fileContents, 'rights')) {
                 return new Error(
                     LocalizationUtility::translate($langKey, $extensionName),
-                    1604050225
+                    1604050225,
                 );
             }
         }

@@ -47,14 +47,14 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
             [
                 'languageKey' => 'frontend.imageUserRights',
                 'extensionName' => 'checkfaluploads',
-            ]
+            ],
         );
     }
 
     public function tearDown(): void
     {
         unset(
-            $this->subject
+            $this->subject,
         );
 
         parent::tearDown();
@@ -69,15 +69,15 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
 
         self::assertStringContainsString(
             'Missing',
-            $message
+            $message,
         );
         self::assertStringContainsString(
             'settings',
-            $message
+            $message,
         );
         self::assertStringContainsString(
             'checkfaluploads',
-            $message
+            $message,
         );
     }
 
@@ -95,11 +95,11 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
 
         self::assertStringContainsString(
             'Stefan Froemken',
-            $message
+            $message,
         );
         self::assertNotSame(
             'Stefan Froemken',
-            $message
+            $message,
         );
     }
 }

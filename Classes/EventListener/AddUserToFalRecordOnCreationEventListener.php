@@ -49,7 +49,7 @@ class AddUserToFalRecordOnCreationEventListener
             $fields,
             [
                 'uid' => $event->getFileUid(),
-            ]
+            ],
         );
     }
 

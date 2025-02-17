@@ -40,7 +40,7 @@ class ExtConf implements SingletonInterface
             }
         } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
             $this->logger?->error(
-                sprintf('Failed to load configuration for extension "%s": %s', self::EXTENSION_KEY, $exception->getMessage())
+                sprintf('Failed to load configuration for extension "%s": %s', self::EXTENSION_KEY, $exception->getMessage()),
             );
         }
     }
@@ -55,7 +55,7 @@ class ExtConf implements SingletonInterface
         foreach ($config as $key => $value) {
             $setterMethod = 'set' . ucfirst($key);
             if (method_exists($this, $setterMethod)) {
-                $this->$setterMethod((string) $value);
+                $this->$setterMethod((string)$value);
             }
         }
     }
@@ -86,7 +86,7 @@ class ExtConf implements SingletonInterface
             self::EXTENSION_KEY,
             [
                 0 => $this->getOwner(),
-            ]
+            ],
         );
     }
 }

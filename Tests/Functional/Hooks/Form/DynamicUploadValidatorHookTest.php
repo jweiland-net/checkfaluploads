@@ -59,7 +59,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         unset(
             $this->subject,
             $this->renderableMock,
-            $this->formRuntimeMock
+            $this->formRuntimeMock,
         );
 
         parent::tearDown();
@@ -75,8 +75,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $this->createMock(Page::class),
-                'Test'
-            )
+                'Test',
+            ),
         );
     }
 
@@ -89,8 +89,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $this->createMock(FileUpload::class),
-                null
-            )
+                null,
+            ),
         );
     }
 
@@ -110,12 +110,12 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $this->createMock(FileUpload::class),
-                $uploadedFile
-            )
+                $uploadedFile,
+            ),
         );
     }
 
-    public function invalidResourcePointerDataProvider(): array
+    public static function invalidResourcePointerDataProvider(): array
     {
         return [
             'empty array' => [[]],
@@ -136,8 +136,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $this->createMock(FileUpload::class),
-                $invalidResourcePointer
-            )
+                $invalidResourcePointer,
+            ),
         );
     }
 
@@ -170,8 +170,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $fileUploadMock,
-                $uploadedFileMock
-            )
+                $uploadedFileMock,
+            ),
         );
     }
 
@@ -213,8 +213,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $fileUploadMock,
-                $uploadedFileMock
-            )
+                $uploadedFileMock,
+            ),
         );
     }
 
@@ -260,8 +260,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $fileUploadMock,
-                $uploadedFileMock
-            )
+                $uploadedFileMock,
+            ),
         );
     }
 
@@ -309,8 +309,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $fileUploadMock,
-                $uploadedFileMock
-            )
+                $uploadedFileMock,
+            ),
         );
     }
 
@@ -363,8 +363,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $fileUploadMock,
-                $uploadedFileMock
-            )
+                $uploadedFileMock,
+            ),
         );
     }
 
@@ -417,8 +417,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
                 $fileUploadMock,
-                $uploadedFileMock
-            )
+                $uploadedFileMock,
+            ),
         );
     }
 
@@ -478,8 +478,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 $uploadedFileMock,
                 [
                     'CheckboxIdentifier' => '1',
-                ]
-            )
+                ],
+            ),
         );
     }
 
@@ -509,7 +509,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('addValidator')
             ->with(
-                self::isInstanceOf(NotEmptyValidator::class)
+                self::isInstanceOf(NotEmptyValidator::class),
             );
 
         /** @var Page|MockObject $pageMock */
@@ -544,8 +544,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
                 $uploadedFileMock,
                 [
                     'CheckboxIdentifier' => '',
-                ]
-            )
+                ],
+            ),
         );
     }
 }

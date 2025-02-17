@@ -77,7 +77,7 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
         $combinedIdentifier = $folderObject->getCombinedIdentifier();
         $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
             $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
-            '&'
+            '&',
         );
 
         $markup[] = '<form class="pt-3 pb-3" action="' . htmlspecialchars($formAction) . '" method="post" name="editform" enctype="multipart/form-data">';
