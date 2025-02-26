@@ -35,7 +35,7 @@ class FalUploadService
             return new Error(
                 LocalizationUtility::translate(
                     'error.uploadFile.invalidFile',
-                    $extensionName
+                    $extensionName,
                 ) . ': ' . $this->getUploadErrorMessage($uploadedFile->getError()),
                 1604050226,
             );
@@ -53,7 +53,7 @@ class FalUploadService
         if (!isset($rightsConfiguration[$fieldName]) || $rightsConfiguration[$fieldName] === '' || $rightsConfiguration[$fieldName] === 0) {
             return new Error(
                 LocalizationUtility::translate($langKey, $extensionName),
-                1604050225
+                1604050225,
             );
         }
 
