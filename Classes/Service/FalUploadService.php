@@ -25,6 +25,7 @@ class FalUploadService
 {
     public function checkFile(
         UploadedFile $uploadedFile,
+        ?array $rightsConfiguration,
         string $fieldName = 'rights',
         string $langKey = 'error.uploadFile.missingRights',
         string $extensionName = 'checkfaluploads',
@@ -32,7 +33,10 @@ class FalUploadService
         // Check if the file has an upload error
         if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
             return new Error(
-                LocalizationUtility::translate('error.uploadFile.invalidFile', $extensionName) . ': ' . $this->getUploadErrorMessage($uploadedFile->getError()),
+                LocalizationUtility::translate(
+                    'error.uploadFile.invalidFile',
+                    $extensionName
+                ) . ': ' . $this->getUploadErrorMessage($uploadedFile->getError()),
                 1604050226,
             );
         }
@@ -45,21 +49,12 @@ class FalUploadService
             );
         }
 
-        // Check if the file contains the required "rights" metadata
-        // Since UploadedFile doesn't contain arbitrary fields like `$fieldName`, adapt logic accordingly
-        if ($fieldName === 'rights') {
-            // Example logic for checking rights; adjust based on your needs
-            $stream = $uploadedFile->getStream();
-            $stream->rewind();
-            $fileContents = $stream->getContents();
-            $stream->close();
-
-            if (!str_contains($fileContents, 'rights')) {
-                return new Error(
-                    LocalizationUtility::translate($langKey, $extensionName),
-                    1604050225,
-                );
-            }
+        // Check the rightsConfigurations set for the field or not
+        if (!isset($rightsConfiguration[$fieldName]) || $rightsConfiguration[$fieldName] === '' || $rightsConfiguration[$fieldName] === 0) {
+            return new Error(
+                LocalizationUtility::translate($langKey, $extensionName),
+                1604050225
+            );
         }
 
         return null;

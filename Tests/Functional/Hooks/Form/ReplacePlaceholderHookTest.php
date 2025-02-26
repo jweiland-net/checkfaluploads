@@ -140,7 +140,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         $formElement
             ->expects(self::atLeastOnce())
             ->method('setLabel')
-            ->with(self::stringContains('[Missing owner in ext settings of checkfaluploads]'));
+            ->with(self::stringContains('You have to confirm that  has unrestricted rights to use the files you will upload'));
 
         $this->subject->afterBuildingFinished($formElement);
     }

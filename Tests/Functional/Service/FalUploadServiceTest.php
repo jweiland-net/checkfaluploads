@@ -61,7 +61,6 @@ class FalUploadServiceTest extends FunctionalTestCase
 
         // Set the field name we're checking for ("rights") and other necessary parameters
         $fieldName = 'rights';
-        $langKey = 'error.uploadFile.missingRights';
         $extensionName = 'checkfaluploads';
 
         // Simulating the file contents with "rights" keyword
@@ -71,7 +70,7 @@ class FalUploadServiceTest extends FunctionalTestCase
         $uploadedFileMock->method('getStream')->willReturn($mockStream);
 
         // Run the checkFile method
-        $result = $this->subject->checkFile($uploadedFileMock, $fieldName, $langKey, $extensionName);
+        $result = $this->subject->checkFile($uploadedFileMock, [$fieldName => 1]);
 
         // Assert that no error is returned (i.e., it returns null)
         self::assertNull($result);
@@ -97,11 +96,9 @@ class FalUploadServiceTest extends FunctionalTestCase
 
         // Run the checkFile method with parameters that expect "rights"
         $fieldName = 'rights';
-        $langKey = 'error.uploadFile.missingRights';
-        $extensionName = 'checkfaluploads';
 
         // Run the checkFile method
-        $error = $this->subject->checkFile($uploadedFileMock, $fieldName, $langKey, $extensionName);
+        $error = $this->subject->checkFile($uploadedFileMock, [$fieldName => 0]);
 
         // Assert that the error is returned
         self::assertNotNull($error);  // Ensure an error was returned
@@ -137,11 +134,9 @@ class FalUploadServiceTest extends FunctionalTestCase
 
         // Run the checkFile method with the field 'rights' being empty
         $fieldName = 'rights';
-        $langKey = 'error.uploadFile.missingRights';
-        $extensionName = 'checkfaluploads';
 
         // Run the checkFile method
-        $error = $this->subject->checkFile($uploadedFileMock, $fieldName, $langKey, $extensionName);
+        $error = $this->subject->checkFile($uploadedFileMock, [$fieldName => '']);
 
         // Assert that the error is returned (i.e., rights is empty, and error should be triggered)
         self::assertNotNull($error);  // Ensure an error was returned

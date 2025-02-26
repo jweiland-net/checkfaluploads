@@ -30,7 +30,6 @@ class AddUserToFalRecordOnUpdateEventListener
     public function __invoke(AfterFileUpdatedInIndexEvent $event): void
     {
         $fields = [];
-
         if ($this->isBackendRequest()) {
             $fields['cruser_id'] = (int)$this->getBackendUserAuthentication()->user['uid'];
         } elseif ($this->isFrontendRequest()) {

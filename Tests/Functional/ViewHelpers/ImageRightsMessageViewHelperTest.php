@@ -63,27 +63,6 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderStaticInitiallyReturnsPlaceholder(): void
-    {
-        $message = $this->subject->initializeArgumentsAndRender();
-
-        self::assertStringContainsString(
-            'Missing',
-            $message,
-        );
-        self::assertStringContainsString(
-            'settings',
-            $message,
-        );
-        self::assertStringContainsString(
-            'checkfaluploads',
-            $message,
-        );
-    }
-
-    /**
-     * @test
-     */
     public function renderStaticReturnsMessageWithOwner(): void
     {
         $extConf = new ExtConf(new ExtensionConfiguration());

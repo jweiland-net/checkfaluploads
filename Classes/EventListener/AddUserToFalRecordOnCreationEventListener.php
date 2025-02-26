@@ -33,12 +33,10 @@ class AddUserToFalRecordOnCreationEventListener
     public function __invoke(AfterFileAddedToIndexEvent $event): void
     {
         $fields = [];
-
         if ($this->isBackendRequest()) {
             $fields['cruser_id'] = (int)($this->getBackendUserAuthentication()->user['uid'] ?? 0);
         } elseif ($this->isFrontendRequest()) {
             $fields['fe_cruser_id'] = $this->getFrontendUserId();
-            debug($fields);
         } else {
             return;
         }
@@ -55,6 +53,6 @@ class AddUserToFalRecordOnCreationEventListener
 
     public function getFrontendUserId(): int
     {
-        return $this->context->getPropertyFromAspect('frontend.user', 'uid', '');
+        return $this->context->getPropertyFromAspect('frontend.user', 'id', '');
     }
 }
