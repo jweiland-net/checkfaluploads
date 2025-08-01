@@ -1,10 +1,12 @@
 # TYPO3 Extension `checkfaluploads`
 
-[![Latest Stable Version](https://poser.pugx.org/jweiland/checkfaluploads/v/stable.svg)](https://packagist.org/packages/jweiland/checkfaluploads)
-[![TYPO3 12.4](https://img.shields.io/badge/TYPO3-12.4-green.svg)](https://get.typo3.org/version/12)
-[![Total Downloads](https://poser.pugx.org/jweiland/checkfaluploads/downloads.svg)](https://packagist.org/packages/jweiland/checkfaluploads)
-[![Monthly Downloads](https://poser.pugx.org/jweiland/checkfaluploads/d/monthly)](https://packagist.org/packages/jweiland/checkfaluploads)
-![Build Status](https://github.com/jweiland-net/checkfaluploads/actions/workflows/typo3_12.yml/badge.svg)
+[![Packagist][packagist-logo-stable]][extension-packagist-url]
+[![Latest Stable Version][extension-build-shield]][extension-ter-url]
+[![Total Downloads][extension-downloads-badge]][extension-packagist-url]
+[![Monthly Downloads][extension-monthly-downloads]][extension-packagist-url]
+[![TYPO3 13.4][TYPO3-shield]][TYPO3-13-url]
+
+![Build Status](https://github.com/jweiland-net/sync_crop_areas/actions/workflows/ci.yml/badge.svg)
 
 With `checkfaluploads` we will add a new checkbox to filelist module and FileBrowser
 where the user gives unrestricted rights to the owner for the uploaded files.
@@ -40,3 +42,20 @@ Download and install `checkfaluploads` with the extension manager module.
 
 1) Install the extension
 2) Reload backend
+<!-- MARKDOWN LINKS & IMAGES -->
+
+[extension-build-shield]: https://poser.pugx.org/jweiland/checkfaluploads/v/stable.svg?style=for-the-badge
+
+[extension-downloads-badge]: https://poser.pugx.org/jweiland/checkfaluploads/d/total.svg?style=for-the-badge
+
+[extension-monthly-downloads]: https://poser.pugx.org/jweiland/checkfaluploads/d/monthly?style=for-the-badge
+
+[extension-ter-url]: https://extensions.typo3.org/extension/sync_crop_areas/
+
+[extension-packagist-url]: https://packagist.org/packages/jweiland/checkfaluploads/
+
+[packagist-logo-stable]: https://img.shields.io/badge/--grey.svg?style=for-the-badge&logo=packagist&logoColor=white
+
+[TYPO3-13-url]: https://get.typo3.org/version/13
+
+[TYPO3-shield]: https://img.shields.io/badge/TYPO3-13.4-green.svg?style=for-the-badge&logo=typo3
