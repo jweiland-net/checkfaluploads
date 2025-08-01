@@ -13,6 +13,7 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\ViewHelpers;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\ViewHelpers\ImageRightsMessageViewHelper;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -60,9 +61,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderStaticReturnsMessageWithOwner(): void
     {
         $extConf = new ExtConf(new ExtensionConfiguration());

@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\Hooks\Form;
 
 use JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
@@ -65,9 +67,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithoutFileUploadWillReturnOriginalElementValue(): void
     {
         self::assertSame(
@@ -80,9 +80,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithNullValueWillReturnNull(): void
     {
         self::assertNull(
@@ -94,9 +92,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithUploadedFileErrorWillReturnNull(): void
     {
         /** @var UploadedFile|MockObject $uploadedFile */
@@ -125,11 +121,8 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider invalidResourcePointerDataProvider
-     */
+    #[Test]
+    #[DataProvider('invalidResourcePointerDataProvider')]
     public function afterSubmitWithEmptyResourcePointerWillReturnNull(mixed $invalidResourcePointer): void
     {
         self::assertNull(
@@ -141,9 +134,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithNoChildElementsReturnsOriginalEmptyValue(): void
     {
         /** @var Page|MockObject $pageMock */
@@ -175,9 +166,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithNoCheckboxElementReturnsOriginalEmptyValue(): void
     {
         /** @var GenericFormElement|MockObject $genericFormElementMock */
@@ -218,9 +207,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithEmptyCheckboxPropertiesReturnsOriginalEmptyValue(): void
     {
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
@@ -265,9 +252,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithEmptyUploadIdentifierReturnsOriginalEmptyValue(): void
     {
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
@@ -314,9 +299,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithDifferentIdentifiersReturnsOriginalEmptyValue(): void
     {
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
@@ -368,9 +351,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithMissingCheckboxRequestReturnsOriginalEmptyValue(): void
     {
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
@@ -422,9 +403,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithActivatedCheckboxReturnsOriginalEmptyValue(): void
     {
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
@@ -483,9 +462,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterSubmitWithDeactivatedCheckboxWillAddNotEmptyValidator(): void
     {
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */

@@ -13,6 +13,7 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\Hooks\Form;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\Hooks\Form\ReplacePlaceholderHook;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -102,9 +103,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedWithoutCheckboxTypeWillNotModifyLabel(): void
     {
         /** @var GenericFormElement|MockObject $formElement */
@@ -121,9 +120,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         $this->subject->afterBuildingFinished($formElement);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedWithCheckboxTypeWillModifyLabelWithMissingOwner(): void
     {
         $this->extConf->setOwner('');
@@ -145,9 +142,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         $this->subject->afterBuildingFinished($formElement);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterBuildingFinishedWithCheckboxTypeWillModifyLabelWithOwner(): void
     {
         $this->extConf->setOwner('jweiland.net');
