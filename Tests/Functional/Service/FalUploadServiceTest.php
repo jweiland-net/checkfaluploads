@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\Service;
 
 use JWeiland\Checkfaluploads\Service\FalUploadService;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\StreamInterface;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -47,9 +48,7 @@ class FalUploadServiceTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkFileWithRightsWillReturnNull(): void
     {
         $uploadedFileMock = $this->createMock(UploadedFile::class);
@@ -76,9 +75,7 @@ class FalUploadServiceTest extends FunctionalTestCase
         self::assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkFileWithNoRightsWillReturnErrorMessage(): void
     {
         // Mocking the UploadedFile instance
@@ -113,9 +110,7 @@ class FalUploadServiceTest extends FunctionalTestCase
         self::assertSame(1604050225, $error->getCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkFileWithEmptyRightsWillReturnErrorMessage(): void
     {
         // Mocking the UploadedFile instance

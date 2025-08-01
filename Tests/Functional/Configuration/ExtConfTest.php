@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\Configuration;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -92,9 +93,7 @@ class ExtConfTest extends FunctionalTestCase
         return $request->withAttribute('language', $site->getDefaultLanguage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOwnerInitiallyReturnsPlaceholder(): void
     {
         self::assertSame(
@@ -103,9 +102,7 @@ class ExtConfTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOwnerSetsOwner(): void
     {
         $this->subject->setOwner('foo bar');
@@ -116,9 +113,7 @@ class ExtConfTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLabelForUserRightsInFrontendContextContainsOwner(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->getRequestForContext(SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -131,9 +126,7 @@ class ExtConfTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLabelForUserRightsInBackendContextContainsOwner(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->getRequestForContext(SystemEnvironmentBuilder::REQUESTTYPE_BE);

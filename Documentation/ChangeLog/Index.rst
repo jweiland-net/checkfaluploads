@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 5.0.1
+=============
+
+*   Update testing directory
+
 Version 5.0.0
 =============
 
