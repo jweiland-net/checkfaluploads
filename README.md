@@ -42,6 +42,13 @@ Download and install `checkfaluploads` with the extension manager module.
 
 1) Install the extension
 2) Reload backend
+
+## 3 Support
+
+Free Support is available via [GitHub Issue Tracker](https://github.com/jweiland-net/checkfaluploads/issues).
+
+For commercial support, please contact us at [support@jweiland.net](support@jweiland.net).
+
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [extension-build-shield]: https://poser.pugx.org/jweiland/checkfaluploads/v/stable.svg?style=for-the-badge
