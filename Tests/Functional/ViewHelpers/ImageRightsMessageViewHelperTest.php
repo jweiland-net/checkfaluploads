@@ -12,16 +12,12 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\ViewHelpers;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
-use JWeiland\Checkfaluploads\ViewHelpers\ImageRightsMessageViewHelper;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
@@ -65,7 +61,7 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
                 data-namespace-typo3-fluid="true">
 
                 {c:imageRightsMessage(languageKey: \'frontend.imageUserRights\', extensionName: \'checkfaluploads\')}
-            </html>'
+            </html>',
         );
 
         self::assertStringContainsString(
