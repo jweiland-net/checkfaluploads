@@ -13,7 +13,6 @@ namespace JWeiland\Checkfaluploads\Tests\Functional\Service;
 
 use JWeiland\Checkfaluploads\Service\FalUploadService;
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\StreamInterface;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
