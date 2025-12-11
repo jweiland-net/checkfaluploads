@@ -16,10 +16,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/*
+/**
  * This VH renders an image user rights message incl. the owner who will retrieve the image rights.
  */
-
 class ImageRightsMessageViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void

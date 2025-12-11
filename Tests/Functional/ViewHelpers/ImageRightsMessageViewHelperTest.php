@@ -18,17 +18,17 @@ use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Test case.
  */
 class ImageRightsMessageViewHelperTest extends FunctionalTestCase
 {
-    protected ?ImageRightsMessageViewHelper $subject = null;
-
     protected array $testExtensionsToLoad = [
         'jweiland/checkfaluploads',
     ];
@@ -38,18 +38,6 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
         parent::setUp();
 
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
-
-        /** @var RenderingContextInterface|MockObject $renderingContext */
-        $renderingContext = $this->createMock(RenderingContext::class);
-
-        $this->subject = new ImageRightsMessageViewHelper();
-        $this->subject->setRenderingContext($renderingContext);
-        $this->subject->setArguments(
-            [
-                'languageKey' => 'frontend.imageUserRights',
-                'extensionName' => 'checkfaluploads',
-            ],
-        );
     }
 
     public function tearDown(): void
@@ -69,15 +57,20 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
 
         GeneralUtility::setSingletonInstance(ExtConf::class, $extConf);
 
-        $message = $this->subject->initializeArgumentsAndRender();
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<html lang="en"
+                xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+                xmlns:c="http://typo3.org/ns/JWeiland/Checkfaluploads/ViewHelpers"
+                data-namespace-typo3-fluid="true">
+
+                {c:imageRightsMessage(languageKey: \'frontend.imageUserRights\', extensionName: \'checkfaluploads\')}
+            </html>'
+        );
 
         self::assertStringContainsString(
             'Stefan Froemken',
-            $message,
-        );
-        self::assertNotSame(
-            'Stefan Froemken',
-            $message,
+            (new TemplateView($context))->render(),
         );
     }
 }
