@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 5.0.2
+=============
+
+*   Migrate old getScriptUlr() method
+
 Version 5.0.1
 =============
 
