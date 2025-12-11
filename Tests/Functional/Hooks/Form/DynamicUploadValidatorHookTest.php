@@ -50,8 +50,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->formRuntimeMock = $this->createMock(FormRuntime::class);
-        $this->renderableMock = $this->createMock(Page::class);
+        $this->formRuntimeMock = $this->createStub(FormRuntime::class);
 
         $this->subject = new DynamicUploadValidatorHook();
     }
@@ -60,7 +59,6 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     {
         unset(
             $this->subject,
-            $this->renderableMock,
             $this->formRuntimeMock,
         );
 
@@ -74,7 +72,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
             'Test',
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
-                $this->createMock(Page::class),
+                $this->createStub(Page::class),
                 'Test',
             ),
         );
@@ -86,7 +84,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         self::assertNull(
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
-                $this->createMock(FileUpload::class),
+                $this->createStub(FileUpload::class),
                 null,
             ),
         );
@@ -105,7 +103,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         self::assertNull(
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
-                $this->createMock(FileUpload::class),
+                $this->createStub(FileUpload::class),
                 $uploadedFile,
             ),
         );
@@ -128,7 +126,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         self::assertNull(
             $this->subject->afterSubmit(
                 $this->formRuntimeMock,
-                $this->createMock(FileUpload::class),
+                $this->createStub(FileUpload::class),
                 $invalidResourcePointer,
             ),
         );

@@ -86,8 +86,6 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
 
-        $this->renderableMock = $this->createMock(GenericFormElement::class);
-
         $this->extConf = new ExtConf(new ExtensionConfiguration());
 
         $this->subject = new ReplacePlaceholderHook($this->extConf);
@@ -97,7 +95,6 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
     {
         unset(
             $this->subject,
-            $this->renderableMock,
         );
 
         parent::tearDown();

@@ -54,19 +54,17 @@ class FalUploadServiceTest extends FunctionalTestCase
         $uploadedFileMock = $this->createMock(UploadedFile::class);
 
         // Set up the mock to simulate an uploaded file with the correct "rights" metadata
-        $uploadedFileMock->method('getError')->willReturn(UPLOAD_ERR_OK);
-        $uploadedFileMock->method('getSize')->willReturn(100);
-        $uploadedFileMock->method('getStream')->willReturn($this->createMock(StreamInterface::class));
+        $uploadedFileMock
+            ->expects($this->atLeastOnce())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
+        $uploadedFileMock
+            ->expects($this->atLeastOnce())
+            ->method('getSize')
+            ->willReturn(100);
 
         // Set the field name we're checking for ("rights") and other necessary parameters
         $fieldName = 'rights';
-        $extensionName = 'checkfaluploads';
-
-        // Simulating the file contents with "rights" keyword
-        $mockStream = $this->createMock(StreamInterface::class);
-        $mockStream->method('rewind'); // Rewind the stream (not implemented for the mock)
-        $mockStream->method('getContents')->willReturn('Some content with rights');  // Simulate that file contains "rights"
-        $uploadedFileMock->method('getStream')->willReturn($mockStream);
 
         // Run the checkFile method
         $result = $this->subject->checkFile($uploadedFileMock, [$fieldName => 1]);
@@ -82,14 +80,14 @@ class FalUploadServiceTest extends FunctionalTestCase
         $uploadedFileMock = $this->createMock(UploadedFile::class);
 
         // Set up the mock to simulate an uploaded file with the correct parameters
-        $uploadedFileMock->method('getError')->willReturn(UPLOAD_ERR_OK);  // No upload error
-        $uploadedFileMock->method('getSize')->willReturn(100);  // Non-zero file size
-        $mockStream = $this->createMock(StreamInterface::class);
-
-        // Simulate the case where the file doesn't contain "rights"
-        $mockStream->method('rewind'); // Rewind the stream (not implemented for the mock)
-        $mockStream->method('getContents')->willReturn('Some content without the rights keyword');
-        $uploadedFileMock->method('getStream')->willReturn($mockStream);
+        $uploadedFileMock
+            ->expects($this->atLeastOnce())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);  // No upload error
+        $uploadedFileMock
+            ->expects($this->atLeastOnce())
+            ->method('getSize')
+            ->willReturn(100);  // Non-zero file size
 
         // Run the checkFile method with parameters that expect "rights"
         $fieldName = 'rights';
@@ -117,15 +115,14 @@ class FalUploadServiceTest extends FunctionalTestCase
         $uploadedFileMock = $this->createMock(UploadedFile::class);
 
         // Set up the mock to simulate an uploaded file with the correct parameters
-        $uploadedFileMock->method('getError')->willReturn(UPLOAD_ERR_OK);  // No upload error
-        $uploadedFileMock->method('getSize')->willReturn(100);  // Non-zero file size
-        $mockStream = $this->createMock(StreamInterface::class);
-
-        // Simulate the case where the file content does not have "rights"
-        // and 'rights' is passed as an empty string
-        $mockStream->method('rewind'); // Rewind the stream (not implemented for the mock)
-        $mockStream->method('getContents')->willReturn('');  // Empty content
-        $uploadedFileMock->method('getStream')->willReturn($mockStream);
+        $uploadedFileMock
+            ->expects($this->atLeastOnce())
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);  // No upload error
+        $uploadedFileMock
+            ->expects($this->atLeastOnce())
+            ->method('getSize')
+            ->willReturn(100);  // Non-zero file size
 
         // Run the checkFile method with the field 'rights' being empty
         $fieldName = 'rights';
