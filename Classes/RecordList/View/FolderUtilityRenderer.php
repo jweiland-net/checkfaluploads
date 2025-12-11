@@ -26,18 +26,19 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRenderer
 {
     /**
-     * Makes an upload form for uploading files to the filemount the user is browsing.
+     * Makes an upload form for uploading files to the file mount the user is browsing.
      * The files are uploaded to the tce_file.php script in the core which will handle the upload.
+     *
+     * @return string HTML for an upload form.
      */
     public function uploadForm(ServerRequestInterface $request, Folder $folderObject, ?FileExtensionFilter $fileExtensionFilter = null)
     {
         if (!$folderObject->checkActionPermission('write')) {
             return '';
         }
-
         // Read configuration of upload field count
-        $count = (int)($this->getBackendUser()->getTSConfig()['options.']['folderTree.']['uploadFieldsInLinkBrowser'] ?? 1);
-        if ($count === 0) {
+        $allowUpload = (bool)($this->getBackendUser()->getTSConfig()['options.']['folderTree.']['uploadFieldsInLinkBrowser'] ?? true);
+        if (!$allowUpload) {
             return '';
         }
 
@@ -46,7 +47,7 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
         $allowedOnlineMediaList = [];
         $lang = $this->getLanguageService();
 
-        if ($fileExtensionFilter instanceof FileExtensionFilter) {
+        if ($fileExtensionFilter !== null) {
             $resolvedFileExtensions = $fileExtensionFilter->getFilteredFileExtensions();
             if (($resolvedFileExtensions['allowedFileExtensions'] ?? []) !== []) {
                 $list = $resolvedFileExtensions['allowedFileExtensions'];
@@ -59,27 +60,22 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
         $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
         foreach ($list as $fileExt) {
             if (($fileExt === '*' && !$denyList) || $fileNameVerifier->isValid('.' . $fileExt)) {
-                $allowedOnlineMediaList[] = '<span class="badge badge-' . ($denyList ? 'danger' : 'success') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+                $allowedOnlineMediaList[] = '<li class="badge badge-' . ($denyList ? 'danger' : 'success') . '">' . strtoupper(htmlspecialchars($fileExt)) . '</li>';
             }
         }
-
         $markup = [];
-        if ($allowedOnlineMediaList !== []) {
+        if (!empty($allowedOnlineMediaList)) {
             $markup[] = '<div class="row">';
             $markup[] = '    <label>';
             $markup[] = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($denyList ? 'disallowedFileExtensions' : 'allowedFileExtensions'))) . '<br/>';
             $markup[] = '    </label>';
-            $markup[] = '    <div>' . implode(' ', $allowedOnlineMediaList) . '</div>';
+            $markup[] = '    <ul>' . implode(' ', $allowedOnlineMediaList) . '</ul>';
             $markup[] = '</div>';
         }
 
         $formAction = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
         $combinedIdentifier = $folderObject->getCombinedIdentifier();
-        $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
-            $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
-            '&',
-        );
-
+        $redirectValue = (string)$this->uriBuilder->buildUriFromRequest($request, $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]));
         $markup[] = '<form class="pt-3 pb-3" action="' . htmlspecialchars($formAction) . '" method="post" name="editform" enctype="multipart/form-data">';
         $markup[] = '<input type="hidden" name="data[upload][0][target]" value="' . htmlspecialchars($combinedIdentifier) . '" />';
         $markup[] = '<input type="hidden" name="data[upload][0][data]" value="0" />';
@@ -107,7 +103,6 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
         $markup[] = '    </label>';
         $markup[] = '</div>';
         $markup[] = '</div>';
-
         $markup[] = '<div class="col-12">';
         $markup[] = '<div class="input-group">';
         $markup[] = '<input type="file" multiple="multiple" name="upload_0[]" class="form-control" />';
@@ -126,13 +121,12 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
         $allowedOnlineMediaList = [];
         foreach (GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions() as $supportedFileExtension) {
             if ($fileNameVerifier->isValid('.' . $supportedFileExtension)
-                && (!$fileExtensionFilter instanceof FileExtensionFilter || $fileExtensionFilter->isAllowed($supportedFileExtension))
+                && ($fileExtensionFilter === null || $fileExtensionFilter->isAllowed($supportedFileExtension))
             ) {
-                $allowedOnlineMediaList[$supportedFileExtension] = '<span class="badge badge-success">' . strtoupper(htmlspecialchars($supportedFileExtension)) . '</span>';
+                $allowedOnlineMediaList[$supportedFileExtension] = '<li class="badge badge-success">' . strtoupper(htmlspecialchars($supportedFileExtension)) . '</li>';
             }
         }
-
-        if ($allowedOnlineMediaList !== []) {
+        if (!empty($allowedOnlineMediaList)) {
             $formAction = (string)$this->uriBuilder->buildUriFromRoute('online_media');
 
             $markup = [];
@@ -140,7 +134,7 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
             $markup[] = '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
             $markup[] = '<input type="hidden" name="data[newMedia][0][target]" value="' . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
             $markup[] = '<input type="hidden" name="data[newMedia][0][allowed]" value="' . htmlspecialchars(implode(',', array_keys($allowedOnlineMediaList))) . '" />';
-            $markup[] = '<h4>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:onlinemedia.new_media')) . '</h4>';
+            $markup[] = '<h4>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media')) . '</h4>';
             $markup[] = '<div class="row">';
             $markup[] = '<div class="col">';
             $markup[] = '<div class="input-group">';
@@ -154,9 +148,9 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
             $markup[] = '<div class="col-auto">';
             $markup[] = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders');
             $markup[] = '</div>';
-            $markup[] = '<div class="col">';
+            $markup[] = '<ul>';
             $markup[] = implode(' ', $allowedOnlineMediaList);
-            $markup[] = '</div>';
+            $markup[] = '</ul>';
             $markup[] = '</div>';
             $markup[] = '</div>';
             $markup[] = '</form>';
