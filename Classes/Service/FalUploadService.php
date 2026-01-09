@@ -13,7 +13,6 @@ namespace JWeiland\Checkfaluploads\Service;
 
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Extbase\Error\Error;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * EXT:checkfaluploads checks, if the user of the image upload has marked the checkbox to transfer the user rights
