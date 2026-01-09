@@ -20,7 +20,7 @@ class CheckFileUploadsMiddleware implements MiddlewareInterface
 {
     public function process(
         ServerRequestInterface $request,
-        RequestHandlerInterface $handler
+        RequestHandlerInterface $handler,
     ): ResponseInterface {
         $uploadedFiles = $request->getUploadedFiles();
         $parsedBody = $request->getParsedBody();
@@ -33,7 +33,7 @@ class CheckFileUploadsMiddleware implements MiddlewareInterface
         $cleanUploads = $this->filterUploadedFiles($uploadedFiles, $parsedBody);
 
         return $handler->handle(
-            $request->withUploadedFiles($cleanUploads)
+            $request->withUploadedFiles($cleanUploads),
         );
     }
 

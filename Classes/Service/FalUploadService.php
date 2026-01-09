@@ -25,14 +25,6 @@ use TYPO3\CMS\Extbase\Error\Error;
  */
 class FalUploadService
 {
-    public function __construct()
-    {
-        trigger_error(
-            'FalUploadService is deprecated. File rights are now handled via PSR-15 middleware in EXT:checkfaluploads.',
-            E_USER_DEPRECATED
-        );
-    }
-
     public function checkFile(
         UploadedFile $uploadedFile,
         ?array $rightsConfiguration,
