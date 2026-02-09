@@ -7,6 +7,14 @@
 ChangeLog
 =========
 
+Version 5.1.0
+=============
+
+*   [TASK] Enhance FalUploadService with collection validation logic
+*   [TASK] Cleanup ext_localconf.php by removing redundant wrapper
+*   [TASK] Remove manual user-to-FAL event listeners from Services.yaml
+*   [TASK] Register EventListeners via PHP Attributes
+
 Version 5.0.2
 =============
 

@@ -81,7 +81,7 @@ class FalUploadService
                 sprintf(
                     '%s: %s',
                     LocalizationUtility::translate('error.uploadFile.invalidFile', $extensionName) ?? 'Invalid file',
-                    $this->getUploadErrorMessage($uploadedFile->getError())
+                    $this->getUploadErrorMessage($uploadedFile->getError()),
                 ),
                 1604050226,
             );
