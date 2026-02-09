@@ -47,6 +47,7 @@ class FalUploadService
         $fileCollectionProperty = $modelOrFieldDataArray[$propertyName] ?? [];
         // Verify the checkbox is checked
         $rightsConfiguration = $this->getFileUploadRightsConfiguration($fileCollectionProperty);
+
         // Get all UploadedFile objects (For Logo it is single, but images it is multiple)
         $uploadedFiles = $this->getUploadedFiles($fileCollectionProperty);
 

@@ -61,12 +61,13 @@ class FalUploadServiceTest extends FunctionalTestCase
             ->expects(self::atLeastOnce())
             ->method('getSize')
             ->willReturn(100);
+        $modelOrFieldDataArray['images'][] = $uploadedFileMock;
 
         // Set the field name we're checking for ("rights") and other necessary parameters
-        $fieldName = 'rights';
+        $modelOrFieldDataArray['images'][] = ['rights' => true];
 
         // Run the checkFile method
-        $result = $this->subject->checkFile($uploadedFileMock, [$fieldName => 1]);
+        $result = $this->subject->checkFile($modelOrFieldDataArray, 'images');
 
         // Assert that no error is returned (i.e., it returns null)
         self::assertNull($result);
@@ -88,11 +89,13 @@ class FalUploadServiceTest extends FunctionalTestCase
             ->method('getSize')
             ->willReturn(100);  // Non-zero file size
 
+        $modelOrFieldDataArray['images'][] = $uploadedFileMock;
+
         // Run the checkFile method with parameters that expect "rights"
-        $fieldName = 'rights';
+        $modelOrFieldDataArray['images'][] = ['rights' => false];
 
         // Run the checkFile method
-        $error = $this->subject->checkFile($uploadedFileMock, [$fieldName => 0]);
+        $error = $this->subject->checkFile($modelOrFieldDataArray, 'images');
 
         // Assert that the error is returned
         self::assertNotNull($error);  // Ensure an error was returned
@@ -124,10 +127,11 @@ class FalUploadServiceTest extends FunctionalTestCase
             ->willReturn(100);  // Non-zero file size
 
         // Run the checkFile method with the field 'rights' being empty
-        $fieldName = 'rights';
+        $modelOrFieldDataArray['images'][] = $uploadedFileMock;
+        $modelOrFieldDataArray['images'][] = ['rights' => ''];
 
         // Run the checkFile method
-        $error = $this->subject->checkFile($uploadedFileMock, [$fieldName => '']);
+        $error = $this->subject->checkFile($modelOrFieldDataArray, 'images');
 
         // Assert that the error is returned (i.e., rights is empty, and error should be triggered)
         self::assertNotNull($error);  // Ensure an error was returned
