@@ -15,12 +15,14 @@ use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
 use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
 use JWeiland\Checkfaluploads\Traits\ConnectionPoolTrait;
 use JWeiland\Checkfaluploads\Traits\TypoScriptFrontendControllerTrait;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
 
 /**
  * Add the uid of the current user to the uploaded file
  */
+#[AsEventListener('checkfaluploadsAddUserToFalRecordOnCreation')]
 class AddUserToFalRecordOnCreationEventListener
 {
     use ApplicationContextTrait;
