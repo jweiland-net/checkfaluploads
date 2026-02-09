@@ -29,12 +29,4 @@ services:
         method: checkForReplacedFile
         event: TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent
 
-  # Add BE or FE user to FAL record
-  JWeiland\Checkfaluploads\EventListener\AddUserToFalRecordOnCreationEventListener:
-    tags:
-      - name: 'event.listener'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent
-  JWeiland\Checkfaluploads\EventListener\AddUserToFalRecordOnUpdateEventListener:
-    tags:
-      - name: 'event.listener'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent
+
