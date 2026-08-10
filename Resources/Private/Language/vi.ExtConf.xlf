@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2020-10-12T13:32:20Z" product-name="checkfaluploads" target-language="vi">
+    <header/>
+    <body>
+      <trans-unit id="owner">
+        <source>Owner of files: Set the name of the owner who will have unrestricted rights to the uploaded files in TYPO3 backend.</source>
+        <target state="needs-translation">Owner of files: Set the name of the owner who will have unrestricted rights to the uploaded files in TYPO3 backend.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
