@@ -12,62 +12,51 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Configuration;
 
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
-use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * This class streamlines all settings from extension manager
  */
-class ExtConf implements SingletonInterface
+#[Autoconfigure(constructor: 'create')]
+final readonly class ExtConf
 {
     use ApplicationContextTrait;
-    use LoggerAwareTrait;
 
-    private const EXTENSION_KEY = 'checkfaluploads';
-    private const DEFAULT_OWNER = '[Missing owner in ext settings of checkfaluploads]';
-    private string $owner = self::DEFAULT_OWNER;
+    private const EXT_KEY = 'checkfaluploads';
 
-    public function __construct(ExtensionConfiguration $extensionConfiguration)
+    private const DEFAULT_SETTINGS = [
+        'owner' => '[Missing owner in ext settings of checkfaluploads]',
+    ];
+
+    public function __construct(
+        private string $owner = self::DEFAULT_SETTINGS['owner'],
+    ) {}
+
+    public static function create(ExtensionConfiguration $extensionConfiguration): self
     {
+        $extensionSettings = self::DEFAULT_SETTINGS;
+
+        // Overwrite default extension settings with values from EXT_CONF
         try {
-            $extConf = $extensionConfiguration->get(self::EXTENSION_KEY);
-            if (is_array($extConf)) {
-                $this->mapConfiguration($extConf);
-            }
-        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $exception) {
-            $this->logger?->error(
-                sprintf('Failed to load configuration for extension "%s": %s', self::EXTENSION_KEY, $exception->getMessage()),
+            $extensionSettings = array_merge(
+                $extensionSettings,
+                $extensionConfiguration->get(self::EXT_KEY),
             );
+        } catch (ExtensionConfigurationExtensionNotConfiguredException|ExtensionConfigurationPathDoesNotExistException) {
         }
-    }
 
-    /**
-     * Maps the configuration array to class properties.
-     *
-     * @param array<string, mixed> $config
-     */
-    private function mapConfiguration(array $config): void
-    {
-        foreach ($config as $key => $value) {
-            $setterMethod = 'set' . ucfirst($key);
-            if (method_exists($this, $setterMethod)) {
-                $this->$setterMethod((string)$value);
-            }
-        }
+        return new self(
+            owner: trim((string)$extensionSettings['owner']),
+        );
     }
 
     public function getOwner(): string
     {
         return $this->owner;
-    }
-
-    public function setOwner(string $owner): void
-    {
-        $this->owner = trim($owner);
     }
 
     /**
@@ -83,7 +72,7 @@ class ExtConf implements SingletonInterface
 
         return LocalizationUtility::translate(
             $langKey,
-            self::EXTENSION_KEY,
+            self::EXT_KEY,
             [
                 0 => $this->getOwner(),
             ],
