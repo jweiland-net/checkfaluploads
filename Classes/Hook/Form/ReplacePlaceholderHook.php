@@ -9,7 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Checkfaluploads\Hooks\Form;
+namespace JWeiland\Checkfaluploads\Hook\Form;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
@@ -18,14 +18,11 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 /**
  * Replace placeholder for customer in checkbox labels
  */
-class ReplacePlaceholderHook
+final readonly class ReplacePlaceholderHook
 {
-    protected ExtConf $extConf;
-
-    public function __construct(ExtConf $extConf)
-    {
-        $this->extConf = $extConf;
-    }
+    public function __construct(
+        private ExtConf $extConf,
+    ) {}
 
     public function afterBuildingFinished(RenderableInterface $formElement): void
     {
