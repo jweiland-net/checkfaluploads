@@ -9,13 +9,12 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Checkfaluploads\Tests\Functional\Hooks\Form;
+namespace JWeiland\Checkfaluploads\Tests\Functional\Hook\Form;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
-use JWeiland\Checkfaluploads\Hooks\Form\ReplacePlaceholderHook;
+use JWeiland\Checkfaluploads\Hook\Form\ReplacePlaceholderHook;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -86,7 +85,7 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
 
-        $this->extConf = new ExtConf(new ExtensionConfiguration());
+        $this->extConf = new ExtConf();
 
         $this->subject = new ReplacePlaceholderHook($this->extConf);
     }
@@ -120,7 +119,8 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
     #[Test]
     public function afterBuildingFinishedWithCheckboxTypeWillModifyLabelWithMissingOwner(): void
     {
-        $this->extConf->setOwner('');
+        $this->extConf = new ExtConf(owner: '');
+        $this->subject = new ReplacePlaceholderHook($this->extConf);
 
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
@@ -142,7 +142,8 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
     #[Test]
     public function afterBuildingFinishedWithCheckboxTypeWillModifyLabelWithOwner(): void
     {
-        $this->extConf->setOwner('jweiland.net');
+        $this->extConf = new ExtConf(owner: 'jweiland.net');
+        $this->subject = new ReplacePlaceholderHook($this->extConf);
 
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
