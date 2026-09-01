@@ -9,7 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Checkfaluploads\Hooks\Form;
+namespace JWeiland\Checkfaluploads\Hook\Form;
 
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,12 +21,10 @@ use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
- * Add dynamic validator. Only upload image, if upload-rights are set.
+ * Add dynamic validator. Only upload image if upload-rights are set.
  */
-class DynamicUploadValidatorHook
+final readonly class DynamicUploadValidatorHook
 {
-    protected array $requestArguments = [];
-
     /**
      * This method will be called by Form Framework.
      * It was checked by method_exists() before
@@ -38,8 +36,7 @@ class DynamicUploadValidatorHook
         array $requestArguments = [],
     ) {
         if ($renderable instanceof FileUpload) {
-            $this->requestArguments = $requestArguments;
-            $elementValue = $this->updateElementValueOnError($elementValue, $renderable);
+            $elementValue = $this->updateElementValueOnError($elementValue, $renderable, $requestArguments);
         }
 
         return $elementValue;
@@ -52,20 +49,21 @@ class DynamicUploadValidatorHook
      * But in some cases it might be an array:
      * - You have uploaded a file, marked the checkbox, but a validator of another element throws an error, and you send the form again after solving the issue
      * - You upload the file on Page 1, but add the checkbox for file-rights to Page 2. OK, in that special case this code here will not find the checkbox ;-)
-     * - You are using the form to edit records which has already an image assigned, and send the form to update the record.
+     * - You are using the form to edit records which have already an image assigned and send the form to update the record.
      *
      * @param array|UploadedFile|null $elementValue UploadedFile on initial upload, array on next upload after error, null on no upload
      */
     protected function updateElementValueOnError(
         array|UploadedFile|null $elementValue,
         FileUpload $fileUpload,
+        array $requestArguments,
     ): array|UploadedFile|null {
         // Early return, if no file was uploaded
         if ($elementValue === null) {
             return null;
         }
 
-        // Early return, if upload has failed
+        // Early return if upload has failed
         if (!$this->isValidElementValue($elementValue)) {
             return null;
         }
@@ -78,18 +76,18 @@ class DynamicUploadValidatorHook
 
         // Early return, if checkbox for user-rights is already set or not in request
         if (
-            !$this->isCheckboxElementPartOfRequest($relatedCheckboxForFileUpload->getIdentifier())
-            || $this->isCheckboxElementActivated($relatedCheckboxForFileUpload->getIdentifier())
+            !$this->isCheckboxElementPartOfRequest($relatedCheckboxForFileUpload->getIdentifier(), $requestArguments)
+            || $this->isCheckboxElementActivated($relatedCheckboxForFileUpload->getIdentifier(), $requestArguments)
         ) {
             return $elementValue;
         }
 
-        // Checkbox not activated: Add NotEmpty validator to inform the user
+        // Checkbox isn't activated: Add NotEmpty validator to inform the user
         $relatedCheckboxForFileUpload->addValidator(
             $this->getNotEmptyValidator(),
         );
 
-        // Checkbox not activated: Remove the uploaded file from request by returning an empty value
+        // Checkbox isn't activated: Remove the uploaded file from request by returning an empty value
         return null;
     }
 
@@ -144,15 +142,15 @@ class DynamicUploadValidatorHook
         return $resourcePointer !== '';
     }
 
-    protected function isCheckboxElementPartOfRequest(string $identifier): bool
+    protected function isCheckboxElementPartOfRequest(string $identifier, $requestArguments): bool
     {
-        return $this->hasArgument($identifier);
+        return $this->hasArgument($identifier, $requestArguments);
     }
 
-    protected function isCheckboxElementActivated(string $identifier): bool
+    protected function isCheckboxElementActivated(string $identifier, array $requestArguments): bool
     {
-        return $this->isCheckboxElementPartOfRequest($identifier)
-            && $this->getArgument($identifier) === '1';
+        return $this->isCheckboxElementPartOfRequest($identifier, $requestArguments)
+            && $this->getArgument($identifier, $requestArguments) === '1';
     }
 
     /**
@@ -178,16 +176,16 @@ class DynamicUploadValidatorHook
         return $checkboxElements;
     }
 
-    protected function hasArgument(string $argument): bool
+    protected function hasArgument(string $argument, array $requestArguments): bool
     {
-        return array_key_exists($argument, $this->requestArguments)
-            && $this->requestArguments[$argument] !== null;
+        return array_key_exists($argument, $requestArguments)
+            && $requestArguments[$argument] !== null;
     }
 
-    protected function getArgument(string $argument): array|string|UploadedFile
+    protected function getArgument(string $argument, array $requestArguments): array|string|UploadedFile
     {
-        return $this->hasArgument($argument)
-            ? $this->requestArguments[$argument]
+        return $this->hasArgument($argument, $requestArguments)
+            ? $requestArguments[$argument]
             : '';
     }
 

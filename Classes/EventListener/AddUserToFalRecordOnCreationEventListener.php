@@ -14,21 +14,25 @@ namespace JWeiland\Checkfaluploads\EventListener;
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
 use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
 use JWeiland\Checkfaluploads\Traits\ConnectionPoolTrait;
-use JWeiland\Checkfaluploads\Traits\TypoScriptFrontendControllerTrait;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
 
 /**
  * Add the uid of the current user to the uploaded file
  */
-class AddUserToFalRecordOnCreationEventListener
+#[AsEventListener(
+    identifier: 'checkfaluploads/add-user-to-fal-record-on-creation',
+)]
+final readonly class AddUserToFalRecordOnCreationEventListener
 {
     use ApplicationContextTrait;
     use BackendUserAuthenticationTrait;
     use ConnectionPoolTrait;
-    use TypoScriptFrontendControllerTrait;
 
-    public function __construct(private readonly Context $context) {}
+    public function __construct(
+        private Context $context
+    ) {}
 
     public function __invoke(AfterFileAddedToIndexEvent $event): void
     {

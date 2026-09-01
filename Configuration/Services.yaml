@@ -8,33 +8,13 @@ services:
     resource: '../Classes/*'
 
   # Called by GeneralUtility::makeInstance in EXT:form -> FormRuntime::mapAndValidatePage
-  JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook:
+  JWeiland\Checkfaluploads\Hook\Form\DynamicUploadValidatorHook:
     public: true
 
   # Called by GeneralUtility::makeInstance in EXT:form -> AbstractFormFactory::triggerFormBuildingFinished
-  JWeiland\Checkfaluploads\Hooks\Form\ReplacePlaceholderHook:
+  JWeiland\Checkfaluploads\Hook\Form\ReplacePlaceholderHook:
     public: true
 
   JWeiland\Checkfaluploads\Controller\File\FileUploadController:
     tags:
       - name: 'backend.controller'
-
-  # Check if user has checked the checkbox (has rights to upload files)
-  JWeiland\Checkfaluploads\EventListener\UserMarkedCheckboxForRightsEventListener:
-    tags:
-      - name: 'event.listener'
-        method: checkForAddedFile
-        event: TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent
-      - name: 'event.listener'
-        method: checkForReplacedFile
-        event: TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent
-
-  # Add BE or FE user to FAL record
-  JWeiland\Checkfaluploads\EventListener\AddUserToFalRecordOnCreationEventListener:
-    tags:
-      - name: 'event.listener'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent
-  JWeiland\Checkfaluploads\EventListener\AddUserToFalRecordOnUpdateEventListener:
-    tags:
-      - name: 'event.listener'
-        event: TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent

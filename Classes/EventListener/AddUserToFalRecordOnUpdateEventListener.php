@@ -14,18 +14,25 @@ namespace JWeiland\Checkfaluploads\EventListener;
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
 use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
 use JWeiland\Checkfaluploads\Traits\ConnectionPoolTrait;
-use JWeiland\Checkfaluploads\Traits\TypoScriptFrontendControllerTrait;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Resource\Event\AfterFileUpdatedInIndexEvent;
 
 /**
  * Add the uid of the current user to the uploaded file
  */
-class AddUserToFalRecordOnUpdateEventListener
+#[AsEventListener(
+    identifier: 'checkfaluploads/add-user-to-fal-record-on-update',
+)]
+final readonly class AddUserToFalRecordOnUpdateEventListener
 {
     use ApplicationContextTrait;
     use BackendUserAuthenticationTrait;
     use ConnectionPoolTrait;
-    use TypoScriptFrontendControllerTrait;
+
+    public function __construct(
+        private Context $context
+    ) {}
 
     public function __invoke(AfterFileUpdatedInIndexEvent $event): void
     {
@@ -33,7 +40,7 @@ class AddUserToFalRecordOnUpdateEventListener
         if ($this->isBackendRequest()) {
             $fields['cruser_id'] = (int)$this->getBackendUserAuthentication()->user['uid'];
         } elseif ($this->isFrontendRequest()) {
-            $fields['fe_cruser_id'] = (int)$this->getTypoScriptFrontendController()->fe_user->user['uid'];
+            $fields['fe_cruser_id'] = $this->getFrontendUserId();
         } else {
             return;
         }
@@ -46,5 +53,10 @@ class AddUserToFalRecordOnUpdateEventListener
                 'uid' => (int)$event->getRelevantProperties()['uid'],
             ],
         );
+    }
+
+    public function getFrontendUserId(): int
+    {
+        return $this->context->getPropertyFromAspect('frontend.user', 'id', '');
     }
 }

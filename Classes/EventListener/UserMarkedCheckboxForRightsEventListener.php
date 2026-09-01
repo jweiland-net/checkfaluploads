@@ -14,6 +14,7 @@ namespace JWeiland\Checkfaluploads\EventListener;
 use JWeiland\Checkfaluploads\Helper\MessageHelper;
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
 use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
@@ -25,26 +26,22 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Check if user has checked the checkbox which indicates that the user has the rights to upload these files
  */
-class UserMarkedCheckboxForRightsEventListener
+final readonly class UserMarkedCheckboxForRightsEventListener
 {
     use ApplicationContextTrait;
     use BackendUserAuthenticationTrait;
 
-    protected ExtendedFileUtility $extendedFileUtility;
-
-    protected MessageHelper $messageHelper;
-
     public function __construct(
-        ExtendedFileUtility $extendedFileUtility,
-        MessageHelper $messageHelper,
-    ) {
-        $this->extendedFileUtility = $extendedFileUtility;
-        $this->messageHelper = $messageHelper;
-    }
+        private ExtendedFileUtility $extendedFileUtility,
+        private MessageHelper $messageHelper,
+    ) {}
 
     /**
      * @throws InsufficientUserPermissionsException
      */
+    #[AsEventListener(
+        identifier: 'checkfaluploads/check-for-added-file',
+    )]
     public function checkForAddedFile(BeforeFileAddedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
@@ -71,6 +68,9 @@ class UserMarkedCheckboxForRightsEventListener
     /**
      * @throws InsufficientUserPermissionsException
      */
+    #[AsEventListener(
+        identifier: 'checkfaluploads/check-for-replaced-file',
+    )]
     public function checkForReplacedFile(BeforeFileReplacedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
