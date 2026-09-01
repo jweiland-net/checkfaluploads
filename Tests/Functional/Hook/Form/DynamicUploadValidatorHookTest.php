@@ -9,9 +9,9 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Checkfaluploads\Tests\Functional\Hooks\Form;
+namespace JWeiland\Checkfaluploads\Tests\Functional\Hook\Form;
 
-use JWeiland\Checkfaluploads\Hooks\Form\DynamicUploadValidatorHook;
+use JWeiland\Checkfaluploads\Hook\Form\DynamicUploadValidatorHook;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
