@@ -13,6 +13,7 @@ namespace JWeiland\Checkfaluploads\RecordList\View;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -20,10 +21,17 @@ use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Add userHasRights checkbox to FileBrowser PopUp
+ * Add the userHasRights checkbox to FileBrowser PopUp
  */
-class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRenderer
+final class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRenderer
 {
+    public function __construct(
+        LinkParameterProviderInterface $parameterProvider,
+        private ExtConf $extConf,
+    ) {
+        parent::__construct($parameterProvider);
+    }
+
     /**
      * Makes an upload form for uploading files to the file mount the user is browsing.
      * The files are uploaded to the tce_file.php script in the core which will handle the upload.
@@ -89,7 +97,7 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
         $markup[] = '<div class="form-check form-switch">';
         $markup[] = '    <input class="form-check-input" type="checkbox" name="userHasRights" id="userHasRights" value="1" />';
         $markup[] = '    <label>';
-        $markup[] =          htmlspecialchars($this->getExtConf()->getLabelForUserRights());
+        $markup[] =          htmlspecialchars($this->extConf->getLabelForUserRights());
         $markup[] = '    </label>';
         $markup[] = '</div>';
         $markup[] = '</div>';
@@ -158,10 +166,5 @@ class FolderUtilityRenderer extends \TYPO3\CMS\Backend\View\FolderUtilityRendere
         }
 
         return $code;
-    }
-
-    protected function getExtConf(): ExtConf
-    {
-        return GeneralUtility::makeInstance(ExtConf::class);
     }
 }
