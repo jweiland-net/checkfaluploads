@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 5.1.0
+=============
+
+*   Add CheckFalUploadValidator to support the native Extbase file upload API (FileUpload attribute) of TYPO3 >= 13.3
+
 Version 5.0.2
 =============
 
