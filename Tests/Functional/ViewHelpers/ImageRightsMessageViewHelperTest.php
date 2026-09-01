@@ -12,13 +12,11 @@ declare(strict_types=1);
 namespace JWeiland\Checkfaluploads\Tests\Functional\ViewHelpers;
 
 use JWeiland\Checkfaluploads\Configuration\ExtConf;
+use JWeiland\Checkfaluploads\ViewHelpers\ImageRightsMessageViewHelper;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Test case.
@@ -36,37 +34,43 @@ class ImageRightsMessageViewHelperTest extends FunctionalTestCase
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 
-    public function tearDown(): void
+    #[Test]
+    public function initializeArgumentsRegistersExpectedDefaults(): void
     {
-        unset(
-            $this->subject,
-        );
+        $subject = new ImageRightsMessageViewHelper(new ExtConf());
+        $argumentDefinitions = $subject->prepareArguments();
 
-        parent::tearDown();
+        self::assertSame('frontend.imageUserRights', $argumentDefinitions['languageKey']->getDefaultValue());
+        self::assertSame('checkfaluploads', $argumentDefinitions['extensionName']->getDefaultValue());
     }
 
     #[Test]
-    public function renderStaticReturnsMessageWithOwner(): void
+    public function renderReturnsMessageWithOwner(): void
     {
-        $extConf = new ExtConf(new ExtensionConfiguration());
-        $extConf->setOwner('Stefan Froemken');
-
-        GeneralUtility::setSingletonInstance(ExtConf::class, $extConf);
-
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource(
-            '<html lang="en"
-                xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-                xmlns:c="http://typo3.org/ns/JWeiland/Checkfaluploads/ViewHelpers"
-                data-namespace-typo3-fluid="true">
-
-                {c:imageRightsMessage(languageKey: \'frontend.imageUserRights\', extensionName: \'checkfaluploads\')}
-            </html>',
-        );
+        $subject = new ImageRightsMessageViewHelper(new ExtConf(owner: 'Stefan Froemken'));
+        $subject->setArguments([
+            'languageKey' => 'frontend.imageUserRights',
+            'extensionName' => 'checkfaluploads',
+        ]);
 
         self::assertStringContainsString(
             'Stefan Froemken',
-            (new TemplateView($context))->render(),
+            $subject->render(),
+        );
+    }
+
+    #[Test]
+    public function renderReturnsMessageWithPlaceholderWhenOwnerWasNotGiven(): void
+    {
+        $subject = new ImageRightsMessageViewHelper(new ExtConf());
+        $subject->setArguments([
+            'languageKey' => 'frontend.imageUserRights',
+            'extensionName' => 'checkfaluploads',
+        ]);
+
+        self::assertStringContainsString(
+            '[Missing owner in ext settings of checkfaluploads]',
+            $subject->render(),
         );
     }
 }
