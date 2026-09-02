@@ -11,15 +11,10 @@ if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
-use JWeiland\Checkfaluploads\Controller\FileListController as CheckfaluploadsFileListController;
 use JWeiland\Checkfaluploads\Hook\Form\DynamicUploadValidatorHook;
 use JWeiland\Checkfaluploads\Hook\Form\ReplacePlaceholderHook;
 use JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRenderer as CheckfaluploadsFolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
-use TYPO3\CMS\Filelist\Controller\FileListController;
-
-// Disable CSS class "t3js-drag-uploader-trigger" to prevent loading DragUploader modal.
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][FileListController::class]['className'] = CheckfaluploadsFileListController::class;
 
 // Add userHasRights checkbox to FileBrowser PopUp
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][FolderUtilityRenderer::class]['className'] = CheckfaluploadsFolderUtilityRenderer::class;
