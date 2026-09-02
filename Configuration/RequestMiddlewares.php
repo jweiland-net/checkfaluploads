@@ -8,11 +8,18 @@
  */
 
 use JWeiland\Checkfaluploads\Middleware\DragUploaderRightsCheckMiddleware;
+use JWeiland\Checkfaluploads\Middleware\ElementBrowserUploadRightsCheckMiddleware;
 
 return [
     'backend' => [
         'jweiland/checkfaluploads/drag-uploader-rights-check' => [
             'target' => DragUploaderRightsCheckMiddleware::class,
+            'after' => [
+                'typo3/cms-backend/backend-routing',
+            ],
+        ],
+        'jweiland/checkfaluploads/element-browser-upload-rights-check' => [
+            'target' => ElementBrowserUploadRightsCheckMiddleware::class,
             'after' => [
                 'typo3/cms-backend/backend-routing',
             ],

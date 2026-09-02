@@ -13,11 +13,6 @@ if (!defined('TYPO3')) {
 
 use JWeiland\Checkfaluploads\Hook\Form\DynamicUploadValidatorHook;
 use JWeiland\Checkfaluploads\Hook\Form\ReplacePlaceholderHook;
-use JWeiland\Checkfaluploads\RecordList\View\FolderUtilityRenderer as CheckfaluploadsFolderUtilityRenderer;
-use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
-
-// Add userHasRights checkbox to FileBrowser PopUp
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][FolderUtilityRenderer::class]['className'] = CheckfaluploadsFolderUtilityRenderer::class;
 
 // Update (replace placeholders) label and description of Checkboxes
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1661929818] = ReplacePlaceholderHook::class;
