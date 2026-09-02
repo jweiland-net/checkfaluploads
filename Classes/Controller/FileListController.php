@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\ElementBrowser\CreateFolderBrowser;
+use TYPO3\CMS\Filelist\Type\SortDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
 /**
@@ -65,12 +66,13 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
                 ->setIcon($this->iconFactory->getIcon('actions-image'));
         }
-
-        $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
-            ->setActive((bool)$this->moduleData->get('clipBoard'))
-            ->setHref($this->filelist->createModuleUri(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
-            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showClipboard'))
-            ->setIcon($this->iconFactory->getIcon('actions-clipboard'));
+        if ($this->allowClipboard) {
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
+                ->setActive((bool)$this->moduleData->get('clipBoard'))
+                ->setHref($this->filelist->createModuleUri(['clipBoard' => $this->moduleData->get('clipBoard') ? 0 : 1]))
+                ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showClipboard'))
+                ->setIcon($this->iconFactory->getIcon('actions-clipboard'));
+        }
         if (($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true)
             && $this->moduleData->get('viewMode') === ViewMode::LIST->value) {
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
@@ -78,14 +80,14 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 ->setTag('typo3-backend-column-selector-button')
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.selectColumns'))
                 ->setAttributes([
-                    'data-url' => $this->uriBuilder->buildUriFromRoute(
+                    'data-url' => (string)$this->uriBuilder->buildUriFromRoute(
                         'ajax_show_columns_selector',
-                        ['id' => $this->id, 'table' => '_FILE']
+                        ['table' => '_FILE']
                     ),
-                    'data-target' => $this->filelist->createModuleUri(),
+                    'data-target' => (string)$this->filelist->createModuleUri(),
                     'data-title' => sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
-                        $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
+                        $this->tcaSchemaFactory->get('sys_file')->getTitle($lang->sL(...)),
                     ),
                     'data-button-ok' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView'),
                     'data-button-close' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
@@ -94,14 +96,52 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 ->setIcon($this->iconFactory->getIcon('actions-options'));
         }
 
+        $sortingButton = $buttonBar->makeDropDownButton()
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting'))
+            ->setIcon($this->iconFactory->getIcon($this->filelist->sortDirection->getIconIdentifier()))
+            ->setShowLabelText(true);
+
+        $sortingModeButtons = [];
+        $sortableFields = $this->filelist->getSortableFields();
+        if (count($sortableFields) > 1) {
+            foreach ($sortableFields as $field) {
+                $label = $this->filelist->getFieldLabel($field);
+
+                $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+                    ->setActive($this->filelist->sortField === $field)
+                    ->setHref($this->filelist->createModuleUri([
+                        'sortField' => $field,
+                        'currentPage' => 0,
+                        'sortDirection' => (int)($this->filelist->sortDirection === SortDirection::DESCENDING),
+                    ]))
+                    ->setLabel($label);
+            }
+
+            $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownDivider::class);
+        }
+        $defaultSortingDirectionParams = ['sortField' => $this->filelist->sortField, 'currentPage' => 0];
+        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->filelist->sortDirection === SortDirection::ASCENDING)
+            ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::ASCENDING->value])))
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc'));
+        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->filelist->sortDirection === SortDirection::DESCENDING)
+            ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::DESCENDING->value])))
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc'));
+
+        foreach ($sortingModeButtons as $sortingModeButton) {
+            $sortingButton->addItem($sortingModeButton);
+        }
+
+        $buttonBar->addButton($sortingButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+
         $viewModeButton = $buttonBar->makeDropDownButton()
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
             ->setShowLabelText(true);
         foreach ($viewModeItems as $viewModeItem) {
             $viewModeButton->addItem($viewModeItem);
         }
-
-        $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
 
         // Level up
         try {
@@ -126,7 +166,7 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                     ->setIcon($this->iconFactory->getIcon('actions-view-go-up', IconSize::SMALL));
                 $buttonBar->addButton($levelUpButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception $e) {
         }
 
         // Shortcut
@@ -199,16 +239,14 @@ class FileListController extends \TYPO3\CMS\Filelist\Controller\FileListControll
                 foreach ($elFromTable as $key => $element) {
                     $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
                     if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder(
-                            $clipBoardElement,
-                            $this->folderObject
-                        )
+                        $clipBoardElement,
+                        $this->folderObject
+                    )
                     ) {
                         $addPasteButton = false;
                     }
-
                     $elToConfirm[$key] = $clipBoardElement->getName();
                 }
-
                 if ($addPasteButton) {
                     $confirmText = $this->filelist->clipObj
                         ->confirmMsgText('_FILE', $this->folderObject->getReadablePath(), 'into', $elToConfirm);
