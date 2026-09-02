@@ -9,6 +9,7 @@
 
 use JWeiland\Checkfaluploads\Middleware\DragUploaderRightsCheckMiddleware;
 use JWeiland\Checkfaluploads\Middleware\ElementBrowserUploadRightsCheckMiddleware;
+use JWeiland\Checkfaluploads\Middleware\FormEngineUploadRightsCheckMiddleware;
 
 return [
     'backend' => [
@@ -20,6 +21,12 @@ return [
         ],
         'jweiland/checkfaluploads/element-browser-upload-rights-check' => [
             'target' => ElementBrowserUploadRightsCheckMiddleware::class,
+            'after' => [
+                'typo3/cms-backend/backend-routing',
+            ],
+        ],
+        'jweiland/checkfaluploads/form-engine-upload-rights-check' => [
+            'target' => FormEngineUploadRightsCheckMiddleware::class,
             'after' => [
                 'typo3/cms-backend/backend-routing',
             ],
