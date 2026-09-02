@@ -4,17 +4,20 @@
 		<header/>
 		<body>
 			<trans-unit id="dragUploader.fileRights.title">
-				<source>You have to confirm that %s has unrestricted rights to use the files you will upload</source>
+				<source>You have to confirm that %s has unrestricted rights to use the files you upload. Your user account will also be saved as a reference on each file, so every upload can be traced back to you.</source>
 			</trans-unit>
 			<trans-unit id="dragUploader.fileRights.confirmation">
 				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="dragUploader.modal.browseFiles">
+				<source>Browse files…</source>
 			</trans-unit>
 			<trans-unit id="error.uploadFile.missingRights">
 				<source>It is not allowed to upload files, as long as the checkbox for file rights is not checked</source>
 			</trans-unit>
 
 			<trans-unit id="frontend.imageUserRights">
-				<source>You have to confirm that %s has unrestricted rights to use the files you will upload</source>
+				<source>You have to confirm that %s has unrestricted rights to use the files you upload. Your user account will also be saved as a reference on each file, so every upload can be traced back to you.</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -6,6 +6,16 @@
 <f:layout name="Module"/>
 
 <f:section name="Content">
+    <f:comment>
+        <!--
+            Still in active use: this template renders whenever an upload is started from a
+            folder's context menu, or from the "Upload Files" row action shown for a subfolder
+            while browsing its parent folder (TYPO3\CMS\Filelist\FileList::createControlUpload()).
+            Both requests bypass DragUploader entirely, so the "userHasRights" confirmation modal
+            added by EXT:checkfaluploads/Resources/Public/JavaScript/drag-uploader-rights-check.js
+            never runs for them - this template's own checkbox below is what protects them instead.
+        -->
+    </f:comment>
     <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/context-menu.js'}"/>
 
     <form action="{f:be.uri(route:'tce_file')}"
