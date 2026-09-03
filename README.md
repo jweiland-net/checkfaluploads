@@ -6,44 +6,63 @@
 [![Monthly Downloads][extension-monthly-downloads]][extension-packagist-url]
 [![TYPO3 13.4][TYPO3-shield]][TYPO3-13-url]
 
-![Build Status](https://github.com/jweiland-net/sync_crop_areas/actions/workflows/ci.yml/badge.svg)
+![Build Status](https://github.com/jweiland-net/checkfaluploads/actions/workflows/ci.yml/badge.svg)
 
-With `checkfaluploads` we will add a new checkbox to filelist module and FileBrowser
-where the user gives unrestricted rights to the owner for the uploaded files.
-Further the user UID will be added to the `sys_file` record, so an admin can see and filter files by
-user UID.
+## What is checkfaluploads?
 
-## 1 Features
+`checkfaluploads` adds a checkbox to every place in the TYPO3 backend where
+editors can upload a file: the File List module, the ElementBrowser, and
+inline file/media fields on records. Editors must confirm it before an
+upload is accepted, and it grants the owner you configure unrestricted
+rights to use that file. The extension also stores the uploading user's
+UID on the `sys_file` record, so administrators can see and filter files
+by who uploaded them.
 
-* The FE or BE user UID of the uploader will be added to the `sys_file` record
-* Add checkbox for image rights into the FileBrowser (modal window)
-* Add checkbox for image rights into the filelist module
-* Integrated API to add your own image rights checkbox to extbase and/or EXT:form forms
+## Why you need it
 
-## 2 Usage
+Editors upload images and documents to TYPO3 all the time, and not every
+one of them actually holds the usage rights to what they upload. Without
+an explicit confirmation step, a site owner has no record of who uploaded
+a given file or whether anyone ever checked that its use was permitted,
+which becomes a real problem the moment a rights holder complains.
+`checkfaluploads` closes that gap: no confirmation, no upload, and a
+`cruser_id` / `fe_cruser_id` trail on `sys_file` afterward, so you can
+always trace a file back to whoever put it there.
 
-### 2.1 Installation
+## Features
 
-#### Installation using Composer
+* Adds an image rights checkbox to the File List module
+* Adds the same checkbox to the ElementBrowser's upload form
+* Adds the same checkbox to inline file/media upload buttons in FormEngine (e.g. "Select & upload files")
+* Stores the FE or BE user UID of the uploader on the `sys_file` record
+* Ships an API to add your own image rights checkbox to Extbase and/or EXT:form forms
 
-The recommended way to install the extension is using Composer.
+## Installation
 
-Run the following command within your Composer based TYPO3 project:
+### Using Composer
+
+The recommended way to install the extension is via Composer. Run this
+inside your Composer based TYPO3 project:
 
 ```
 composer require jweiland/checkfaluploads
+vendor/bin/typo3 extension:setup --extension=checkfaluploads
 ```
 
-#### Installation as extension from TYPO3 Extension Repository (TER)
+### Using the TYPO3 Extension Repository (TER)
 
-Download and install `checkfaluploads` with the extension manager module.
+On non-Composer-based installations, download and install
+`checkfaluploads` via the Extension Manager module instead.
 
-### 2.2 Minimal setup
+## Configuration
 
-1) Install the extension
-2) Reload backend
+After installing, open **Admin Tools > Settings > Extension Configuration
+> checkfaluploads** and set the **Owner** field to whoever should receive
+the usage rights (e.g. your company name). Until you do, the checkbox
+label falls back to a placeholder like `[Missing owner in ext settings of
+checkfaluploads]` instead of a real name, so this step is not optional.
 
-## 3 Support
+## Support
 
 Free Support is available via [GitHub Issue Tracker](https://github.com/jweiland-net/checkfaluploads/issues).
 
@@ -57,7 +76,7 @@ For commercial support, please contact us at [support@jweiland.net](support@jwei
 
 [extension-monthly-downloads]: https://poser.pugx.org/jweiland/checkfaluploads/d/monthly?style=for-the-badge
 
-[extension-ter-url]: https://extensions.typo3.org/extension/sync_crop_areas/
+[extension-ter-url]: https://extensions.typo3.org/extension/checkfaluploads/
 
 [extension-packagist-url]: https://packagist.org/packages/jweiland/checkfaluploads/
 
