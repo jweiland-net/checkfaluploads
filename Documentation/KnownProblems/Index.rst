@@ -10,6 +10,6 @@ Known Problems
 No user in CLI mode
 ===================
 
-We only set FE or BE user in frontend or backend mode. As the user for CLI mode
-is always the same one and only user, it does not make sense to add that
-user as creator or editor to any files.
+We only assign an FE or BE user in frontend or backend context. CLI mode
+always runs as the same single, generic user, so assigning it as a file's
+creator or editor would not be meaningful.

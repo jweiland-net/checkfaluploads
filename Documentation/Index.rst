@@ -32,8 +32,9 @@ Checkfaluploads
 
 ----
 
-With checkfaluploads we will add a new checkbox to filelist module and ElementBrowser
-where the user gives unrestricted rights to the owner for the uploaded files.
+`checkfaluploads` adds a checkbox to the File List module and the
+ElementBrowser that editors must confirm before a file upload is accepted,
+granting the configured owner unrestricted rights to that file.
 ----
 
 **Table of Contents:**
