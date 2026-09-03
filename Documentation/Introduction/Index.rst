@@ -23,3 +23,17 @@ This only covers what TYPO3 core itself handles. Extensions with their own
 upload logic need a developer to wire in our `FalUploadService` /
 `CheckFalUploadValidator` API by hand, and frontend forms without a login
 have no user to assign at all, see :ref:`known-problems`.
+
+..  _screenshots:
+
+Screenshots
+===========
+
+..  figure:: /_Images/UploadRightsDialog.png
+    :alt: Confirmation dialog asking to confirm the file rights checkbox
+    :class: with-shadow
+    :zoom: lightbox
+    :align: center
+
+    The rights confirmation dialog shown before an inline file/media
+    upload in FormEngine is accepted.
