@@ -31,7 +31,7 @@ final readonly class AddUserToFalRecordOnCreationEventListener
     use ConnectionPoolTrait;
 
     public function __construct(
-        private Context $context
+        private Context $context,
     ) {}
 
     public function __invoke(AfterFileAddedToIndexEvent $event): void

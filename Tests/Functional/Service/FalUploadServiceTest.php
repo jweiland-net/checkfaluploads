@@ -54,11 +54,11 @@ class FalUploadServiceTest extends FunctionalTestCase
 
         // Set up the mock to simulate an uploaded file with the correct "rights" metadata
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(UPLOAD_ERR_OK);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getSize')
             ->willReturn(100);
 
@@ -80,11 +80,11 @@ class FalUploadServiceTest extends FunctionalTestCase
 
         // Set up the mock to simulate an uploaded file with the correct parameters
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(UPLOAD_ERR_OK);  // No upload error
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getSize')
             ->willReturn(100);  // Non-zero file size
 
@@ -115,11 +115,11 @@ class FalUploadServiceTest extends FunctionalTestCase
 
         // Set up the mock to simulate an uploaded file with the correct parameters
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(UPLOAD_ERR_OK);  // No upload error
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getSize')
             ->willReturn(100);  // Non-zero file size
 

@@ -96,7 +96,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var UploadedFile|MockObject $uploadedFile */
         $uploadedFile = $this->createMock(UploadedFile::class);
         $uploadedFile
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(1);
 
@@ -138,19 +138,19 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([]);
 
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getParentRenderable')
             ->willReturn($pageMock);
 
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(0);
 
@@ -170,14 +170,14 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $genericFormElementMock */
         $genericFormElementMock = $this->createMock(GenericFormElement::class);
         $genericFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getType')
             ->willReturn('Text');
 
         /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 $genericFormElementMock,
@@ -185,13 +185,13 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getParentRenderable')
             ->willReturn($pageMock);
 
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(0);
 
@@ -211,18 +211,18 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
         $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getType')
             ->willReturn('Checkbox');
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([]);
 
         /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 $checkboxFormElementMock,
@@ -230,13 +230,13 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getParentRenderable')
             ->willReturn($pageMock);
 
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(0);
 
@@ -256,11 +256,11 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
         $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getType')
             ->willReturn('Checkbox');
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
@@ -269,7 +269,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 $checkboxFormElementMock,
@@ -277,13 +277,13 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getParentRenderable')
             ->willReturn($pageMock);
 
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(0);
 
@@ -303,11 +303,11 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
         $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getType')
             ->willReturn('Checkbox');
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
@@ -317,7 +317,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 $checkboxFormElementMock,
@@ -325,17 +325,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getParentRenderable')
             ->willReturn($pageMock);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('Other Identifier');
 
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(0);
 
@@ -355,11 +355,11 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
         $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getType')
             ->willReturn('Checkbox');
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
@@ -369,7 +369,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 $checkboxFormElementMock,
@@ -377,17 +377,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getParentRenderable')
             ->willReturn($pageMock);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('CorrectIdentifier');
 
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(0);
 
@@ -407,25 +407,25 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
         $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getType')
             ->willReturn('Checkbox');
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
                 'referenceUploadIdentifier' => 'FileUploadIdentifier',
             ]);
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('CheckboxIdentifier');
 
         /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 $checkboxFormElementMock,
@@ -433,17 +433,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getParentRenderable')
             ->willReturn($pageMock);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('FileUploadIdentifier');
 
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(0);
 
@@ -466,22 +466,22 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $checkboxFormElementMock */
         $checkboxFormElementMock = $this->createMock(GenericFormElement::class);
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getType')
             ->willReturn('Checkbox');
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
                 'referenceUploadIdentifier' => 'FileUploadIdentifier',
             ]);
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('CheckboxIdentifier');
         $checkboxFormElementMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('addValidator')
             ->with(
                 self::isInstanceOf(NotEmptyValidator::class),
@@ -490,7 +490,7 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
         /** @var Page|MockObject $pageMock */
         $pageMock = $this->createMock(Page::class);
         $pageMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getElementsRecursively')
             ->willReturn([
                 $checkboxFormElementMock,
@@ -498,17 +498,17 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
 
         $fileUploadMock = $this->createMock(FileUpload::class);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getParentRenderable')
             ->willReturn($pageMock);
         $fileUploadMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getIdentifier')
             ->willReturn('FileUploadIdentifier');
 
         $uploadedFileMock = $this->createMock(UploadedFile::class);
         $uploadedFileMock
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getError')
             ->willReturn(0);
 

@@ -82,7 +82,7 @@ class ExtConfTest extends FunctionalTestCase
     public function createMapsOwnerFromExtensionConfiguration(): void
     {
         $this->extensionConfigurationMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with('checkfaluploads')
             ->willReturn([
@@ -101,7 +101,7 @@ class ExtConfTest extends FunctionalTestCase
     public function createTrimsOwnerFromExtensionConfiguration(): void
     {
         $this->extensionConfigurationMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with('checkfaluploads')
             ->willReturn([
@@ -120,7 +120,7 @@ class ExtConfTest extends FunctionalTestCase
     public function createFallsBackToPlaceholderWhenExtensionIsNotConfigured(): void
     {
         $this->extensionConfigurationMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with('checkfaluploads')
             ->willThrowException(
