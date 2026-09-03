@@ -105,12 +105,12 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([]);
 
         $formElement
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('setLabel');
 
         $this->subject->afterBuildingFinished($formElement);
@@ -125,16 +125,16 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
             ]);
 
         $formElement
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('setLabel')
-            ->with(self::stringContains('You have to confirm that  has unrestricted rights to use the files you will upload'));
+            ->with(self::stringContains('You have to confirm that  has unrestricted rights to use the files you upload'));
 
         $this->subject->afterBuildingFinished($formElement);
     }
@@ -148,14 +148,14 @@ class ReplacePlaceholderHookTest extends FunctionalTestCase
         /** @var GenericFormElement|MockObject $formElement */
         $formElement = $this->createMock(GenericFormElement::class);
         $formElement
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getProperties')
             ->willReturn([
                 'checkboxType' => 'uploadRights',
             ]);
 
         $formElement
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('setLabel')
             ->with(self::stringContains('jweiland.net'));
 
