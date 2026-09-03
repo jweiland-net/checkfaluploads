@@ -60,8 +60,8 @@ handleDbmsOptions() {
                 echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
-            [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10.5"
-            if ! [[ ${DBMS_VERSION} =~ ^(10.5|10.6|10.7|10.8|10.9|10.10|10.11|11.0|11.1)$ ]]; then
+            [ -z "${DBMS_VERSION}" ] && DBMS_VERSION="10.11"
+            if ! [[ ${DBMS_VERSION} =~ ^(10.11|11.0|11.1|11.2|11.3|11.4|11.5|11.6)$ ]]; then
                 echo "Invalid combination -d ${DBMS} -i ${DBMS_VERSION}" >&2
                 echo >&2
                 echo "Use \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
@@ -178,7 +178,8 @@ Options:
     -i version
         Specify a specific database version
         With "-d mariadb":
-            - 10.5   short-term, maintained until 2025-06-24 (default)
+            - 10.4   short-term, maintained until 2024-06-18 (default)
+            - 10.5   short-term, maintained until 2025-06-24
             - 10.6   long-term, maintained until 2026-06
             - 10.7   short-term, no longer maintained
             - 10.8   short-term, maintained until 2023-05
@@ -203,7 +204,7 @@ Options:
 
     -p <8.2|8.3|8.4>
         Specifies the PHP minor version to be used
-            - 8.2: use PHP 8.2 (default)
+            - 8.2: use PHP 8.2
             - 8.3: use PHP 8.3
             - 8.4: use PHP 8.4
 
@@ -230,14 +231,14 @@ Options:
         Show this help.
 
 Examples:
-    # Run unit tests using PHP 8.2
-    ./Build/Scripts/runTests.sh -p 8.2 -s unit
+    # Run unit tests using PHP 8.3
+    ./Build/Scripts/runTests.sh -p 8.3 -s unit
 
-    # Run functional tests using PHP 8.3 and MariaDB 10.6 using pdo_mysql
-    ./Build/Scripts/runTests.sh -p 8.3 -s functional -d mariadb -i 10.6 -a pdo_mysql
+    # Run functional tests using PHP 8.4 and MariaDB 10.6 using pdo_mysql
+    ./Build/Scripts/runTests.sh -p 8.4 -s functional -d mariadb -i 10.6 -a pdo_mysql
 
-    # Run functional tests on postgres with xdebug, php 8.3 and execute a restricted set of tests
-    ./Build/Scripts/runTests.sh -x -p 8.3 -s functional -d postgres -- Tests/Functional/DummyTest.php
+    # Run functional tests on postgres with xdebug, php 8.4 and execute a restricted set of tests
+    ./Build/Scripts/runTests.sh -x -p 8.4 -s functional -d postgres -- Tests/Functional/DummyTest.php
 EOF
 }
 
@@ -410,9 +411,9 @@ fi
 case ${TEST_SUITE} in
     cgl)
         if [ "${CGLCHECK_DRY_RUN}" -eq 1 ]; then
-            COMMAND="php -dxdebug.mode=off .Build/bin/php-cs-fixer fix -v --dry-run --diff --config=Build/cgl/.php-cs-fixer.dist.php --using-cache=no ."
+            COMMAND="php -dxdebug.mode=off .Build/bin/php-cs-fixer fix -v --dry-run --diff --config=Build/cgl/config.php --using-cache=no ."
         else
-            COMMAND="php -dxdebug.mode=off .Build/bin/php-cs-fixer fix -v --config=Build/cgl/.php-cs-fixer.dist.php --using-cache=no ."
+            COMMAND="php -dxdebug.mode=off .Build/bin/php-cs-fixer fix -v --config=Build/cgl/config.php --using-cache=no ."
         fi
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name cgl-${SUFFIX} -e COMPOSER_CACHE_DIR=.Build/.cache/composer -e COMPOSER_ROOT_VERSION=${COMPOSER_ROOT_VERSION} ${IMAGE_PHP} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
