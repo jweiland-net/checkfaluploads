@@ -30,18 +30,16 @@ final readonly class ExtConf
 
     private const DEFAULT_SETTINGS = [
         'owner' => '[Missing owner in ext settings of checkfaluploads]',
-        'checkFileListUploadRights' => true,
+        'checkDragUploaderUploadRights' => true,
         'checkElementBrowserUploadRights' => true,
-        'checkFormEngineUploadRights' => true,
         'storeBackendUploaderUserId' => true,
         'storeFrontendUploaderUserId' => true,
     ];
 
     public function __construct(
         private string $owner = self::DEFAULT_SETTINGS['owner'],
-        private bool $checkFileListUploadRights = self::DEFAULT_SETTINGS['checkFileListUploadRights'],
+        private bool $checkDragUploaderUploadRights = self::DEFAULT_SETTINGS['checkDragUploaderUploadRights'],
         private bool $checkElementBrowserUploadRights = self::DEFAULT_SETTINGS['checkElementBrowserUploadRights'],
-        private bool $checkFormEngineUploadRights = self::DEFAULT_SETTINGS['checkFormEngineUploadRights'],
         private bool $storeBackendUploaderUserId = self::DEFAULT_SETTINGS['storeBackendUploaderUserId'],
         private bool $storeFrontendUploaderUserId = self::DEFAULT_SETTINGS['storeFrontendUploaderUserId'],
     ) {}
@@ -61,9 +59,8 @@ final readonly class ExtConf
 
         return new self(
             owner: trim((string)$extensionSettings['owner']),
-            checkFileListUploadRights: (bool)$extensionSettings['checkFileListUploadRights'],
+            checkDragUploaderUploadRights: (bool)$extensionSettings['checkDragUploaderUploadRights'],
             checkElementBrowserUploadRights: (bool)$extensionSettings['checkElementBrowserUploadRights'],
-            checkFormEngineUploadRights: (bool)$extensionSettings['checkFormEngineUploadRights'],
             storeBackendUploaderUserId: (bool)$extensionSettings['storeBackendUploaderUserId'],
             storeFrontendUploaderUserId: (bool)$extensionSettings['storeFrontendUploaderUserId'],
         );
@@ -74,30 +71,20 @@ final readonly class ExtConf
         return $this->owner;
     }
 
-    public function isFileListUploadRightsCheckEnabled(): bool
-    {
-        return $this->checkFileListUploadRights;
-    }
-
     public function isElementBrowserUploadRightsCheckEnabled(): bool
     {
         return $this->checkElementBrowserUploadRights;
     }
 
-    public function isFormEngineUploadRightsCheckEnabled(): bool
-    {
-        return $this->checkFormEngineUploadRights;
-    }
-
     /**
      * File List and FormEngine's inline "Select & upload files" both submit through the very
      * same DragUploader ajax endpoint, with no request data distinguishing one from the other.
-     * The enforcement side of the rights check can therefore not be split any further than this
-     * combined switch, even though the confirmation dialog itself is toggled separately for each.
+     * Both the confirmation dialog and its enforcement are therefore controlled by this single
+     * switch, covering both surfaces together rather than pretending they can be split further.
      */
     public function isDragUploaderUploadRightsCheckEnabled(): bool
     {
-        return $this->checkFileListUploadRights || $this->checkFormEngineUploadRights;
+        return $this->checkDragUploaderUploadRights;
     }
 
     public function isStoreBackendUploaderUserIdEnabled(): bool

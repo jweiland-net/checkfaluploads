@@ -140,10 +140,8 @@ class ExtConfTest extends FunctionalTestCase
     {
         $subject = new ExtConf();
 
-        self::assertTrue($subject->isFileListUploadRightsCheckEnabled());
-        self::assertTrue($subject->isElementBrowserUploadRightsCheckEnabled());
-        self::assertTrue($subject->isFormEngineUploadRightsCheckEnabled());
         self::assertTrue($subject->isDragUploaderUploadRightsCheckEnabled());
+        self::assertTrue($subject->isElementBrowserUploadRightsCheckEnabled());
         self::assertTrue($subject->isStoreBackendUploaderUserIdEnabled());
         self::assertTrue($subject->isStoreFrontendUploaderUserIdEnabled());
     }
@@ -152,30 +150,16 @@ class ExtConfTest extends FunctionalTestCase
     public function constructorSetsUploadRightsChecksAndUserIdStorage(): void
     {
         $subject = new ExtConf(
-            checkFileListUploadRights: false,
+            checkDragUploaderUploadRights: false,
             checkElementBrowserUploadRights: false,
-            checkFormEngineUploadRights: false,
             storeBackendUploaderUserId: false,
             storeFrontendUploaderUserId: false,
         );
 
-        self::assertFalse($subject->isFileListUploadRightsCheckEnabled());
+        self::assertFalse($subject->isDragUploaderUploadRightsCheckEnabled());
         self::assertFalse($subject->isElementBrowserUploadRightsCheckEnabled());
-        self::assertFalse($subject->isFormEngineUploadRightsCheckEnabled());
         self::assertFalse($subject->isStoreBackendUploaderUserIdEnabled());
         self::assertFalse($subject->isStoreFrontendUploaderUserIdEnabled());
-    }
-
-    #[Test]
-    public function dragUploaderUploadRightsCheckIsEnabledAsLongAsOneOfBothCoveredSurfacesIsEnabled(): void
-    {
-        $onlyFileListEnabled = new ExtConf(checkFileListUploadRights: true, checkFormEngineUploadRights: false);
-        $onlyFormEngineEnabled = new ExtConf(checkFileListUploadRights: false, checkFormEngineUploadRights: true);
-        $bothDisabled = new ExtConf(checkFileListUploadRights: false, checkFormEngineUploadRights: false);
-
-        self::assertTrue($onlyFileListEnabled->isDragUploaderUploadRightsCheckEnabled());
-        self::assertTrue($onlyFormEngineEnabled->isDragUploaderUploadRightsCheckEnabled());
-        self::assertFalse($bothDisabled->isDragUploaderUploadRightsCheckEnabled());
     }
 
     #[Test]
@@ -186,18 +170,16 @@ class ExtConfTest extends FunctionalTestCase
             ->method('get')
             ->with('checkfaluploads')
             ->willReturn([
-                'checkFileListUploadRights' => '0',
+                'checkDragUploaderUploadRights' => '0',
                 'checkElementBrowserUploadRights' => '0',
-                'checkFormEngineUploadRights' => '0',
                 'storeBackendUploaderUserId' => '0',
                 'storeFrontendUploaderUserId' => '0',
             ]);
 
         $subject = ExtConf::create($this->extensionConfigurationMock);
 
-        self::assertFalse($subject->isFileListUploadRightsCheckEnabled());
+        self::assertFalse($subject->isDragUploaderUploadRightsCheckEnabled());
         self::assertFalse($subject->isElementBrowserUploadRightsCheckEnabled());
-        self::assertFalse($subject->isFormEngineUploadRightsCheckEnabled());
         self::assertFalse($subject->isStoreBackendUploaderUserIdEnabled());
         self::assertFalse($subject->isStoreFrontendUploaderUserIdEnabled());
     }
@@ -215,9 +197,8 @@ class ExtConfTest extends FunctionalTestCase
 
         $subject = ExtConf::create($this->extensionConfigurationMock);
 
-        self::assertTrue($subject->isFileListUploadRightsCheckEnabled());
+        self::assertTrue($subject->isDragUploaderUploadRightsCheckEnabled());
         self::assertTrue($subject->isElementBrowserUploadRightsCheckEnabled());
-        self::assertTrue($subject->isFormEngineUploadRightsCheckEnabled());
         self::assertTrue($subject->isStoreBackendUploaderUserIdEnabled());
         self::assertTrue($subject->isStoreFrontendUploaderUserIdEnabled());
     }

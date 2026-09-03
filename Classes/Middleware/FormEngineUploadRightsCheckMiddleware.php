@@ -44,7 +44,7 @@ final readonly class FormEngineUploadRightsCheckMiddleware implements Middleware
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!$this->extConf->isFormEngineUploadRightsCheckEnabled()) {
+        if (!$this->extConf->isDragUploaderUploadRightsCheckEnabled()) {
             return $handler->handle($request);
         }
 

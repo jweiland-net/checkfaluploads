@@ -33,14 +33,14 @@ class DragUploaderRightsCheckMiddlewareTest extends FunctionalTestCase
     ];
 
     #[Test]
-    public function processSkipsLoadingJavaScriptModuleWhenFileListUploadRightsCheckIsDisabled(): void
+    public function processSkipsLoadingJavaScriptModuleWhenDragUploaderUploadRightsCheckIsDisabled(): void
     {
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects($this->never())->method('loadJavaScriptModule');
 
         $subject = new DragUploaderRightsCheckMiddleware(
             $pageRenderer,
-            new ExtConf(checkFileListUploadRights: false),
+            new ExtConf(checkDragUploaderUploadRights: false),
         );
 
         $subject->process($this->createRequestForMediaManagementModule(), $this->createRequestHandler());

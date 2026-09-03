@@ -20,15 +20,15 @@ label is a placeholder you can set in the extension settings.
 Upload rights checks
 --------------------
 
-The confirmation checkbox is shown in three places: the File List module,
-the ElementBrowser popup and FormEngine's inline "Select & upload files"
-fields. Each of these can be switched off independently in the extension
-settings, in case you do not need the confirmation everywhere.
+The confirmation checkbox is shown in two places, each with its own
+extension setting: drag & drop uploads (the File List module and
+FormEngine's inline "Select & upload files" fields, which both use TYPO3
+core's DragUploader) and uploads through the ElementBrowser popup.
 
-File List and the inline fields share the same upload mechanism internally,
-though. Disabling only one of the two still enforces the checkbox for both,
-since TYPO3 core gives us no way to tell them apart on the server side. To
-fully remove the check from either, disable both settings together.
+File List and the inline fields cannot be switched off individually: they
+both submit through the very same upload mechanism internally, and TYPO3
+core gives us no way to tell them apart on the server side. Disabling the
+drag & drop setting therefore turns off the check for both at once.
 
 Store uploader on file
 ----------------------

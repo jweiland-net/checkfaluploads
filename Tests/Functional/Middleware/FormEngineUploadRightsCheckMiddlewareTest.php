@@ -32,14 +32,14 @@ class FormEngineUploadRightsCheckMiddlewareTest extends FunctionalTestCase
     ];
 
     #[Test]
-    public function processSkipsLoadingJavaScriptModuleWhenFormEngineUploadRightsCheckIsDisabled(): void
+    public function processSkipsLoadingJavaScriptModuleWhenDragUploaderUploadRightsCheckIsDisabled(): void
     {
         $pageRenderer = $this->createMock(PageRenderer::class);
         $pageRenderer->expects($this->never())->method('loadJavaScriptModule');
 
         $subject = new FormEngineUploadRightsCheckMiddleware(
             $pageRenderer,
-            new ExtConf(checkFormEngineUploadRights: false),
+            new ExtConf(checkDragUploaderUploadRights: false),
         );
 
         $subject->process($this->createRequestForRecordEditRoute(), $this->createRequestHandler());

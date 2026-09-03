@@ -57,12 +57,12 @@ class UserMarkedCheckboxForRightsEventListenerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function checkForAddedFileDoesNotThrowOnDragUploaderRouteWhenBothCoveredSurfacesAreDisabled(): void
+    public function checkForAddedFileDoesNotThrowOnDragUploaderRouteWhenRightsCheckIsDisabled(): void
     {
         $this->setRequestWithRoute(null);
 
         $this->createSubject(
-            new ExtConf(checkFileListUploadRights: false, checkFormEngineUploadRights: false),
+            new ExtConf(checkDragUploaderUploadRights: false),
         )->checkForAddedFile($this->createFileAddedEvent());
 
         self::addToAssertionCount(1);
