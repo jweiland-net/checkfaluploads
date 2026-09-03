@@ -29,6 +29,20 @@ which becomes a real problem the moment a rights holder complains.
 `cruser_id` / `fe_cruser_id` trail on `sys_file` afterward, so you can
 always trace a file back to whoever put it there.
 
+That coverage has limits worth knowing before you rely on it. It only
+protects what TYPO3 core itself handles: the File List module, the
+ElementBrowser, and inline file/media fields in FormEngine. Installing
+`checkfaluploads` does not retroactively guarantee that every `sys_file`
+record in your installation carries a rights confirmation or an
+uploader ID. Extensions with their own upload logic, powermail's file
+upload field being one example, need a developer to wire in the
+`FalUploadService` / `CheckFalUploadValidator` API by hand (see the
+[Developer manual](Documentation/Developer/Index.rst)); installing
+`checkfaluploads` alone does not cover them. And for frontend forms
+without a login, a job application form for example, there is no
+frontend user to begin with: no session means no user ID, regardless
+of what `checkfaluploads` does.
+
 ## Features
 
 * Adds an image rights checkbox to the File List module
