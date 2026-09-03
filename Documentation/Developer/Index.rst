@@ -10,25 +10,25 @@ Developer manual
 Additional columns
 ==================
 
-checkfaluploads adds two columns to table sys_file:
+`checkfaluploads` adds two columns to the `sys_file` table:
 
 **cruser_id**
 
-This column will be filled automatically by `checkfaluploads` in
-TYPO3 BE context.
+`checkfaluploads` fills this column automatically in TYPO3 backend
+context.
 
 **fe_cruser_id**
 
-This column will be automatically filled by the current logged in FE user, as
-long as you use the officially TYPO3 API for FAL files. In any other cases you
-have to fill this column on your own.
+This column is filled automatically with the current frontend user, as
+long as you use TYPO3's official API for FAL files. In any other case,
+you have to fill it yourself.
 
 FalUploadService
 ================
 
-We deliver a little API you can use in your own Extension to check, if an
-uploaded file from FE context has the user rights checkbox marked. Add checkbox
-to your Fluid Template:
+`checkfaluploads` ships a small API you can use in your own extension to
+check whether an uploaded file's user rights checkbox was marked in
+frontend context. Add the checkbox to your Fluid template:
 
 Checkbox via Fluid
 ------------------
@@ -40,8 +40,8 @@ Checkbox via Fluid
                      class="form-check-input"
                      value="1" />
 
-Somewhere in your extbase extension you should have an UploadTypeConverter.
-Add following lines:
+Somewhere in your Extbase extension, you should have an UploadTypeConverter.
+Add the following lines:
 
 ..  code-block:: php
 
@@ -230,24 +230,33 @@ ViewHelpers
 ImageRightsMessageViewHelper
 ----------------------------
 
-This ViewHelper reads the owner property of `checkfaluploads` extension
-settings and implements the owner into a localized string. That way you can
-build a text like "I give all image rights to jweiland.net".
+This ViewHelper reads the owner property from `checkfaluploads` extension
+settings and inserts it into a localized string. That way you can build a
+text like "I give all image rights to jweiland.net".
+
+Declare the ViewHelper namespace in your template first:
 
 ..  code-block:: html
 
-    <c:imageRightsMessage />
+    <html xmlns:cfu="http://typo3.org/ns/JWeiland/Checkfaluploads/ViewHelpers"
+          data-namespace-typo3-fluid="true">
+
+Then use the ViewHelper:
+
+..  code-block:: html
+
+    <cfu:imageRightsMessage />
 
 Or inline style:
 
 ..  code-block:: html
 
-    {c:imageRightsMessage()}
+    {cfu:imageRightsMessage()}
 
-If you want you can use your own translation of your own extension. In that
-case be sure you have added `%s` as placeholder into your message
-of locallang.xlf.
+You can also use your own translation from your own extension. In that
+case, make sure your message in `locallang.xlf` contains the `%s`
+placeholder.
 
 ..  code-block:: html
 
-    <c:imageRightsMessage languageKey="myOwnImageRightsLanguageKey" extensionName="myExtKey" />
+    <cfu:imageRightsMessage languageKey="myOwnImageRightsLanguageKey" extensionName="myExtKey" />

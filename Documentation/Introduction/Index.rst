@@ -13,8 +13,8 @@ Introduction
 What does it do?
 ================
 
-With checkfaluploads we will add a new checkbox to filelist module and
-ElementBrowser where the user gives unrestricted rights to the owner for the
-uploaded files. Further the UID of the image uploading editor will be added
-to the `sys_file` record, so an admin can see who has uploaded a file
-in history.
+`checkfaluploads` adds a checkbox to the File List module and the
+ElementBrowser that editors must confirm before a file upload is accepted,
+granting the configured owner unrestricted rights to that file. It also
+stores the uploading editor's user UID on the `sys_file` record, so
+administrators can trace back who uploaded a given file.

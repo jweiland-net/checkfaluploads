@@ -10,7 +10,7 @@ Installation
 Composer
 ========
 
-If your TYPO3 installation works in composer mode, please execute following
+If your TYPO3 installation runs in Composer mode, execute the following
 command:
 
 ..  code-block:: bash
@@ -18,7 +18,7 @@ command:
     composer req jweiland/checkfaluploads
     vendor/bin/typo3 extension:setup --extension=checkfaluploads
 
-If you work with DDEV please execute this command:
+If you work with DDEV, execute this command instead:
 
 ..  code-block:: bash
 
@@ -28,30 +28,29 @@ If you work with DDEV please execute this command:
 ExtensionManager
 ================
 
-On non composer based TYPO3 installations you can install `checkfaluploads`
-still over the ExtensionManager:
+On non-Composer-based TYPO3 installations, you can still install
+`checkfaluploads` via the Extension Manager:
 
 ..  rst-class:: bignums
 
-1.  Login
+1.  Log in
 
-    Login to backend of your TYPO3 installation as an administrator or system
-    maintainer.
+    Log in to your TYPO3 installation's backend as an administrator or
+    system maintainer.
 
-2.  Open ExtensionManager
+2.  Open the Extension Manager
 
-    Click on `Extensions` from the left menu to open the ExtensionManager.
+    Click `Extensions` in the left-hand menu to open the Extension Manager.
 
-3.  Update Extensions
+3.  Update the extension list
 
-    Choose `Get Extensions` from the upper selectbox and click on
-    the `Update now` button at the upper right.
+    Choose `Get Extensions` from the drop-down at the top and click the
+    `Update now` button in the upper right corner.
 
 4.  Install `checkfaluploads`
 
-    Use the search field to find `checkfaluploads`. Choose the `checkfaluploads`
-    line from the search result and click on the cloud icon to
-    install `checkfaluploads`.
+    Use the search field to find `checkfaluploads`, select it from the
+    search results, and click the cloud icon to install it.
 
 Next step
 =========
