@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\EventListener;
 
+use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
 use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
 use JWeiland\Checkfaluploads\Traits\ConnectionPoolTrait;
@@ -32,14 +33,15 @@ final readonly class AddUserToFalRecordOnCreationEventListener
 
     public function __construct(
         private Context $context,
+        private ExtConf $extConf,
     ) {}
 
     public function __invoke(AfterFileAddedToIndexEvent $event): void
     {
         $fields = [];
-        if ($this->isBackendRequest()) {
+        if ($this->isBackendRequest() && $this->extConf->isStoreBackendUploaderUserIdEnabled()) {
             $fields['cruser_id'] = (int)($this->getBackendUserAuthentication()->user['uid'] ?? 0);
-        } elseif ($this->isFrontendRequest()) {
+        } elseif ($this->isFrontendRequest() && $this->extConf->isStoreFrontendUploaderUserIdEnabled()) {
             $fields['fe_cruser_id'] = $this->getFrontendUserId();
         } else {
             return;

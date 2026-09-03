@@ -11,9 +11,11 @@ declare(strict_types=1);
 
 namespace JWeiland\Checkfaluploads\EventListener;
 
+use JWeiland\Checkfaluploads\Configuration\ExtConf;
 use JWeiland\Checkfaluploads\Helper\MessageHelper;
 use JWeiland\Checkfaluploads\Traits\ApplicationContextTrait;
 use JWeiland\Checkfaluploads\Traits\BackendUserAuthenticationTrait;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
@@ -31,9 +33,12 @@ final readonly class UserMarkedCheckboxForRightsEventListener
     use ApplicationContextTrait;
     use BackendUserAuthenticationTrait;
 
+    private const ELEMENT_BROWSER_ROUTE_IDENTIFIER = 'tce_file';
+
     public function __construct(
         private ExtendedFileUtility $extendedFileUtility,
         private MessageHelper $messageHelper,
+        private ExtConf $extConf,
     ) {}
 
     /**
@@ -45,7 +50,7 @@ final readonly class UserMarkedCheckboxForRightsEventListener
     public function checkForAddedFile(BeforeFileAddedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
-        if ($this->isBackendRequest()) {
+        if ($this->isBackendRequest() && $this->isUploadRightsCheckEnabledForCurrentRoute()) {
             $fileParts = GeneralUtility::split_fileref($event->getFileName());
             if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'], true)) {
                 $userHasRights = (bool)($this->getTypo3Request()->getParsedBody()['userHasRights'] ?? 0);
@@ -74,7 +79,7 @@ final readonly class UserMarkedCheckboxForRightsEventListener
     public function checkForReplacedFile(BeforeFileReplacedEvent $event): void
     {
         // FE will not be checked here. This should be part of the extension itself.
-        if ($this->isBackendRequest()) {
+        if ($this->isBackendRequest() && $this->isUploadRightsCheckEnabledForCurrentRoute()) {
             $fileParts = GeneralUtility::split_fileref($event->getFile()->getName());
             if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'], true)) {
                 $userHasRights = (bool)($this->getTypo3Request()->getParsedBody()['userHasRights'] ?? false);
@@ -92,5 +97,24 @@ final readonly class UserMarkedCheckboxForRightsEventListener
                 }
             }
         }
+    }
+
+    /**
+     * The classic, non-AJAX upload form (ElementBrowser popup, and the currently unprotected
+     * folder/row upload actions) is submitted through the "tce_file" route and gated by the
+     * ElementBrowser rights setting. Every other backend upload path - most notably DragUploader,
+     * used in both the File List module and FormEngine's inline "Select & upload files" - is
+     * submitted through the same ajax endpoint with nothing in the request telling them apart,
+     * so those two share a single combined switch instead, see
+     * ExtConf::isDragUploaderUploadRightsCheckEnabled().
+     */
+    private function isUploadRightsCheckEnabledForCurrentRoute(): bool
+    {
+        $route = $this->getTypo3Request()?->getAttribute('route');
+        if ($route instanceof Route && $route->getOption('_identifier') === self::ELEMENT_BROWSER_ROUTE_IDENTIFIER) {
+            return $this->extConf->isElementBrowserUploadRightsCheckEnabled();
+        }
+
+        return $this->extConf->isDragUploaderUploadRightsCheckEnabled();
     }
 }
