@@ -7,7 +7,7 @@
                project-repository="https://github.com/jweiland-net/checkfaluploads"
                project-issues="https://github.com/jweiland-net/checkfaluploads/issues" edit-on-github-branch="main"
                edit-on-github="jweiland-net/checkfaluploads" typo3-core-preferred="stable"/>
-    <project title="Check FAL Uploads" release="5.0" version="5.0.2" copyright="by jweiland.net"/>
+    <project title="Check FAL Uploads" release="5.1" version="5.1.0" copyright="by jweiland.net"/>
     <inventory id="t3coreapi" url="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/"/>
     <inventory id="t3install" url="https://docs.typo3.org/m/typo3/guide-installation/main/en-us/"/>
     <inventory id="t3sitepackage" url="https://docs.typo3.org/m/typo3/tutorial-sitepackage/main/en-us/"/>
