@@ -7,6 +7,22 @@
         <source>Owner of files: Set the name of the owner who will have unrestricted rights to the uploaded files in TYPO3 backend.</source>
         <target state="final">Ejer af filer: Angiv navnet på ejeren som vil have ubegrænsede rettigheder til de uploadede filer i TYPO3 backend.</target>
       </trans-unit>
+      <trans-unit id="checkDragUploaderUploadRights">
+        <source>Require confirmation for drag &amp; drop uploads: Ask editors to confirm the file rights checkbox before an upload through the File List or an inline file/media field (e.g. "Select &amp; upload files") is accepted.</source>
+        <target state="needs-translation">Require confirmation for drag &amp; drop uploads: Ask editors to confirm the file rights checkbox before an upload through the File List or an inline file/media field (e.g. "Select &amp; upload files") is accepted.</target>
+      </trans-unit>
+      <trans-unit id="checkElementBrowserUploadRights">
+        <source>Require confirmation in the file browser: Ask editors to confirm the file rights checkbox before an upload through the TYPO3 file browser popup is accepted.</source>
+        <target state="needs-translation">Require confirmation in the file browser: Ask editors to confirm the file rights checkbox before an upload through the TYPO3 file browser popup is accepted.</target>
+      </trans-unit>
+      <trans-unit id="storeBackendUploaderUserId">
+        <source>Store backend uploader on file: Save the uploading backend user as a reference on the uploaded sys_file record.</source>
+        <target state="needs-translation">Store backend uploader on file: Save the uploading backend user as a reference on the uploaded sys_file record.</target>
+      </trans-unit>
+      <trans-unit id="storeFrontendUploaderUserId">
+        <source>Store frontend uploader on file: Save the uploading frontend user as a reference on the uploaded sys_file record.</source>
+        <target state="needs-translation">Store frontend uploader on file: Save the uploading frontend user as a reference on the uploaded sys_file record.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
