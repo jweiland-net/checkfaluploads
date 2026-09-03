@@ -7,12 +7,12 @@
 ChangeLog
 =========
 
-Version 5.1.0
+Version 6.0.0
 =============
 
 *   Add CheckFalUploadValidator to support the native Extbase file upload API (FileUpload attribute) of TYPO3 >= 13.3
-*   Remove the FileListController XClass; confirm upload rights via a JS dialog in front of the File List module's DragUploader instead
-*   Remove the FolderUtilityRenderer XClass; add the same checkbox to the classic ElementBrowser upload form via JS instead
+*   [BREAKING] Remove the FileListController XClass and re-enable the File List module's native DragUploader; a JS-based confirmation dialog now gates it instead of navigating to the classic upload page
+*   [BREAKING] Remove the FolderUtilityRenderer XClass; add the same checkbox to the classic ElementBrowser upload form via JS instead
 *   Add the same rights confirmation to FormEngine's inline upload button (e.g. "Select & upload files"), which was previously unprotected and silently rejected every upload
 *   Fix a dead Services.yaml entry that could push the DI container into failsafe mode after a cache flush, breaking constructor injection for unrelated classes
 
