@@ -136,6 +136,93 @@ class ExtConfTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function allUploadRightsChecksAndUserIdStorageAreEnabledByDefault(): void
+    {
+        $subject = new ExtConf();
+
+        self::assertTrue($subject->isFileListUploadRightsCheckEnabled());
+        self::assertTrue($subject->isElementBrowserUploadRightsCheckEnabled());
+        self::assertTrue($subject->isFormEngineUploadRightsCheckEnabled());
+        self::assertTrue($subject->isDragUploaderUploadRightsCheckEnabled());
+        self::assertTrue($subject->isStoreBackendUploaderUserIdEnabled());
+        self::assertTrue($subject->isStoreFrontendUploaderUserIdEnabled());
+    }
+
+    #[Test]
+    public function constructorSetsUploadRightsChecksAndUserIdStorage(): void
+    {
+        $subject = new ExtConf(
+            checkFileListUploadRights: false,
+            checkElementBrowserUploadRights: false,
+            checkFormEngineUploadRights: false,
+            storeBackendUploaderUserId: false,
+            storeFrontendUploaderUserId: false,
+        );
+
+        self::assertFalse($subject->isFileListUploadRightsCheckEnabled());
+        self::assertFalse($subject->isElementBrowserUploadRightsCheckEnabled());
+        self::assertFalse($subject->isFormEngineUploadRightsCheckEnabled());
+        self::assertFalse($subject->isStoreBackendUploaderUserIdEnabled());
+        self::assertFalse($subject->isStoreFrontendUploaderUserIdEnabled());
+    }
+
+    #[Test]
+    public function dragUploaderUploadRightsCheckIsEnabledAsLongAsOneOfBothCoveredSurfacesIsEnabled(): void
+    {
+        $onlyFileListEnabled = new ExtConf(checkFileListUploadRights: true, checkFormEngineUploadRights: false);
+        $onlyFormEngineEnabled = new ExtConf(checkFileListUploadRights: false, checkFormEngineUploadRights: true);
+        $bothDisabled = new ExtConf(checkFileListUploadRights: false, checkFormEngineUploadRights: false);
+
+        self::assertTrue($onlyFileListEnabled->isDragUploaderUploadRightsCheckEnabled());
+        self::assertTrue($onlyFormEngineEnabled->isDragUploaderUploadRightsCheckEnabled());
+        self::assertFalse($bothDisabled->isDragUploaderUploadRightsCheckEnabled());
+    }
+
+    #[Test]
+    public function createMapsUploadRightsChecksAndUserIdStorageFromExtensionConfiguration(): void
+    {
+        $this->extensionConfigurationMock
+            ->expects($this->once())
+            ->method('get')
+            ->with('checkfaluploads')
+            ->willReturn([
+                'checkFileListUploadRights' => '0',
+                'checkElementBrowserUploadRights' => '0',
+                'checkFormEngineUploadRights' => '0',
+                'storeBackendUploaderUserId' => '0',
+                'storeFrontendUploaderUserId' => '0',
+            ]);
+
+        $subject = ExtConf::create($this->extensionConfigurationMock);
+
+        self::assertFalse($subject->isFileListUploadRightsCheckEnabled());
+        self::assertFalse($subject->isElementBrowserUploadRightsCheckEnabled());
+        self::assertFalse($subject->isFormEngineUploadRightsCheckEnabled());
+        self::assertFalse($subject->isStoreBackendUploaderUserIdEnabled());
+        self::assertFalse($subject->isStoreFrontendUploaderUserIdEnabled());
+    }
+
+    #[Test]
+    public function createFallsBackToEnabledUploadRightsChecksAndUserIdStorageWhenExtensionIsNotConfigured(): void
+    {
+        $this->extensionConfigurationMock
+            ->expects($this->once())
+            ->method('get')
+            ->with('checkfaluploads')
+            ->willThrowException(
+                new ExtensionConfigurationExtensionNotConfiguredException('not configured', 1788363531),
+            );
+
+        $subject = ExtConf::create($this->extensionConfigurationMock);
+
+        self::assertTrue($subject->isFileListUploadRightsCheckEnabled());
+        self::assertTrue($subject->isElementBrowserUploadRightsCheckEnabled());
+        self::assertTrue($subject->isFormEngineUploadRightsCheckEnabled());
+        self::assertTrue($subject->isStoreBackendUploaderUserIdEnabled());
+        self::assertTrue($subject->isStoreFrontendUploaderUserIdEnabled());
+    }
+
+    #[Test]
     public function getLabelForUserRightsInFrontendContextContainsOwner(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = $this->createRequest(SystemEnvironmentBuilder::REQUESTTYPE_FE);

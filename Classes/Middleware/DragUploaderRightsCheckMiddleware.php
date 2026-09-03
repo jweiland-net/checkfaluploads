@@ -47,6 +47,10 @@ final readonly class DragUploaderRightsCheckMiddleware implements MiddlewareInte
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        if (!$this->extConf->isFileListUploadRightsCheckEnabled()) {
+            return $handler->handle($request);
+        }
+
         $route = $request->getAttribute('route');
         $module = $route instanceof Route ? $route->getOption('module') : null;
         if ($module instanceof ModuleInterface && $module->getIdentifier() === self::MODULE_IDENTIFIER) {

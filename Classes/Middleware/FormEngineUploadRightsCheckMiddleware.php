@@ -44,6 +44,10 @@ final readonly class FormEngineUploadRightsCheckMiddleware implements Middleware
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        if (!$this->extConf->isFormEngineUploadRightsCheckEnabled()) {
+            return $handler->handle($request);
+        }
+
         $route = $request->getAttribute('route');
         if ($route instanceof Route && $route->getOption('_identifier') === self::ROUTE_IDENTIFIER) {
             $this->pageRenderer->loadJavaScriptModule('@jweiland/checkfaluploads/form-engine-upload-rights-check.js');

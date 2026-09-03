@@ -6,6 +6,21 @@
 			<trans-unit id="owner">
 				<source>Owner of files: Set the name of the owner who will have unrestricted rights to the uploaded files in TYPO3 backend.</source>
 			</trans-unit>
+			<trans-unit id="checkFileListUploadRights">
+				<source>Require confirmation in the File List: Ask editors to confirm the file rights checkbox before a File List upload is accepted.</source>
+			</trans-unit>
+			<trans-unit id="checkElementBrowserUploadRights">
+				<source>Require confirmation in the file browser: Ask editors to confirm the file rights checkbox before an upload through the TYPO3 file browser popup is accepted.</source>
+			</trans-unit>
+			<trans-unit id="checkFormEngineUploadRights">
+				<source>Require confirmation on inline uploads: Ask editors to confirm the file rights checkbox before an upload through an inline file/media field (e.g. "Select &amp; upload files") is accepted.</source>
+			</trans-unit>
+			<trans-unit id="storeBackendUploaderUserId">
+				<source>Store backend uploader on file: Save the uploading backend user as a reference on the uploaded sys_file record.</source>
+			</trans-unit>
+			<trans-unit id="storeFrontendUploaderUserId">
+				<source>Store frontend uploader on file: Save the uploading frontend user as a reference on the uploaded sys_file record.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
