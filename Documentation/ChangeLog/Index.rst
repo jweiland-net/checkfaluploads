@@ -7,6 +7,12 @@
 ChangeLog
 =========
 
+Version 6.0.1
+=============
+
+*   [BUGFIX] Clarify CheckFalUploadValidator exception messages, so a missing "rights" checkbox in a
+    consuming extension's template is not mistaken for an error of the consuming extension itself
+
 Version 6.0.0
 =============
 
