@@ -66,9 +66,22 @@ final class CheckFalUploadValidator extends AbstractValidator
         try {
             $rightsConfiguration = ArrayUtility::getValueByPath($this->request->getParsedBody(), $propertyPath);
         } catch (MissingArrayPathException $e) {
-            throw new \InvalidArgumentException('The configured property path does not exist in the parsed request body', 1788270392);
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'checkfaluploads: CheckFalUploadValidator could not find the property path "%s" in the'
+                    . ' parsed request body. This usually means the "rights" checkbox of the checkfaluploads'
+                    . ' API was not added to the upload form template of the extension that registered this'
+                    . ' validator. Add the checkbox or double-check the configured "propertyPath" option.',
+                    $propertyPath,
+                ),
+                1788270392,
+            );
         } catch (\RuntimeException $e) {
-            throw new \InvalidArgumentException('The option "propertyPath" must not be empty', 1788270484);
+            throw new \InvalidArgumentException(
+                'checkfaluploads: CheckFalUploadValidator was registered without a "propertyPath" option. '
+                . 'The option "propertyPath" must not be empty.',
+                1788270484,
+            );
         }
 
         $error = $this->falUploadService->checkFile(
