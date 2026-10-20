@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-04-04T10:32:20Z" product-name="checkfaluploads" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="dragUploader.fileRights.title">
+        <source>You have to confirm that %s has unrestricted rights to use the files you upload. Your user account will also be saved as a reference on each file, so every upload can be traced back to you.</source>
+        <target>crwdns414539:0%scrwdne414539:0</target>
+      </trans-unit>
+      <trans-unit id="dragUploader.fileRights.confirmation">
+        <source>Yes</source>
+        <target>crwdns305386:0crwdne305386:0</target>
+      </trans-unit>
+      <trans-unit id="dragUploader.modal.browseFiles">
+        <source>Browse files…</source>
+        <target>crwdns414541:0crwdne414541:0</target>
+      </trans-unit>
+      <trans-unit id="error.uploadFile.missingRights">
+        <source>It is not allowed to upload files, as long as the checkbox for file rights is not checked</source>
+        <target>crwdns305388:0crwdne305388:0</target>
+      </trans-unit>
+      <trans-unit id="missingRights.title">
+        <source>Upload aborted</source>
+        <target>crwdns414543:0crwdne414543:0</target>
+      </trans-unit>
+      <trans-unit id="frontend.imageUserRights">
+        <source>You have to confirm that %s has unrestricted rights to use the files you upload. Your user account will also be saved as a reference on each file, so every upload can be traced back to you.</source>
+        <target>crwdns414545:0%scrwdne414545:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
