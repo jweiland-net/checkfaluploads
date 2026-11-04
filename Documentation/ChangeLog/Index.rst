@@ -7,6 +7,12 @@
 ChangeLog
 =========
 
+Version 6.0.2
+=============
+
+*   [BUGFIX] EXT:form: Do not require the upload rights checkbox, if no new file was uploaded. Editing a record
+    with an already assigned image does not ask for the upload rights again
+
 Version 6.0.1
 =============
 

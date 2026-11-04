@@ -43,13 +43,15 @@ final readonly class DynamicUploadValidatorHook
     }
 
     /**
-     * In normal cases $elementValue should never be an array, as we remove the file from request, if checkbox
-     * for user-rights was not checked.
+     * Only a new upload (UploadedFile) requires the user-rights checkbox.
      *
-     * But in some cases it might be an array:
-     * - You have uploaded a file, marked the checkbox, but a validator of another element throws an error, and you send the form again after solving the issue
-     * - You upload the file on Page 1, but add the checkbox for file-rights to Page 2. OK, in that special case this code here will not find the checkbox ;-)
-     * - You are using the form to edit records which have already an image assigned and send the form to update the record.
+     * An array value contains a resource pointer to a file, which was already accepted before:
+     * - You have uploaded a file, marked the checkbox, but a validator of another element throws an error,
+     *   and you send the form again after solving the issue
+     * - You are using the form to edit records which have already an image assigned and send the form
+     *   to update the record
+     *
+     * In both cases no new file was uploaded, so there is nothing to confirm.
      *
      * @param array|UploadedFile|null $elementValue UploadedFile on initial upload, array on next upload after error, null on no upload
      */
@@ -66,6 +68,11 @@ final readonly class DynamicUploadValidatorHook
         // Early return if upload has failed
         if (!$this->isValidElementValue($elementValue)) {
             return null;
+        }
+
+        // Early return, if no new file was uploaded. The resource pointer references an already accepted file
+        if (is_array($elementValue)) {
+            return $elementValue;
         }
 
         // Early return, if there is no checkbox configured for user-rights
