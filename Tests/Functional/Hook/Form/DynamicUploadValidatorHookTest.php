@@ -133,6 +133,33 @@ class DynamicUploadValidatorHookTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function afterSubmitWithResourcePointerWillReturnOriginalValueWithoutRightsCheck(): void
+    {
+        $elementValue = [
+            'submittedFile' => [
+                'resourcePointer' => 'file:123',
+            ],
+        ];
+
+        $fileUploadMock = $this->createMock(FileUpload::class);
+        $fileUploadMock
+            ->expects($this->never())
+            ->method('getParentRenderable');
+
+        self::assertSame(
+            $elementValue,
+            $this->subject->afterSubmit(
+                $this->formRuntimeMock,
+                $fileUploadMock,
+                $elementValue,
+                [
+                    'CheckboxIdentifier' => '',
+                ],
+            ),
+        );
+    }
+
+    #[Test]
     public function afterSubmitWithNoChildElementsReturnsOriginalEmptyValue(): void
     {
         /** @var Page|MockObject $pageMock */
