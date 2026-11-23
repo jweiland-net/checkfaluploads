@@ -94,19 +94,25 @@ other file upload validator, it is only ever called by Extbase with an
 :php:`\TYPO3\CMS\Core\Http\UploadedFile` instance as the validated value.
 
 As described in the TYPO3 Changelog under "Modifying existing configuration",
-this is done in the controller's :php:`initialize*Action()`:
+this is done in the controller's :php:`initialize*Action()`. As
+`checkfaluploads` is an optional dependency of most extensions, attach the
+validator only if it is loaded:
 
 ..  code-block:: php
 
     public function initializeCreateAction(): void
     {
+        if (!ExtensionManagementUtility::isLoaded('checkfaluploads')) {
+            return;
+        }
+
         $validator = $this->validatorResolver->createValidator(
             CheckFalUploadValidator::class,
-            ['propertyPath' => 'topic.images'],
+            ['propertyPath' => 'record.images'],
             $this->request,
         );
 
-        $argument = $this->arguments->getArgument('topic');
+        $argument = $this->arguments->getArgument('record');
         $configuration = $argument->getFileHandlingServiceConfiguration()
             ->getFileUploadConfigurationForProperty('images');
         $configuration?->addValidator($validator);
@@ -115,7 +121,22 @@ this is done in the controller's :php:`initialize*Action()`:
 How and where exactly the validator is registered is up to the consuming
 extension. `initialize*Action()` is the way shown by the TYPO3 Changelog and
 requires no further wiring, but nothing stops you from doing this in a PSR-14
-event listener instead, if you prefer to keep your controllers slim.
+event listener of your extension instead, if you prefer to keep your
+controllers slim.
+
+The validator only checks an upload, if the rights field is part of the
+request, e.g. `tx_myext_myplugin[record][images][rights]`. Templates without
+the rights checkbox keep working: the upload is accepted as usual. Integrators
+activate the check by adding the checkbox to (a copy of) the form template:
+
+..  code-block:: html
+
+    <f:form.upload property="images" multiple="1"/>
+    <f:form.checkbox name="record[images][rights]" value="1"/>
+
+If the checkbox is not checked, Extbase reports a validation error at the
+upload field and re-renders the form with the entered values. The record is
+not saved and the file is not stored.
 
 The `$request` argument of :php:`ValidatorResolver::createValidator()` is
 mandatory. It is the only way :php:`CheckFalUploadValidator` gets access to
@@ -127,24 +148,24 @@ Where "propertyPath" points to, and why it does NOT need the plugin namespace
 
 This is the part most people get wrong on first try, because
 :php:`$request->getParsedBody()` does **not** return an already-resolved
-Extbase argument (as :php:`$request->getArgument('topic')` would). It returns
+Extbase argument (as :php:`$request->getArgument('record')` would). It returns
 the raw, unfiltered HTTP POST body, i.e. exactly what PHP's :php:`$_POST`
 superglobal would contain. Extbase's :php:`f:form` ViewHelper wraps every
 field name in the current plugin's namespace (`tx_<extension>_<plugin>`):
 
 ..  code-block:: text
 
-    1)  Fluid form field, rendered inside <f:form name="topic" ...>:
+    1)  Fluid form field, rendered inside <f:form name="record" ...>:
 
             <f:form.checkbox name="{object}[images][rights]" value="1"/>
 
     2)  Extbase prefixes every field name with the plugin namespace
-        ("tx_pforum_forum"), so it ends up here, in the raw and unfiltered
+        ("tx_myext_myplugin"), so it ends up here, in the raw and unfiltered
         HTTP POST body == $request->getParsedBody():
 
             [
-                'tx_pforum_forum' => [   // plugin namespace
-                    'topic' => [          // Extbase argument name
+                'tx_myext_myplugin' => [   // plugin namespace
+                    'record' => [         // Extbase argument name
                         'images' => [     // <- "propertyPath" points here,
                             'rights' => '1',    // NOT to "...images.rights"
                         ],
@@ -165,9 +186,9 @@ prepends it to "propertyPath" before resolving the value:
                 '.',
                 '/',
                 $pluginNamespace . '.' . $this->options['propertyPath'],
-                // 'tx_pforum_forum'   .   'topic.images'
+                // 'tx_myext_myplugin'   .   'record.images'
             );
-            // === 'tx_pforum_forum/topic/images'
+            // === 'tx_myext_myplugin/record/images'
 
             ArrayUtility::getValueByPath($parsedBody, $propertyPath)
             === ['rights' => '1']
@@ -179,7 +200,7 @@ prepends it to "propertyPath" before resolving the value:
         rather than an array, and fatal with a TypeError.
 
 Extension developers therefore only ever configure the simple, plugin-agnostic
-part of the path ("topic.images", "post.images", ...) - the plugin namespace
+part of the path ("record.images", "article.images", ...) - the plugin namespace
 differs per extension/plugin and would otherwise have to be duplicated,
 error-prone, in every extension using this validator.
 
@@ -194,18 +215,18 @@ All of the following options are passed as the second argument of
 `propertyPath`
     Required. Path in Extbase notation (divided by "."), without the plugin
     namespace, pointing to the array that holds the `rights` key, e.g.
-    `topic.images` or `post.images` (see above).
+    `record.images` or `article.images` (see above).
 
 `fieldName`
     Optional, default `rights`. Key within that array that must be set and
     not empty for the upload to be allowed. Configurable on purpose: another
     extension's form might already use `rights` for something unrelated at
     that same array level, so a different name avoids a collision, e.g.
-    :php:`['propertyPath' => 'topic.images', 'fieldName' => 'uploadRights']`.
+    :php:`['propertyPath' => 'record.images', 'fieldName' => 'uploadRights']`.
 
 `langKey`
     Optional, default `error.uploadFile.missingRights`. Language key (LLL) of
-    the validation error message shown when `fieldName` is missing or empty.
+    the validation error message shown when `fieldName` is empty.
 
 `extensionName`
     Optional, default `checkfaluploads`. Extension key used to resolve the
@@ -217,8 +238,10 @@ content from the parsed body, so in practice only the small `rights` array
 shown above remains there. Since Extbase supports uploading multiple files
 for a single property with :html:`<f:form.upload property="images"
 multiple="1" />`, one checkbox is enough to confirm the rights for all
-uploaded files at once - no per-file checkbox / index is needed. If `rights`
-is set and not empty, the upload is allowed; otherwise
+uploaded files at once - no per-file checkbox / index is needed. If the
+`rights` field is not part of the request at all, the validator does not
+report an error. If `rights` is set and not empty, the upload is allowed;
+otherwise
 :php:`FalUploadService::checkFile()` returns an
 :php:`\TYPO3\CMS\Extbase\Error\Error`, which :php:`CheckFalUploadValidator`
 turns into a validation error via :php:`$this->addError()`, so Extbase

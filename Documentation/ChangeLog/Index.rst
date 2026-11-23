@@ -7,6 +7,12 @@
 ChangeLog
 =========
 
+Version 6.0.3
+=============
+
+*   [BUGFIX] CheckFalUploadValidator does not throw an exception anymore, if the rights field is missing in the
+    request (e.g. a form template without the rights checkbox). The upload is accepted without a rights check
+
 Version 6.0.2
 =============
 
