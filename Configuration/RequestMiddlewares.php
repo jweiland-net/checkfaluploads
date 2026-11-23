@@ -10,6 +10,7 @@
 use JWeiland\Checkfaluploads\Middleware\DragUploaderRightsCheckMiddleware;
 use JWeiland\Checkfaluploads\Middleware\ElementBrowserUploadRightsCheckMiddleware;
 use JWeiland\Checkfaluploads\Middleware\FormEngineUploadRightsCheckMiddleware;
+use JWeiland\Checkfaluploads\Middleware\FrontendUploadRightsCheckMiddleware;
 
 return [
     'backend' => [
@@ -29,6 +30,20 @@ return [
             'target' => FormEngineUploadRightsCheckMiddleware::class,
             'after' => [
                 'typo3/cms-backend/backend-routing',
+            ],
+        ],
+    ],
+    'frontend' => [
+        // The flash message queue stores session messages for the frontend user
+        // of $GLOBALS['TYPO3_REQUEST'], which is set by "tsfe".
+        // Must run before any plugin is rendered.
+        'jweiland/checkfaluploads/frontend-upload-rights-check' => [
+            'target' => FrontendUploadRightsCheckMiddleware::class,
+            'after' => [
+                'typo3/cms-frontend/tsfe',
+            ],
+            'before' => [
+                'typo3/cms-frontend/prepare-tsfe-rendering',
             ],
         ],
     ],

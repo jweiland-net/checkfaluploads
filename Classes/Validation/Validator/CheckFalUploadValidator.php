@@ -28,6 +28,11 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  * ValidatorResolver::createValidator(), as this validator reads the parsed request body and resolves the
  * current plugin namespace via ExtensionService::getPluginNamespace().
  *
+ * If the request does not contain the "rights" field, the validator does not report an error, so the
+ * upload works like without checkfaluploads. In the frontend, the generic FrontendUploadRightsCheckMiddleware
+ * already removes uploads with an unchecked field named "rights" before Extbase is called. Configure another
+ * "fieldName" (e.g. "uploadRights") to get a validation error at the upload field from this validator instead.
+ *
  * See Documentation/Developer/Index.rst ("CheckFalUploadValidator") for usage, the available options and
  * how "propertyPath" is resolved against the raw parsed request body.
  */
@@ -36,7 +41,7 @@ final class CheckFalUploadValidator extends AbstractValidator
     protected $supportedOptions = [
         'propertyPath' => [null, 'Path in Extbase notation (divided by "."), without the plugin namespace, pointing to the array that holds the "rights" key, e.g. "topic.images"', 'string'],
         'fieldName' => ['rights', 'Key within the rights configuration array that must be set and not empty for the upload to be allowed. Configurable to avoid collisions with an unrelated field of the same name in a foreign form', 'string'],
-        'langKey' => ['error.uploadFile.missingRights', 'Language key (LLL) of the validation error message shown when "fieldName" is missing or empty', 'string'],
+        'langKey' => ['error.uploadFile.missingRights', 'Language key (LLL) of the validation error message shown when "fieldName" is empty', 'string'],
         'extensionName' => ['checkfaluploads', 'Extension key used to resolve the language file for "langKey" and the other error messages of FalUploadService::checkFile()', 'string'],
     ];
 
@@ -55,33 +60,12 @@ final class CheckFalUploadValidator extends AbstractValidator
             throw new \InvalidArgumentException('CheckFalUploadValidator can only be used within an Extbase request context', 1788269828);
         }
 
-        $pluginNamespace = $this->extensionService->getPluginNamespace(
-            $this->request->getControllerExtensionName(),
-            $this->request->getPluginName(),
-        );
+        $rightsConfiguration = $this->getRightsConfiguration($this->request);
 
-        // PropertyPath of Extbase is divided by ".", to use it in ArrayUtility we need "/"
-        $propertyPath = str_replace('.', '/', $pluginNamespace . '.' . $this->options['propertyPath']);
-
-        try {
-            $rightsConfiguration = ArrayUtility::getValueByPath($this->request->getParsedBody(), $propertyPath);
-        } catch (MissingArrayPathException $e) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'checkfaluploads: CheckFalUploadValidator could not find the property path "%s" in the'
-                    . ' parsed request body. This usually means the "rights" checkbox of the checkfaluploads'
-                    . ' API was not added to the upload form template of the extension that registered this'
-                    . ' validator. Add the checkbox or double-check the configured "propertyPath" option.',
-                    $propertyPath,
-                ),
-                1788270392,
-            );
-        } catch (\RuntimeException $e) {
-            throw new \InvalidArgumentException(
-                'checkfaluploads: CheckFalUploadValidator was registered without a "propertyPath" option. '
-                . 'The option "propertyPath" must not be empty.',
-                1788270484,
-            );
+        // Same rule as for the generic frontend check: the rights check only applies,
+        // if the form contains the rights field. Without it, there is nothing to check.
+        if (!is_array($rightsConfiguration) || !array_key_exists($this->options['fieldName'], $rightsConfiguration)) {
+            return;
         }
 
         $error = $this->falUploadService->checkFile(
@@ -99,6 +83,31 @@ final class CheckFalUploadValidator extends AbstractValidator
                 $error->getArguments(),
                 $error->getTitle(),
             );
+        }
+    }
+
+    private function getRightsConfiguration(Request $request): mixed
+    {
+        if ((string)($this->options['propertyPath'] ?? '') === '') {
+            throw new \InvalidArgumentException(
+                'checkfaluploads: CheckFalUploadValidator was registered without a "propertyPath" option. '
+                . 'The option "propertyPath" must not be empty.',
+                1788270484,
+            );
+        }
+
+        $pluginNamespace = $this->extensionService->getPluginNamespace(
+            $request->getControllerExtensionName(),
+            $request->getPluginName(),
+        );
+
+        // PropertyPath of Extbase is divided by ".", to use it in ArrayUtility we need "/"
+        $propertyPath = str_replace('.', '/', $pluginNamespace . '.' . $this->options['propertyPath']);
+
+        try {
+            return ArrayUtility::getValueByPath((array)$request->getParsedBody(), $propertyPath);
+        } catch (MissingArrayPathException) {
+            return null;
         }
     }
 }

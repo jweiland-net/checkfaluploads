@@ -34,11 +34,12 @@ protects what TYPO3 core itself handles: the File List module, the
 ElementBrowser, and inline file/media fields in FormEngine. Installing
 `checkfaluploads` does not retroactively guarantee that every `sys_file`
 record in your installation carries a rights confirmation or an
-uploader ID. Extensions with their own upload logic, powermail's file
-upload field being one example, need a developer to wire in the
-`FalUploadService` / `CheckFalUploadValidator` API by hand (see the
-[Developer manual](Documentation/Developer/Index.rst)); installing
-`checkfaluploads` alone does not cover them. And for frontend forms
+uploader ID. In frontend, Extbase and EXT:form forms are checked as soon
+as the form template contains a rights checkbox for the upload field (see
+the [Developer manual](Documentation/Developer/Index.rst)). Extensions
+with other upload logic need a developer to wire in the
+`FalUploadService` API by hand; installing `checkfaluploads` alone does
+not cover them. And for frontend forms
 without a login, a job application form for example, there is no
 frontend user to begin with: no session means no user ID, regardless
 of what `checkfaluploads` does.
@@ -49,7 +50,8 @@ of what `checkfaluploads` does.
 * Adds the same checkbox to the ElementBrowser's upload form
 * Adds the same checkbox to inline file/media upload buttons in FormEngine (e.g. "Select & upload files")
 * Stores the FE or BE user UID of the uploader on the `sys_file` record
-* Ships an API to add your own image rights checkbox to Extbase and/or EXT:form forms
+* Checks the image rights checkbox of any Extbase or EXT:form frontend form, as soon as the form template contains it
+* Ships an API for extensions with their own upload logic
 
 ## Installation
 

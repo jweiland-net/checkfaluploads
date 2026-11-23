@@ -15,6 +15,9 @@
 			<trans-unit id="error.uploadFile.missingRights">
 				<source>It is not allowed to upload files, as long as the checkbox for file rights is not checked</source>
 			</trans-unit>
+			<trans-unit id="error.uploadFile.rightsNotConfirmed">
+				<source>The file(s) "%s" were not uploaded, because the checkbox for file rights was not checked.</source>
+			</trans-unit>
 			<trans-unit id="missingRights.title">
 				<source>Upload aborted</source>
 			</trans-unit>

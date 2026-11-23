@@ -33,8 +33,8 @@ Third-party extensions are not covered automatically
 
 `checkfaluploads` only protects what TYPO3 core itself handles: the
 File List module, the ElementBrowser, and inline file/media fields in
-FormEngine. Extensions that implement their own upload logic on top of
-Extbase or EXT:form, powermail's file upload field being one example,
-are not covered just by installing `checkfaluploads`. Their developers
-have to wire in :ref:`FalUploadService or CheckFalUploadValidator
-<developer-manual>` by hand.
+FormEngine. In frontend, Extbase and EXT:form forms are only checked,
+if the form template contains a rights checkbox for the upload field,
+see :ref:`developer-manual`. Extensions with other upload logic are not
+covered just by installing `checkfaluploads`. Their developers have to
+wire in :ref:`FalUploadService <developer-manual>` by hand.

@@ -50,9 +50,8 @@ final readonly class UserMarkedCheckboxForRightsEventListener
     public function checkForAddedFile(BeforeFileAddedEvent $event): void
     {
         // FE uploads are not enforced here: checkfaluploads does not own the
-        // frontend upload form, so whichever extension renders it must call
-        // FalUploadService / CheckFalUploadValidator itself, see
-        // Documentation/Developer/Index.rst.
+        // frontend upload form. They are checked by the rights field of the
+        // form, see FrontendUploadRightsCheckMiddleware and the EXT:form hook.
         if ($this->isBackendRequest() && $this->isUploadRightsCheckEnabledForCurrentRoute()) {
             $fileParts = GeneralUtility::split_fileref($event->getFileName());
             if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'], true)) {
@@ -82,9 +81,8 @@ final readonly class UserMarkedCheckboxForRightsEventListener
     public function checkForReplacedFile(BeforeFileReplacedEvent $event): void
     {
         // FE uploads are not enforced here: checkfaluploads does not own the
-        // frontend upload form, so whichever extension renders it must call
-        // FalUploadService / CheckFalUploadValidator itself, see
-        // Documentation/Developer/Index.rst.
+        // frontend upload form. They are checked by the rights field of the
+        // form, see FrontendUploadRightsCheckMiddleware and the EXT:form hook.
         if ($this->isBackendRequest() && $this->isUploadRightsCheckEnabledForCurrentRoute()) {
             $fileParts = GeneralUtility::split_fileref($event->getFile()->getName());
             if (!in_array($fileParts['fileext'], ['youtube', 'vimeo'], true)) {

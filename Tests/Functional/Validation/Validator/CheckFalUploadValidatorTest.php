@@ -156,21 +156,49 @@ class CheckFalUploadValidatorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function validateThrowsExceptionWhenPropertyPathDoesNotExistInParsedBody(): void
+    public function validateReturnsNoErrorsWhenPropertyPathDoesNotExistInParsedBody(): void
     {
-        $this->subject->setOptions(['propertyPath' => 'topic.nonExistingProperty']);
+        $this->subject->setOptions(['propertyPath' => 'topic.images']);
+        $this->subject->setRequest($this->createRequestStub([
+            'tx_pforum_forum' => [
+                'topic' => [
+                    'title' => 'Without rights field',
+                ],
+            ],
+        ]));
+
+        $result = $this->subject->validate($this->createUploadedFileMock());
+
+        self::assertFalse($result->hasErrors());
+    }
+
+    #[Test]
+    public function validateReturnsNoErrorsWhenRightsFieldIsMissingInPropertyPath(): void
+    {
+        $this->subject->setOptions(['propertyPath' => 'topic.images']);
         $this->subject->setRequest($this->createRequestStub([
             'tx_pforum_forum' => [
                 'topic' => [
                     'images' => [
-                        'rights' => '1',
+                        'unrelated' => '1',
                     ],
                 ],
             ],
         ]));
 
+        $result = $this->subject->validate($this->createUploadedFileMock());
+
+        self::assertFalse($result->hasErrors());
+    }
+
+    #[Test]
+    public function validateThrowsExceptionWhenPropertyPathOptionIsEmpty(): void
+    {
+        $this->subject->setOptions(['propertyPath' => '']);
+        $this->subject->setRequest($this->createRequestStub([]));
+
         self::expectException(\InvalidArgumentException::class);
-        self::expectExceptionCode(1788270392);
+        self::expectExceptionCode(1788270484);
 
         $this->subject->validate($this->createUploadedFileMock());
     }
@@ -179,7 +207,7 @@ class CheckFalUploadValidatorTest extends FunctionalTestCase
     public function validatePrependsResolvedPluginNamespaceBeforeResolvingPropertyPath(): void
     {
         $extensionServiceStub = self::createStub(ExtensionService::class);
-        $extensionServiceStub->method('getPluginNamespace')->willReturn('tx_wrong_namespace');
+        $extensionServiceStub->method('getPluginNamespace')->willReturn('tx_other_namespace');
 
         $subject = new CheckFalUploadValidator(new FalUploadService(), $extensionServiceStub);
         $subject->setOptions(['propertyPath' => 'topic.images']);
@@ -187,16 +215,46 @@ class CheckFalUploadValidatorTest extends FunctionalTestCase
             'tx_pforum_forum' => [
                 'topic' => [
                     'images' => [
-                        'rights' => '1',
+                        'rights' => '',
+                    ],
+                ],
+            ],
+            'tx_other_namespace' => [
+                'topic' => [
+                    'images' => [
+                        'rights' => '',
                     ],
                 ],
             ],
         ]));
 
-        self::expectException(\InvalidArgumentException::class);
-        self::expectExceptionCode(1788270392);
+        $result = $subject->validate($this->createUploadedFileMock());
 
-        $subject->validate($this->createUploadedFileMock());
+        self::assertTrue($result->hasErrors());
+        self::assertSame(1604050225, $result->getFirstError()->getCode());
+    }
+
+    #[Test]
+    public function validateIgnoresRightsFieldOfForeignPluginNamespace(): void
+    {
+        $extensionServiceStub = self::createStub(ExtensionService::class);
+        $extensionServiceStub->method('getPluginNamespace')->willReturn('tx_other_namespace');
+
+        $subject = new CheckFalUploadValidator(new FalUploadService(), $extensionServiceStub);
+        $subject->setOptions(['propertyPath' => 'topic.images']);
+        $subject->setRequest($this->createRequestStub([
+            'tx_pforum_forum' => [
+                'topic' => [
+                    'images' => [
+                        'rights' => '',
+                    ],
+                ],
+            ],
+        ]));
+
+        $result = $subject->validate($this->createUploadedFileMock());
+
+        self::assertFalse($result->hasErrors());
     }
 
     private function createRequestStub(array $parsedBody): Request

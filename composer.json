@@ -49,6 +49,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
+			"JWeiland\\CheckfaluploadsTest\\": "Tests/Functional/Fixtures/Extensions/checkfaluploads_test/Classes/",
 			"JWeiland\\Checkfaluploads\\Tests\\": "Tests"
 		}
 	},

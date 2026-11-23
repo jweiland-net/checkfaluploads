@@ -1,0 +1,11 @@
+plugin.tx_checkfaluploadstest_upload {
+  view.templateRootPaths.10 = EXT:checkfaluploads_test/Resources/Private/Templates/
+  persistence.storagePid = 1
+}
+
+page = PAGE
+page.10 = EXTBASEPLUGIN
+page.10 {
+  extensionName = CheckfaluploadsTest
+  pluginName = Upload
+}

@@ -19,10 +19,11 @@ granting the configured owner unrestricted rights to that file. It also
 stores the uploading editor's user UID on the `sys_file` record, so
 administrators can trace back who uploaded a given file.
 
-This only covers what TYPO3 core itself handles. Extensions with their own
-upload logic need a developer to wire in our `FalUploadService` /
-`CheckFalUploadValidator` API by hand, and frontend forms without a login
-have no user to assign at all, see :ref:`known-problems`.
+In frontend, Extbase and EXT:form forms get the same check, as soon as the
+form template contains a rights checkbox for the upload field, see
+:ref:`developer-manual`. Extensions with other upload logic need a developer
+to wire in our `FalUploadService` API by hand, and frontend forms without a
+login have no user to assign at all, see :ref:`known-problems`.
 
 ..  _screenshots:
 
