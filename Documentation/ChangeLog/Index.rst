@@ -7,6 +7,16 @@
 ChangeLog
 =========
 
+Version 6.1.0
+=============
+
+*   [TASK] Check the upload rights of any Extbase form in frontend, without code in the extension
+    providing the form. If the request contains the field `<plugin namespace>[<object>][<property>][rights]`
+    and it is not checked, the uploaded files of that property are removed from the request and the user
+    gets an error flash message. Without such a field, nothing changes.
+*   [BUGFIX] CheckFalUploadValidator does not throw an exception anymore, if the rights field is missing in
+    the request. Like the generic check, it only checks the upload, if the rights field is part of the form.
+
 Version 6.0.2
 =============
 
